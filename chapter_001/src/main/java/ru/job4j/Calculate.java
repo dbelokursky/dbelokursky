@@ -3,7 +3,7 @@ package ru.job4j;
 /**
 * Class Calculate решение задачи части 001 урок1.
 * @author dbelokursky
-* @since 30.05.2017
+* @since 0.1
 */
 public class Calculate {
 
@@ -12,7 +12,7 @@ public class Calculate {
 * @param args массив строк с параметрами запуска.
 */
 	public static void main(String[] args) {
-		echo("test");
+		System.out.println("Hello World");
 }
 
 /**
