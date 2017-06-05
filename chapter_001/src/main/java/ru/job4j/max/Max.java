@@ -2,6 +2,8 @@ package ru.job4j.max;
 
 /**
 * Class Max для решения задачи нахождения максимума из двух чисел.
+* @author Dmitry Belokursky
+* @since 0.1
 */
 public class Max {
 
