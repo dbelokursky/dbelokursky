@@ -13,15 +13,24 @@ import static org.junit.Assert.assertThat;
 public class MaxTest {
 
 	/**
-	* Метод тестирует операцию нахождения максимального числа.
-	* @param first **первый аргумент**
-	* @param second **второй аргумент**
+	* Метод тестирует операцию нахождения наибольшего из двух чисел.
 	*/
 	@Test
-	public void whenFirstMoreThenReturnsFirst(int first, int second) {
+	public void whenFirstMoreThenReturnsFirst() {
 		Max max = new Max();
 		int result = max.max(2, 1);
 		int expected = 2;
+		assertThat(result, is(expected));
+	}
+
+	/**
+	* Метод тестирует операцию нахождения наибольшего из трех чисел.
+	*/
+	@Test
+	public void maxTest() {
+		Max max = new Max();
+		int result = max.max(1, 2, 3);
+		int expected = 3;
 		assertThat(result, is(expected));
 	}
 }

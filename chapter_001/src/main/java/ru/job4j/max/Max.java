@@ -16,4 +16,16 @@ public class Max {
 	public int max(int first, int second) {
 		return (first > second) ? first : second;
 	}
+
+	/**
+	* Метод сравнивает три числа и возвращает большее.
+	* @param first **первое число**
+	* @param second **второе число**
+	* @param third **третье число**
+	* @return max **максимальное число**
+	*/
+	public int max(int first, int second, int third) {
+		int tmp = max(first, second);
+		return max(tmp, third);
+	}
 }
