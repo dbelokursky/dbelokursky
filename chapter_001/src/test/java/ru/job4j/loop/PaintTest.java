@@ -20,7 +20,7 @@ public class PaintTest {
 		Paint pyramid = new Paint();
 		String result = pyramid.pyramid(2);
 		final String line = System.getProperty("line.separator");
-		String expected = String.format(" ^%<s^^^%<s", line);
+		String expected = String.format(" ^%s^^^%<s", line);
 		assertThat(result, is(expected));
 	}
 
