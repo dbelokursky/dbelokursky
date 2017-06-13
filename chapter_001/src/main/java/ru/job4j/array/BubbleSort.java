@@ -13,10 +13,8 @@ public class BubbleSort {
 	* @return array **отсортированный массив**
 	*/
 	public int[] sort(int[] array) {
-		boolean swap = true;
-		int lastElementInd = array.length - 1;
-		for (int j = 0; j < array.length; j++) {
-			for (int i = 0; i < lastElementInd; i++) {
+		for (int j = array.length; j >= 0; j--) {
+			for (int i = 0; i < array.length - 1; i++) {
 				if (array[i] > array[i + 1]) {
 					int tmp = array[i];
 					array[i] = array[i + 1];
