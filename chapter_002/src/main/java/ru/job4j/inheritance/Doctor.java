@@ -1,12 +1,16 @@
 package ru.job4j.inheritance;
 
 /**
- * Created by db on 26.06.17.
+ * Class Doctor. Характеристики врача.
  */
 public class Doctor extends Profession {
 
-    public String treat(Disease desiase) {
-        return String.format("Doctor $s treat $s", this.getFullName(), desiase.getName());
+    /**
+     * Метод возвращает фразу содержащую ФИО врача и название болезни.
+     * @param disease **заболевание**
+     * @return **фраза содержащая ФИО врача и название болезни**
+     */
+    public String treat(Disease disease) {
+        return String.format("Doctor $s treat $s", this.getFullName(), disease.getName());
     }
-
 }
