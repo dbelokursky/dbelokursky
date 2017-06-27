@@ -9,7 +9,7 @@ public class Discipline {
 
     /**
      * Поле хранит название дисциплины.
-    */
+     */
     private String name;
 
     /**
