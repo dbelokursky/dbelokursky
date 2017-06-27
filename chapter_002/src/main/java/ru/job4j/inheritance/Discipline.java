@@ -6,6 +6,7 @@ package ru.job4j.inheritance;
  * @since 27.06.2017
  */
 public class Discipline {
+
     /**
      * Поле хранит название дисциплины.
     */
