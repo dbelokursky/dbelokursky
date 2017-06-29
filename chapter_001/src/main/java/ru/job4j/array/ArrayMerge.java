@@ -17,17 +17,24 @@ public class ArrayMerge {
         int sInd = 0;
         int rInd = 0;
 
-        while (rInd < result.length) {
-            result[rInd] = fArr[fInd] < sArr[sInd] ? fArr[fInd++] : sArr[sInd++];
-            if (fInd == fArr.length) {
-                System.arraycopy(sArr, sInd, result, ++rInd, sArr.length - sInd);
-                break;
+        if (fArr.length == 0) {
+            System.arraycopy(sArr, 0, result,0, sArr.length);
+        } else if (sArr.length == 0) {
+            System.arraycopy(fArr, 0, result, 0, fArr.length);
+        } else {
+            while (rInd < result.length) {
+                result[rInd] = fArr[fInd] < sArr[sInd] ? fArr[fInd++] : sArr[sInd++];
+                if (fInd == fArr.length) {
+                    System.arraycopy(sArr, sInd, result, ++rInd, sArr.length - sInd);
+                    break;
+                }
+                if (sInd == sArr.length) {
+                    System.arraycopy(fArr, fInd, result, ++rInd, fArr.length - fInd);
+                    break;
+                }
+                rInd++;
             }
-            if (sInd == sArr.length) {
-                System.arraycopy(fArr, fInd, result, ++rInd, fArr.length - fInd);
-                break;
-            }
-            rInd++;
+
         }
         return result;
     }
