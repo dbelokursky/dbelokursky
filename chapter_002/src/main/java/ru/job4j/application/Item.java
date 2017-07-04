@@ -15,6 +15,12 @@ public class Item {
 
     private String id;
 
+    @Override
+    public String toString() {
+        return this.name + " " + this.description + " " + "ID: " + this.id;
+    }
+
+
     public Item() {
     }
 
