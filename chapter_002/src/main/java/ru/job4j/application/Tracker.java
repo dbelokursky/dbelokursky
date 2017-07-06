@@ -2,6 +2,7 @@ package ru.job4j.application;
 
 /**
  * Класс Tracker. Обертка для работы с массивом заявок.
+ *
  * @author Dmitry Belokursky
  * @since 0.1 02.07.2017
  */
@@ -13,6 +14,7 @@ public class Tracker {
 
     /**
      * Добавляет заявку в массив заявок items.
+     *
      * @param item заявка
      * @return добавленная заявка.
      */
@@ -23,6 +25,7 @@ public class Tracker {
 
     /**
      * Обновляет заявку в массиве items.
+     *
      * @param item новая заявка.
      */
     public void update(Item item) {
@@ -36,6 +39,7 @@ public class Tracker {
 
     /**
      * Удаляет ячейку в массиве items. Все значения справа от удаляемого элемента - на одну ячейку влево.
+     *
      * @param item заявка.
      */
     public void delete(Item item) {
@@ -50,6 +54,7 @@ public class Tracker {
 
     /**
      * Возвращает копию массива items без null элементов.
+     *
      * @return копия массива без null элементов.
      */
     public Item[] findAll() {
@@ -68,6 +73,7 @@ public class Tracker {
     /**
      * Проверяет все элементы массива items, сравнивая name с аргументом String key.
      * Элементы, у которых совпадает name, копирует в результирующий массив.
+     *
      * @param key название заявки.
      * @return результирующий массив.
      */
@@ -86,6 +92,7 @@ public class Tracker {
 
     /**
      * Проверяет элементы массива items, сравнивая id с аргументом String id
+     *
      * @param id id заявки
      * @return возвращает найденный Item. Если Item не найден - возвращает null.
      */
