@@ -10,6 +10,22 @@ public class StartUI {
 
     private Tracker tracker;
 
+    private static final String ADD = "0";
+
+    private static final String SHOW = "1";
+
+    private static final String EDIT = "2";
+
+    private static final String DELETE = "3";
+
+    private static final String FIND_ID = "4";
+
+    private static final String FIND_NAME = "5";
+
+    private static final String EXIT = "6";
+
+
+
     public StartUI(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
@@ -46,25 +62,25 @@ public class StartUI {
             menuItem = input.ask("Select: ");
 
             switch (menuItem) {
-                case "0"://Добавление заявки.
+                case ADD://Добавление заявки.
                     addItem(input);
                     break;
-                case "1"://Вывод списка заявок.
+                case SHOW://Вывод списка заявок.
                     showItemsList();
                     break;
-                case "2"://Редактирование заявки.
+                case EDIT://Редактирование заявки.
                     editItem(input);
                     break;
-                case "3"://Удаление заявки.
+                case DELETE://Удаление заявки.
                     deleteItem(input);
                     break;
-                case "4"://Поиск по заявки ID.
+                case FIND_ID://Поиск по заявки ID.
                     findItemById(input);
                     break;
-                case "5"://Поиск заявок по названию.
+                case FIND_NAME://Поиск заявок по названию.
                     findItemByName(input);
                     break;
-                case "6"://Завершение программы.
+                case EXIT://Завершение программы.
                     exitProgram = exit();
             }
         }
