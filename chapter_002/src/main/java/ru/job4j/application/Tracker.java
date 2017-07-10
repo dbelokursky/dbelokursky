@@ -31,7 +31,8 @@ public class Tracker {
     public void update(Item item) {
         for (int i = 0; i < cursor; i++) {
             if (item != null && item.getId().equals(items[i].getId())) {
-                items[i] = item;
+                items[i].setName(item.getName());
+                items[i].setDescription(item.getDescription());
                 break;
             }
         }
