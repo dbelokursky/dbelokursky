@@ -41,6 +41,10 @@ public class MenuTracker {
         this.tracker = tracker;
     }
 
+    public UserAction[] getActions() {
+        return actions;
+    }
+
     public void fillActions() {
         this.actions[0] = this.new AddItem();
         this.actions[1] = new MenuTracker.ShowItems();
@@ -48,6 +52,14 @@ public class MenuTracker {
         this.actions[3] = this.new DeleteItem();
         this.actions[4] = this.new FindItemById();
         this.actions[5] = this.new FindItemByName();
+    }
+
+    public int[] getMenuRange() {
+        int[] range = new int[this.getActions().length];
+        for (int i = 0; i < this.getActions().length; i++) {
+            range[i] = i;
+        }
+        return range;
     }
 
     public void show() {

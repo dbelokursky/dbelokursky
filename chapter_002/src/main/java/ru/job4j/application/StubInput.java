@@ -15,6 +15,11 @@ public class StubInput implements Input {
     }
 
     @Override
+    public int ask(String question, int[] range) {
+        throw new UnsupportedOperationException("Unsupported operation.");
+    }
+
+    @Override
     public String ask(String question) {
         return answers[position++];
     }
