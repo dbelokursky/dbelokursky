@@ -5,11 +5,11 @@ package ru.job4j.application;
  * @since 09.07.17.
  */
 
-class EditItem implements UserAction {
+class EditItem extends BaseAction {
 
     @Override
     public String info() {
-        return String.format("%s. %s", this.key(), "Edit item.");
+        return super.info(this.key(), "Edit item.");
     }
 
     @Override
@@ -36,6 +36,8 @@ public class MenuTracker {
 
     private UserAction[] actions = new UserAction[6];
 
+    private int position = 0;
+
     MenuTracker(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
@@ -46,12 +48,16 @@ public class MenuTracker {
     }
 
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = new MenuTracker.ShowItems();
-        this.actions[2] = new EditItem();
-        this.actions[3] = this.new DeleteItem();
-        this.actions[4] = this.new FindItemById();
-        this.actions[5] = this.new FindItemByName();
+        this.actions[position++] = this.new AddItem();
+        this.actions[position++] = new MenuTracker.ShowItems();
+        this.actions[position++] = new EditItem();
+        this.actions[position++] = this.new DeleteItem();
+        this.actions[position++] = this.new FindItemById();
+        this.actions[position++] = this.new FindItemByName();
+    }
+
+    public void addAction(UserAction action) {
+        this.actions[position++] = action;
     }
 
     public int[] getMenuRange() {
@@ -76,31 +82,11 @@ public class MenuTracker {
         System.out.println("Заявка не найдена.");
     }
 
-    private class AddItem implements UserAction {
+    private static class ShowItems extends BaseAction {
 
         @Override
         public String info() {
-            return String.format("%s. %s", this.key(), "Add the new item.");
-        }
-
-        @Override
-        public int key() {
-            return 0;
-        }
-
-        @Override
-        public void execute(Input input, Tracker tracker) {
-            String name = input.ask("Введите имя заявки: ");
-            String desc = input.ask("Введите описание заявки: ");
-            tracker.add(new Item(name, desc));
-        }
-    }
-
-    private static class ShowItems implements UserAction {
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show items.");
+            return super.info(this.key(), "Show items.");
         }
 
         @Override
@@ -120,11 +106,31 @@ public class MenuTracker {
         }
     }
 
-    private class DeleteItem implements UserAction {
+    private class AddItem extends BaseAction {
 
         @Override
         public String info() {
-            return String.format("%s. %s", this.key(), "Delete item.");
+            return super.info(this.key(), "Add the new item.");
+        }
+
+        @Override
+        public int key() {
+            return 0;
+        }
+
+        @Override
+        public void execute(Input input, Tracker tracker) {
+            String name = input.ask("Введите имя заявки: ");
+            String desc = input.ask("Введите описание заявки: ");
+            tracker.add(new Item(name, desc));
+        }
+    }
+
+    private class DeleteItem extends BaseAction {
+
+        @Override
+        public String info() {
+            return super.info(this.key(), "Delete item.");
         }
 
         @Override
@@ -145,11 +151,11 @@ public class MenuTracker {
         }
     }
 
-    private class FindItemById implements UserAction {
+    private class FindItemById extends BaseAction {
 
         @Override
         public String info() {
-            return String.format("%s. %s", this.key(), "Find item by id.");
+            return super.info(this.key(), "Find item by id.");
         }
 
         @Override
@@ -169,11 +175,11 @@ public class MenuTracker {
         }
     }
 
-    private class FindItemByName implements UserAction {
+    private class FindItemByName extends BaseAction {
 
         @Override
         public String info() {
-            return String.format("%s. %s", this.key(), "Find item by name.");
+            return super.info(this.key(), "Find item by name.");
         }
 
         @Override
