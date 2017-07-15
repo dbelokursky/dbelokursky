@@ -7,14 +7,8 @@ package ru.job4j.application;
 
 class EditItem extends BaseAction {
 
-    @Override
-    public String info() {
-        return super.info(this.key(), "Edit item.");
-    }
-
-    @Override
-    public int key() {
-        return 2;
+    EditItem(String name, int key) {
+        super(name, key);
     }
 
     @Override
@@ -48,12 +42,12 @@ public class MenuTracker {
     }
 
     public void fillActions() {
-        this.actions[position++] = this.new AddItem();
-        this.actions[position++] = new MenuTracker.ShowItems();
-        this.actions[position++] = new EditItem();
-        this.actions[position++] = this.new DeleteItem();
-        this.actions[position++] = this.new FindItemById();
-        this.actions[position++] = this.new FindItemByName();
+        this.actions[position++] = this.new AddItem("Add the new item.", 0);
+        this.actions[position++] = new MenuTracker.ShowItems("Show items.", 1);
+        this.actions[position++] = new EditItem("Edit item.", 2);
+        this.actions[position++] = this.new DeleteItem("Delete item.", 3);
+        this.actions[position++] = this.new FindItemById("Find item by id.", 4);
+        this.actions[position++] = this.new FindItemByName("Find item by name.", 5);
     }
 
     public void addAction(UserAction action) {
@@ -84,14 +78,8 @@ public class MenuTracker {
 
     private static class ShowItems extends BaseAction {
 
-        @Override
-        public String info() {
-            return super.info(this.key(), "Show items.");
-        }
-
-        @Override
-        public int key() {
-            return 1;
+        ShowItems(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -108,14 +96,8 @@ public class MenuTracker {
 
     private class AddItem extends BaseAction {
 
-        @Override
-        public String info() {
-            return super.info(this.key(), "Add the new item.");
-        }
-
-        @Override
-        public int key() {
-            return 0;
+        AddItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -128,14 +110,8 @@ public class MenuTracker {
 
     private class DeleteItem extends BaseAction {
 
-        @Override
-        public String info() {
-            return super.info(this.key(), "Delete item.");
-        }
-
-        @Override
-        public int key() {
-            return 3;
+        DeleteItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -153,14 +129,8 @@ public class MenuTracker {
 
     private class FindItemById extends BaseAction {
 
-        @Override
-        public String info() {
-            return super.info(this.key(), "Find item by id.");
-        }
-
-        @Override
-        public int key() {
-            return 4;
+        FindItemById(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -177,14 +147,8 @@ public class MenuTracker {
 
     private class FindItemByName extends BaseAction {
 
-        @Override
-        public String info() {
-            return super.info(this.key(), "Find item by name.");
-        }
-
-        @Override
-        public int key() {
-            return 5;
+        FindItemByName(String name, int key) {
+            super(name, key);
         }
 
         @Override

@@ -10,16 +10,16 @@ public abstract class BaseAction implements UserAction {
 
     private int key;
 
-    BaseAction() {
-
-    }
-
     BaseAction(String name, int key) {
         this.name = name;
         this.key = key;
     }
 
-    public String info(int key, String name) {
-        return String.format("%s. %s", key, name);
+    public String info() {
+        return String.format("%s. %s", this.key, this.name);
+    }
+
+    public int key() {
+        return this.key;
     }
 }
