@@ -200,28 +200,33 @@ public class Board {
     }
 
     public void showBoard() {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (!(board[i][j].getFigure() == null)) {
-                    System.out.print(board[i][j].getFigure().getTextRepresentation() + " ");
+                    sb.append(board[i][j].getFigure().getTextRepresentation()).append(" ");
                 } else {
-                    System.out.print("\u2B1A" + " ");
+                    sb.append("\u2B1A").append(" ");
                 }
             }
-            System.out.println();
+            sb.append("\n");
         }
+        System.out.println(sb);
     }
 
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean result = false;
+        Cell[] way = source.getFigure().way(dest);
+        Figure destFigure = dest.getFigure();
+
         if (source.getFigure() == null) {
             throw new FigureNotFoundException("Фигура не найдена.");
-        } else if (dest.getFigure() != null) {
+        } else if (destFigure != null) {
             throw new OccupiedWayException("Клетка занята.");
-        } else if (source.getFigure().way(dest).length == 0) {
+        } else if (way.length == 0) {
             throw new ImpossibleMoveException("Ход невозможен.");
-        } else if (source.getFigure().way(dest).length != 0) {
-            for (Cell cell : source.getFigure().way(dest)) {
+        } else if (way.length != 0) {
+            for (Cell cell : way) {
                 if (board[cell.getRowPosition()][cell.getColPosition()].getFigure() != null) {
                     throw new ImpossibleMoveException("Ход невозможен.(Фигура на пути.)");
                 }
@@ -234,4 +239,3 @@ public class Board {
         return result;
         }
     }
-
