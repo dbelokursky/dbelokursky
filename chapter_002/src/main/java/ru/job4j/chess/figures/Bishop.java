@@ -7,7 +7,7 @@ public class Bishop extends Figure {
 
     public Bishop(Cell cell) {
         super(cell);
-        this.name = "\u2657";
+        this.textRepresentation = "\u2657";
     }
 
     @Override

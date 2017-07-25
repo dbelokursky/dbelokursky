@@ -7,7 +7,7 @@ public class Rook extends Figure {
 
     public Rook(Cell cell) {
         super(cell);
-        this.name = "\u2656";
+        this.textRepresentation = "\u2656";
     }
 
     @Override
@@ -18,6 +18,7 @@ public class Rook extends Figure {
         int desColPos = dest.getColPosition();
         int desRowPos = dest.getRowPosition();
         int resInd = 0;
+
         if ((dest.getFigure() == null) && (figRowPos == desRowPos && figColPos != desColPos)) {
             int resultSize = Math.abs(figColPos - desColPos);
             result = new Cell[resultSize];

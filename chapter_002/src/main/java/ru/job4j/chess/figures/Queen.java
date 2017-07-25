@@ -7,7 +7,7 @@ public class Queen extends Figure {
 
     public Queen(Cell cell) {
         super(cell);
-        this.name = "\u2655";
+        this.textRepresentation = "\u2655";
     }
 
     @Override

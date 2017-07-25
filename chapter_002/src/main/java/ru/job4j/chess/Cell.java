@@ -8,8 +8,6 @@ public class Cell {
 
     private int colPosition;
 
-    private boolean occupied;
-
     private Figure figure;
 
     public void setFigure(Figure figure) {
@@ -23,12 +21,7 @@ public class Cell {
     public Cell(int rowPosition, int colPosition) {
         this.rowPosition = rowPosition;
         this.colPosition = colPosition;
-        occupied = false;
         figure = null;
-    }
-
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
     }
 
     public int getRowPosition() {
@@ -37,18 +30,5 @@ public class Cell {
 
     public int getColPosition() {
         return colPosition;
-    }
-
-    public boolean isOccupied() {
-        return occupied;
-    }
-
-    @Override
-    public String toString() {
-        String result = "0";
-        if (this.occupied == true) {
-            result = "X";
-        }
-        return result;
     }
 }

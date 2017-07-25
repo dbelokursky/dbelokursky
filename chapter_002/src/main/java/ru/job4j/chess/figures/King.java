@@ -6,7 +6,7 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 public class King extends Figure {
     public King(Cell cell) {
         super(cell);
-        this.name = "\u2654";
+        this.textRepresentation = "\u2654";
     }
 
     @Override

@@ -7,14 +7,18 @@ public class Pawn extends Figure {
 
     public Pawn(Cell position) {
         super(position);
-        this.name = "\u2659";
+        this.textRepresentation = "\u2659";
     }
 
     @Override
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         Cell[] result = new Cell[0];
-        if ((dest.getFigure() == null) && (this.position.getRowPosition() - 1 == dest.getRowPosition())
-                && (this.position.getColPosition() == dest.getColPosition())) {
+        int figRowPos = this.position.getRowPosition();
+        int desRowPos = dest.getRowPosition();
+        int figColPos = this.position.getColPosition();
+        int desColPos = dest.getColPosition();
+
+        if ((dest.getFigure() == null) && (figRowPos - 1 == desRowPos) && (figColPos == desColPos)) {
             result = new Cell[1];
             result[0] = dest;
         } else {
@@ -22,5 +26,4 @@ public class Pawn extends Figure {
         }
         return result;
     }
-
 }

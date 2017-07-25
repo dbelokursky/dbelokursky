@@ -11,10 +11,10 @@ public abstract class Figure {
 
     protected Cell position;
 
-    protected String name;
+    protected String textRepresentation;
 
-    public String getName() {
-        return name;
+    public String getTextRepresentation() {
+        return textRepresentation;
     }
 
     Figure(Cell position) {
