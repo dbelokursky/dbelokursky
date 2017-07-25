@@ -18,28 +18,27 @@ public class Rook extends Figure {
         int desColPos = dest.getColPosition();
         int desRowPos = dest.getRowPosition();
         int resInd = 0;
-
         if ((dest.getFigure() == null) && (figRowPos == desRowPos && figColPos != desColPos)) {
             int resultSize = Math.abs(figColPos - desColPos);
             result = new Cell[resultSize];
             if (figColPos > desColPos) {
-                for (int i = figColPos; i != desColPos; i--) {
-                    result[resInd++] = new Cell(i, figRowPos);
+                for (int i = desColPos; i < figColPos; i++) {
+                    result[resInd++] = new Cell(figRowPos, i);
                 }
             } else if (figColPos < desColPos) {
-                for (int i = figColPos; i != desColPos; i++) {
-                    result[resInd++] = new Cell(i, figRowPos);
+                for (int i = desColPos; i > figColPos; i--) {
+                    result[resInd++] = new Cell(figRowPos, i);
                 }
             }
         } else if ((dest.getFigure() == null) && (figColPos == desColPos && figRowPos != desRowPos)) {
             int resultSize = Math.abs(figRowPos - desRowPos);
             result = new Cell[resultSize];
-            if (figRowPos > figColPos) {
-                for (int i = figRowPos; i != desRowPos; i--) {
+            if (figRowPos > desRowPos) {
+                for (int i = desRowPos; i < figRowPos; i++) {
                     result[resInd++] = new Cell(i, figColPos);
                 }
             } else if (figRowPos < desRowPos) {
-                for (int i = figRowPos; i != desRowPos; i++) {
+                for (int i = desRowPos; i > figRowPos; i--) {
                     result[resInd++] = new Cell(i, figColPos);
                 }
             }
