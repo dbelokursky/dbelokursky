@@ -209,7 +209,7 @@ public class Board {
                     sb.append("\u2B1A").append(" ");
                 }
             }
-            sb.append("\n");
+            sb.append(System.getProperty("line.separator"));
         }
         System.out.println(sb);
     }
