@@ -6,8 +6,7 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 public class Rook extends Figure {
 
     public Rook(Cell cell) {
-        super(cell);
-        this.textRepresentation = "\u2656";
+        super(cell, "\u2656");
     }
 
     @Override
@@ -46,5 +45,12 @@ public class Rook extends Figure {
             }
         }
         return result;
+    }
+
+    @Override
+    public Figure clone(Cell dest) {
+        Rook rook = new Rook(dest);
+        dest.setFigure(rook);
+        return rook;
     }
 }

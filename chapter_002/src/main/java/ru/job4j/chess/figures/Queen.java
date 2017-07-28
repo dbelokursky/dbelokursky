@@ -6,12 +6,18 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 public class Queen extends Figure {
 
     public Queen(Cell cell) {
-        super(cell);
-        this.textRepresentation = "\u2655";
+        super(cell, "\u2655");
     }
 
     @Override
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         return new Cell[0];
+    }
+
+    @Override
+    public Figure clone(Cell dest) {
+        Queen queen = new Queen(dest);
+        dest.setFigure(queen);
+        return queen;
     }
 }

@@ -4,13 +4,20 @@ import ru.job4j.chess.Cell;
 import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 public class King extends Figure {
-    public King(Cell cell) {
-        super(cell);
-        this.textRepresentation = "\u2654";
+
+    public King(Cell position) {
+        super(position, "\u2654");
     }
 
     @Override
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         return new Cell[0];
+    }
+
+    @Override
+    public Figure clone(Cell dest) {
+        King king = new King(dest);
+        dest.setFigure(king);
+        return king;
     }
 }

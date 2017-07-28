@@ -5,13 +5,19 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 public class Bishop extends Figure {
 
-    public Bishop(Cell cell) {
-        super(cell);
-        this.textRepresentation = "\u2657";
+    public Bishop(Cell position) {
+        super(position, "\u2657");
     }
 
     @Override
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
         return new Cell[0];
+    }
+
+    @Override
+    public Figure clone(Cell dest) {
+        Bishop bishop = new Bishop(dest);
+        dest.setFigure(bishop);
+        return bishop;
     }
 }

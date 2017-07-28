@@ -1,8 +1,8 @@
 package ru.job4j.chess;
 
+import ru.job4j.chess.exceptions.FigureNotFoundException;
 import ru.job4j.chess.exceptions.ImpossibleMoveException;
 import ru.job4j.chess.exceptions.OccupiedWayException;
-import ru.job4j.chess.exceptions.FigureNotFoundException;
 import ru.job4j.chess.figures.*;
 
 public class Board {
@@ -204,7 +204,7 @@ public class Board {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (!(board[i][j].getFigure() == null)) {
-                    sb.append(board[i][j].getFigure().getTextRepresentation()).append(" ");
+                    sb.append(board[i][j].getFigure().textRepresentation).append(" ");
                 } else {
                     sb.append("\u2B1A").append(" ");
                 }
@@ -216,10 +216,11 @@ public class Board {
 
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean result = false;
-        Cell[] way = source.getFigure().way(dest);
+        Figure sourceFigure = source.getFigure();
         Figure destFigure = dest.getFigure();
+        Cell[] way = sourceFigure.way(dest);
 
-        if (source.getFigure() == null) {
+        if (sourceFigure == null) {
             throw new FigureNotFoundException("Фигура не найдена.");
         } else if (destFigure != null) {
             throw new OccupiedWayException("Клетка занята.");
@@ -231,8 +232,7 @@ public class Board {
                     throw new ImpossibleMoveException("Ход невозможен.(Фигура на пути.)");
                 }
             }
-            dest.setFigure(source.getFigure());
-            dest.getFigure().setPosition(dest);
+            sourceFigure.clone(dest);
             source.setFigure(null);
             result = true;
             }

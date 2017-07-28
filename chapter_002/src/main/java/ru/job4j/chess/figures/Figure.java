@@ -5,20 +5,12 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 
 public abstract class Figure {
 
-    public void setPosition(Cell position) {
+    public final String textRepresentation;
+    final Cell position;
+
+    Figure(Cell position, String textRepresentation) {
         this.position = position;
-    }
-
-    protected Cell position;
-
-    protected String textRepresentation;
-
-    public String getTextRepresentation() {
-        return textRepresentation;
-    }
-
-    Figure(Cell position) {
-        this.position = position;
+        this.textRepresentation = textRepresentation;
     }
 
     /**
@@ -29,4 +21,6 @@ public abstract class Figure {
      * @throws ImpossibleMoveException
      */
     public abstract Cell[] way(Cell dest) throws ImpossibleMoveException;
+
+    public abstract Figure clone(Cell dest);
 }

@@ -6,8 +6,7 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 public class Pawn extends Figure {
 
     public Pawn(Cell position) {
-        super(position);
-        this.textRepresentation = "\u2659";
+        super(position, "\u2659");
     }
 
     @Override
@@ -25,5 +24,12 @@ public class Pawn extends Figure {
             throw new ImpossibleMoveException("Ход невозможен.");
         }
         return result;
+    }
+
+    @Override
+    public Figure clone(Cell dest) {
+        Pawn pawn = new Pawn(dest);
+        dest.setFigure(pawn);
+        return pawn;
     }
 }
