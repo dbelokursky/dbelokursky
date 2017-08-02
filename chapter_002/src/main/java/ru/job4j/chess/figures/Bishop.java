@@ -17,7 +17,6 @@ public class Bishop extends Figure {
     @Override
     public Figure clone(Cell dest) {
         Bishop bishop = new Bishop(dest);
-        dest.setFigure(bishop);
         return bishop;
     }
 }

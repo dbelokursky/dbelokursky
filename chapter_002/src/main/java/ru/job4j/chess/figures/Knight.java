@@ -17,7 +17,6 @@ public class Knight extends Figure {
     @Override
     public Figure clone(Cell dest) {
         Knight knight = new Knight(dest);
-        dest.setFigure(knight);
         return knight;
     }
 }

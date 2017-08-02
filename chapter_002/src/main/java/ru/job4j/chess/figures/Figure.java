@@ -6,7 +6,8 @@ import ru.job4j.chess.exceptions.ImpossibleMoveException;
 public abstract class Figure {
 
     public final String textRepresentation;
-    final Cell position;
+
+    public final Cell position;
 
     Figure(Cell position, String textRepresentation) {
         this.position = position;

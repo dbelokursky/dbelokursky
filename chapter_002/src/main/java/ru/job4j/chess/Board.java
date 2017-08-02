@@ -11,27 +11,12 @@ public class Board {
 
     private static final int INITIAL_FIGURES_COUNT = 32;
 
-    private int figuresCount;
-
     private int figureInd = 0;
 
     private Figure[] figures;
 
-    private Cell[][] board;
-
-    public Cell[][] getBoard() {
-        return board;
-    }
-
     Board() {
-        this.figuresCount = INITIAL_FIGURES_COUNT;
         this.figures = new Figure[INITIAL_FIGURES_COUNT];
-        this.board = new Cell[BOARD_SIZE][BOARD_SIZE];
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                board[i][j] = new Cell(i, j);
-            }
-        }
     }
 
     /**
@@ -40,17 +25,9 @@ public class Board {
     private void setPawns() {
         int whitePawsRow = 6;//начальная позиция белых пешек(2-ой ряд)
         int blackPawRow = 1;//начальная позиция черных пешек(7-ой ряд)
-        Cell tmpCell;
         for (int i = 0; i < BOARD_SIZE; i++) {
-            tmpCell = new Cell(whitePawsRow, i);
-            tmpCell.setFigure(new Pawn(tmpCell));
-            board[whitePawsRow][i] = tmpCell;
-            figures[figureInd++] = new Pawn(tmpCell);
-
-            tmpCell = new Cell(blackPawRow, i);
-            tmpCell.setFigure(new Pawn(tmpCell));
-            board[blackPawRow][i] = tmpCell;
-            figures[figureInd++] = new Pawn(tmpCell);
+            figures[figureInd++] = new Pawn(new Cell(whitePawsRow, i));
+            figures[figureInd++] = new Pawn(new Cell(blackPawRow, i));
         }
     }
 
@@ -58,133 +35,69 @@ public class Board {
      * Начальная расстановка Слонов.
      */
     private void setBishops() {
-        Cell tmpCell;
         int whiteBishopsRow = 7;
         int blackBishopsRow = 0;
         int fBishopsCol = 2;
         int sBishopsCol = 5;
 
-        tmpCell = new Cell(whiteBishopsRow, fBishopsCol);
-        tmpCell.setFigure(new Bishop(tmpCell));
-        board[whiteBishopsRow][fBishopsCol] = tmpCell;
-        figures[figureInd++] = new Bishop(tmpCell);
-
-        tmpCell = new Cell(whiteBishopsRow, sBishopsCol);
-        tmpCell.setFigure(new Bishop(tmpCell));
-        board[whiteBishopsRow][sBishopsCol] = tmpCell;
-        figures[figureInd++] = new Bishop(tmpCell);
-
-        tmpCell = new Cell(blackBishopsRow, fBishopsCol);
-        tmpCell.setFigure(new Bishop(tmpCell));
-        board[blackBishopsRow][fBishopsCol] = tmpCell;
-        figures[figureInd++] = new Bishop(tmpCell);
-
-        tmpCell = new Cell(blackBishopsRow, sBishopsCol);
-        tmpCell.setFigure(new Bishop(tmpCell));
-        board[blackBishopsRow][sBishopsCol] = tmpCell;
-        figures[figureInd++] = new Bishop(tmpCell);
+        figures[figureInd++] = new Bishop(new Cell(whiteBishopsRow, fBishopsCol));
+        figures[figureInd++] = new Bishop(new Cell(whiteBishopsRow, sBishopsCol));
+        figures[figureInd++] = new Bishop(new Cell(blackBishopsRow, fBishopsCol));
+        figures[figureInd++] = new Bishop(new Cell(blackBishopsRow, sBishopsCol));
     }
 
     /**
      * Начальная расстановка Королей.
      */
     private void setKings() {
-        Cell tmpCell;
         int whiteKingRow = 7;
         int blackKingRow = 0;
         int kingCol = 3;
 
-        tmpCell = new Cell(whiteKingRow, kingCol);
-        tmpCell.setFigure(new King(tmpCell));
-        board[whiteKingRow][kingCol] = tmpCell;
-        figures[figureInd++] = new King(tmpCell);
-
-        tmpCell = new Cell(blackKingRow, kingCol);
-        tmpCell.setFigure(new King(tmpCell));
-        board[blackKingRow][kingCol] = tmpCell;
-        figures[figureInd++] = new King(tmpCell);
+        figures[figureInd++] = new King(new Cell(whiteKingRow, kingCol));
+        figures[figureInd++] = new King(new Cell(blackKingRow, kingCol));
     }
 
     /**
      * Начальная расстановка Ферзей.
      */
     private void setQueens() {
-        Cell tmpCell;
         int whiteQueenRow = 7;
         int blackQueenRow = 0;
         int queenCol = 4;
 
-        tmpCell = new Cell(whiteQueenRow, queenCol);
-        tmpCell.setFigure(new Queen(tmpCell));
-        board[whiteQueenRow][queenCol] = tmpCell;
-        figures[figureInd++] = new King(tmpCell);
-
-        tmpCell = new Cell(blackQueenRow, queenCol);
-        tmpCell.setFigure(new Queen(tmpCell));
-        board[blackQueenRow][queenCol] = tmpCell;
-        figures[figureInd++] = new King(tmpCell);
+        figures[figureInd++] = new King(new Cell(whiteQueenRow, queenCol));
+        figures[figureInd++] = new King(new Cell(blackQueenRow, queenCol));
     }
 
     /**
      * Начальная расстановка Ладей.
      */
     private void setRooks() {
-        Cell tmpCell;
         int whiteRooksRow = 7;
         int blackRooksRow = 0;
         int fRookCol = 0;
         int sRookCol = 7;
 
-        tmpCell = new Cell(whiteRooksRow, fRookCol);
-        tmpCell.setFigure(new Rook(tmpCell));
-        board[whiteRooksRow][fRookCol] = tmpCell;
-        figures[figureInd++] = new Rook(tmpCell);
-
-        tmpCell = new Cell(whiteRooksRow, sRookCol);
-        tmpCell.setFigure(new Rook(tmpCell));
-        board[whiteRooksRow][sRookCol] = tmpCell;
-        figures[figureInd++] = new Rook(tmpCell);
-
-        tmpCell = new Cell(blackRooksRow, fRookCol);
-        tmpCell.setFigure(new Rook(tmpCell));
-        board[blackRooksRow][fRookCol] = tmpCell;
-        figures[figureInd++] = new Rook(tmpCell);
-
-        tmpCell = new Cell(blackRooksRow, sRookCol);
-        tmpCell.setFigure(new Rook(tmpCell));
-        board[blackRooksRow][sRookCol] = tmpCell;
-        figures[figureInd++] = new Rook(tmpCell);
+        figures[figureInd++] = new Rook(new Cell(whiteRooksRow, fRookCol));
+        figures[figureInd++] = new Rook(new Cell(whiteRooksRow, sRookCol));
+        figures[figureInd++] = new Rook(new Cell(blackRooksRow, fRookCol));
+        figures[figureInd++] = new Rook(new Cell(blackRooksRow, sRookCol));
     }
 
     /**
      * Начаальная расстановка Коней.
      */
     private void setKnights() {
-        Cell tmpCell;
         int whiteKnightsRow = 7;
         int blackKnightRow = 0;
         int fKnightCol = 1;
         int sKnightCol = 6;
 
-        tmpCell = new Cell(whiteKnightsRow, fKnightCol);
-        tmpCell.setFigure(new Knight(tmpCell));
-        board[whiteKnightsRow][fKnightCol] = tmpCell;
-        figures[figureInd++] = new Knight(tmpCell);
-
-        tmpCell = new Cell(whiteKnightsRow, sKnightCol);
-        tmpCell.setFigure(new Knight(tmpCell));
-        board[whiteKnightsRow][sKnightCol] = tmpCell;
-        figures[figureInd++] = new Knight(tmpCell);
-
-        tmpCell = new Cell(blackKnightRow, fKnightCol);
-        tmpCell.setFigure(new Knight(tmpCell));
-        board[blackKnightRow][fKnightCol] = tmpCell;
-        figures[figureInd++] = new Knight(tmpCell);
-
-        tmpCell = new Cell(blackKnightRow, sKnightCol);
-        tmpCell.setFigure(new Knight(tmpCell));
-        board[blackKnightRow][sKnightCol] = tmpCell;
-        figures[figureInd++] = new Knight(tmpCell);
+        figures[figureInd++] = new Knight(new Cell(whiteKnightsRow, fKnightCol));
+        figures[figureInd++] = new Knight(new Cell(whiteKnightsRow, sKnightCol));
+        figures[figureInd++] = new Knight(new Cell(blackKnightRow, fKnightCol));
+        figures[figureInd++] = new Knight(new Cell(blackKnightRow, sKnightCol));
     }
 
     /**
@@ -199,25 +112,20 @@ public class Board {
         setRooks();
     }
 
-    public void showBoard() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (!(board[i][j].getFigure() == null)) {
-                    sb.append(board[i][j].getFigure().textRepresentation).append(" ");
-                } else {
-                    sb.append("\u2B1A").append(" ");
-                }
-            }
-            sb.append(System.getProperty("line.separator"));
-        }
-        System.out.println(sb);
-    }
-
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean result = false;
-        Figure sourceFigure = source.getFigure();
-        Figure destFigure = dest.getFigure();
+        Figure sourceFigure = null;
+        Figure destFigure = null;
+
+        for (Figure figure : figures) {
+            if (figure.position.equals(source)) {
+                sourceFigure = figure;
+            }
+            if (figure.position.equals(dest)) {
+                destFigure = figure;
+            }
+        }
+
         Cell[] way = sourceFigure.way(dest);
 
         if (sourceFigure == null) {
@@ -228,12 +136,18 @@ public class Board {
             throw new ImpossibleMoveException("Ход невозможен.");
         } else if (way.length != 0) {
             for (Cell cell : way) {
-                if (board[cell.getRowPosition()][cell.getColPosition()].getFigure() != null) {
-                    throw new ImpossibleMoveException("Ход невозможен.(Фигура на пути.)");
+                for (Figure figure : figures) {
+                    if (cell.equals(figure.position)) {
+                        throw new ImpossibleMoveException("Ход невозможен.(Фигура на пути.)");
+                    }
                 }
             }
-            sourceFigure.clone(dest);
-            source.setFigure(null);
+            Figure clonedFigure = sourceFigure.clone(dest);
+            for (int i = 0; i < figures.length; i++) {
+                if (figures[i].equals(sourceFigure)) {
+                    figures[i] = clonedFigure;
+                }
+            }
             result = true;
             }
         return result;

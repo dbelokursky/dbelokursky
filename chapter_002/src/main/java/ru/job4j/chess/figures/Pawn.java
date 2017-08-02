@@ -17,7 +17,7 @@ public class Pawn extends Figure {
         int figColPos = this.position.getColPosition();
         int desColPos = dest.getColPosition();
 
-        if ((dest.getFigure() == null) && (--figRowPos == desRowPos) && (figColPos == desColPos)) {
+        if ((--figRowPos == desRowPos) && (figColPos == desColPos)) {
             result = new Cell[1];
             result[0] = dest;
         } else {
@@ -29,7 +29,6 @@ public class Pawn extends Figure {
     @Override
     public Figure clone(Cell dest) {
         Pawn pawn = new Pawn(dest);
-        dest.setFigure(pawn);
         return pawn;
     }
 }
