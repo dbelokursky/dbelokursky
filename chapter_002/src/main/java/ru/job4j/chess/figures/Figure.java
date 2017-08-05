@@ -24,4 +24,22 @@ public abstract class Figure {
     public abstract Cell[] way(Cell dest) throws ImpossibleMoveException;
 
     public abstract Figure clone(Cell dest);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Figure figure = (Figure) o;
+
+        if (!textRepresentation.equals(figure.textRepresentation)) return false;
+        return position.equals(figure.position);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = textRepresentation.hashCode();
+        result = 31 * result + position.hashCode();
+        return result;
+    }
 }
