@@ -11,6 +11,24 @@ public class Cell {
         this.colPosition = colPosition;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cell cell = (Cell) o;
+
+        if (getRowPosition() != cell.getRowPosition()) return false;
+        return getColPosition() == cell.getColPosition();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getRowPosition();
+        result = 31 * result + getColPosition();
+        return result;
+    }
+
     public int getRowPosition() {
         return rowPosition;
     }
