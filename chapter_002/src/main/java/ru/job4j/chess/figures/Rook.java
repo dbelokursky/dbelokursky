@@ -48,7 +48,6 @@ public class Rook extends Figure {
 
     @Override
     public Figure clone(Cell dest) {
-        Rook rook = new Rook(dest);
-        return rook;
+        return new Rook(dest);
     }
 }

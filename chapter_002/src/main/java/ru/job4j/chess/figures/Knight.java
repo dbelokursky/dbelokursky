@@ -16,7 +16,6 @@ public class Knight extends Figure {
 
     @Override
     public Figure clone(Cell dest) {
-        Knight knight = new Knight(dest);
-        return knight;
+        return new Knight(dest);
     }
 }

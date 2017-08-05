@@ -28,7 +28,6 @@ public class Pawn extends Figure {
 
     @Override
     public Figure clone(Cell dest) {
-        Pawn pawn = new Pawn(dest);
-        return pawn;
+        return new Pawn(dest);
     }
 }
