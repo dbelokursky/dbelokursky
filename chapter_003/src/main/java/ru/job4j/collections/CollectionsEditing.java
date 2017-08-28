@@ -9,7 +9,7 @@ import java.util.Collection;
 public class CollectionsEditing {
 
     public static void main(String[] args) {
-        CollectionsEditing collectionsEditing = new CollectionsEditing();
+//        CollectionsEditing collectionsEditing = new CollectionsEditing();
 //        LinkedList<String> ll = new LinkedList<>();
 //        System.out.println(collectionsEditing.add(ll, 1_000_000));
 //        System.out.println(collectionsEditing.delete(ll, 1_00_000));
