@@ -1,6 +1,7 @@
 package ru.job4j.collections;
 
 import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  * @author Dmitry Belokursky
@@ -12,13 +13,13 @@ public class CollectionsEditing {
 //        CollectionsEditing collectionsEditing = new CollectionsEditing();
 //        LinkedList<String> ll = new LinkedList<>();
 //        System.out.println(collectionsEditing.add(ll, 1_000_000));
-//        System.out.println(collectionsEditing.delete(ll, 1_00_000));
+//        System.out.println(collectionsEditing.delete(ll, 100_000));
 //        ArrayList<String> al = new ArrayList<>();
 //        System.out.println(collectionsEditing.add(al, 1_000_000));
 //        System.out.println(collectionsEditing.delete(al, 100_000));
-//        TreeSet<String> ts = new TreeSet<>();
+        TreeSet<String> ts = new TreeSet<>();
 //        System.out.println(collectionsEditing.add(ts, 1_000_000));
-//        System.out.println(collectionsEditing.delete(ts, 100_000));
+        System.out.println(collectionsEditing.delete(ts, 100_000));
     }
 
     public long add(Collection<String> collection, int amount) {
