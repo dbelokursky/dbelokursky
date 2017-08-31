@@ -21,20 +21,25 @@ public class ConvertList {
     }
 
     public int[][] toArray(List<Integer> list, int rows) throws ArithmeticException {
-        int listSize = list.size();
         try {
+            int listSize = list.size();
             int rowLength = listSize / rows;
+
             if (listSize % rows != 0) {
                 rowLength++;
             }
+
             Iterator<Integer> iter = list.iterator();
             int result[][] = new int[rows][rowLength];
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < rowLength; j++) {
                     if (iter.hasNext()) {
-                        result[i][j] = iter.next();
-                    } else {
-                        result[i][j] = 0;
+                        Integer num = iter.next();
+                        if (num != null) {
+                            result[i][j] = num;
+                        } else {
+                            result[i][j] = 0;
+                        }
                     }
                 }
             }

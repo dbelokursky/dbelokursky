@@ -7,6 +7,7 @@ package ru.job4j.collections;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +31,21 @@ public class ConvertListTest {
         List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
         int[][] expected = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         int rows = 3;
+        int[][] result = cl.toArray(list, rows);
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void toArrayTest2() {
+        ConvertList cl = new ConvertList();
+        List<Integer> list = new ArrayList<Integer>() {{
+            add(1);
+            add(2);
+            add(null);
+            add(4);
+        }};
+        int[][] expected = new int[][]{{1, 2}, {0, 4}};
+        int rows = 2;
         int[][] result = cl.toArray(list, rows);
         assertThat(result, is(expected));
     }
