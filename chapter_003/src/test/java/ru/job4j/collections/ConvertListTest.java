@@ -36,7 +36,7 @@ public class ConvertListTest {
     }
 
     @Test
-    public void toArrayTest2() {
+    public void toArrayTestWithNull() {
         ConvertList cl = new ConvertList();
         List<Integer> list = new ArrayList<Integer>() {{
             add(1);
