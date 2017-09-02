@@ -7,7 +7,6 @@ package ru.job4j.collections;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,12 +37,7 @@ public class ConvertListTest {
     @Test
     public void toArrayTestWithNull() {
         ConvertList cl = new ConvertList();
-        List<Integer> list = new ArrayList<Integer>() {{
-            add(1);
-            add(2);
-            add(null);
-            add(4);
-        }};
+        List<Integer> list = Arrays.asList(1, 2, null, 4);
         int[][] expected = new int[][]{{1, 2}, {0, 4}};
         int rows = 2;
         int[][] result = cl.toArray(list, rows);
