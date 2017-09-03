@@ -1,5 +1,6 @@
 package ru.job4j.collections;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,5 +48,15 @@ public class ConvertList {
         } catch (ArithmeticException e) {
             throw new ArithmeticException();
         }
+    }
+
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] arr : list) {
+            for (int num : arr) {
+                result.add(num);
+            }
+        }
+        return result;
     }
 }
