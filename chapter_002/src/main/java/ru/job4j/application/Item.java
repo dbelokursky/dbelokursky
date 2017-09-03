@@ -1,5 +1,6 @@
 package ru.job4j.application;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -23,6 +24,30 @@ public class Item {
         this.name = name;
         this.description = description;
         this.id = UUID.randomUUID().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (getName() != null ? !getName().equals(item.getName()) : item.getName() != null) return false;
+        if (getDescription() != null ? !getDescription().equals(item.getDescription()) : item.getDescription() != null)
+            return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(getComments(), item.getComments())) return false;
+        return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(getComments());
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        return result;
     }
 
     @Override

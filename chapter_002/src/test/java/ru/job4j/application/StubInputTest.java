@@ -2,6 +2,8 @@ package ru.job4j.application;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -14,7 +16,12 @@ public class StubInputTest {
     @Test
     public void whenAddItemTrackerHasItemWithTheSameName() {
         Tracker tracker = new Tracker();
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});
+        ArrayList<String> inp = new ArrayList<>();
+        inp.add("0");
+        inp.add("test name");
+        inp.add("desc");
+        inp.add("6");
+        Input input = new StubInput(inp);
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("test name"));
     }
@@ -22,7 +29,10 @@ public class StubInputTest {
     @Test
     public void whenAddItemThenTrackerHasOneItem() {
         Tracker tracker = new Tracker();
-        Input input = new StubInput(new String[]{"1", "6"});
+        Input input = new StubInput(new ArrayList<String>() {{
+            add("1");
+            add("6");
+        }});
         Item item = new Item("Name", "Desc");
         tracker.add(item);
         new StartUI(input, tracker).init();
@@ -34,7 +44,12 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Item item = new Item("Name", "Desc");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"2", item.getId(), "test name", "desc", "6"});
+        ArrayList<String> inp = new ArrayList<>();
+        inp.add("2");
+        inp.add(item.getId());
+        inp.add("test name");
+        inp.add("6");
+        Input input = new StubInput(inp);
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("test name"));
     }
@@ -44,7 +59,11 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Item item = new Item("Name", "Desc");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"3", item.getId(), "6"});
+        ArrayList<String> inp = new ArrayList<>();
+        inp.add("3");
+        inp.add(item.getId());
+        inp.add("6");
+        Input input = new StubInput(inp);
         new StartUI(input, tracker).init();
         assertThat(tracker.findAll().length, is(0));
     }
@@ -55,7 +74,11 @@ public class StubInputTest {
         Item item = new Item("Name", "Desc");
         tracker.add(item);
         String id = item.getId();
-        Input input = new StubInput(new String[]{"4", item.getId(), "6"});
+        ArrayList<String> inp = new ArrayList<>();
+        inp.add("4");
+        inp.add(item.getId());
+        inp.add("6");
+        Input input = new StubInput(inp);
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()), is(item));
     }

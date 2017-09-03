@@ -1,5 +1,7 @@
 package ru.job4j.application;
 
+import java.util.ArrayList;
+
 /**
  * @author Dmitry Belokursky
  * @since 09.07.17.
@@ -54,10 +56,10 @@ public class MenuTracker {
         this.actions[position++] = action;
     }
 
-    public int[] getMenuRange() {
-        int[] range = new int[this.getActions().length];
+    public ArrayList<Integer> getMenuRange() {
+        ArrayList<Integer> range = new ArrayList<>(getActions().length);
         for (int i = 0; i < this.getActions().length; i++) {
-            range[i] = i;
+            range.add(i);
         }
         return range;
     }

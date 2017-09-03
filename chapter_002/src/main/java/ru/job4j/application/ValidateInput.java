@@ -1,11 +1,13 @@
 package ru.job4j.application;
 
+import java.util.ArrayList;
+
 /**
  * @author Dmitry Belokursky
  * @since 11.07.17.
  */
 public class ValidateInput extends ConsoleInput {
-    public int ask(String question, int[] range) {
+    public int ask(String question, ArrayList<Integer> range) {
         boolean invalid = true;
         int value = -1;
         do {
