@@ -1,9 +1,9 @@
 package ru.job4j.bank;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author Dmitry Belokursky
@@ -11,7 +11,7 @@ import java.util.TreeMap;
  */
 public class AccountManagement {
 
-    private Map<User, List<Account>> bankMap = new TreeMap<>();
+    private Map<User, List<Account>> bankMap = new HashMap<>();
 
     public Map<User, List<Account>> getBankMap() {
         return bankMap;
