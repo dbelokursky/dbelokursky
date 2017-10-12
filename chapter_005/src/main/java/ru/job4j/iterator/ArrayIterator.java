@@ -47,4 +47,5 @@ public class ArrayIterator implements Iterator<Integer> {
             throw new NoSuchElementException();
         }
     }
+
 }

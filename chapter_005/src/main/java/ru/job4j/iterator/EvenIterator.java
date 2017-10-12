@@ -41,4 +41,5 @@ public class EvenIterator implements Iterator<Integer> {
         }
         return result;
     }
+
 }
