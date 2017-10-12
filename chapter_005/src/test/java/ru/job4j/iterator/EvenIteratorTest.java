@@ -26,5 +26,4 @@ public class EvenIteratorTest {
         int expected = 4;
         assertThat(result, is(expected));
     }
-
 }

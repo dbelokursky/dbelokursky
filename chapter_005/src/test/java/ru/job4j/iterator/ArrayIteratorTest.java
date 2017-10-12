@@ -31,5 +31,4 @@ public class ArrayIteratorTest {
         int expected = 3;
         assertThat(result, is(expected));
     }
-
 }
