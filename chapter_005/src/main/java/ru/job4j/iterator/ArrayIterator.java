@@ -1,6 +1,7 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Dmitry Belokursky
@@ -43,7 +44,7 @@ public class ArrayIterator implements Iterator<Integer> {
             cursor++;
             return result;
         } else {
-            throw new UnsupportedOperationException();
+            throw new NoSuchElementException();
         }
     }
 }
