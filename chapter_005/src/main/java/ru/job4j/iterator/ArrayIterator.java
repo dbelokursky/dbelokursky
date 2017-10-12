@@ -10,35 +10,40 @@ public class ArrayIterator implements Iterator<Integer> {
 
     private final int[][] values;
 
-    private int indx = 0;
+    private final int size;
 
-    private int jndx = 0;
+    private int yind = 0;
+
+    private int xind = 0;
+
+    private int cursor = 0;
 
     public ArrayIterator(int[][] values) {
         this.values = values;
+        this.size = values.length + values[yind].length;
     }
 
     @Override
     public boolean hasNext() {
-        return indx < values.length && jndx < values[indx].length;
+        return cursor < size;
     }
 
     @Override
     public Integer next() {
-        int result = 0;
-        if (jndx < values[indx].length) {
-            result = values[indx][jndx];
-            jndx++;
-        } else {
-            jndx = 0;
-            indx++;
-            if (indx < values.length) {
-                result = values[indx][jndx];
-                jndx++;
+        if (hasNext()) {
+            int result = values[yind][xind];
+            if (xind < values[yind].length - 1) {
+                xind++;
             } else {
-                throw new UnsupportedOperationException();
+                if (yind < values.length - 1) {
+                    yind++;
+                    xind = 0;
+                }
             }
+            cursor++;
+            return result;
+        } else {
+            throw new UnsupportedOperationException();
         }
-        return result;
     }
 }
