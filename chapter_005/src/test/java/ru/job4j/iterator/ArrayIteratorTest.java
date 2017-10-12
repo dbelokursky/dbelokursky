@@ -15,6 +15,9 @@ public class ArrayIteratorTest {
 
     @Test
     public void hasNextTest() {
+        arrayIterator.next();
+        arrayIterator.next();
+        arrayIterator.next();
         boolean result = arrayIterator.hasNext();
         boolean expected = true;
         assertThat(result, is(expected));
