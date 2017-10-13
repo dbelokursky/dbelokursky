@@ -1,6 +1,7 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Dmitry Belokursky
@@ -12,6 +13,8 @@ public class EvenIterator implements Iterator<Integer> {
 
     private int index = 0;
 
+    private int nextEvenElem;
+
     public EvenIterator(int[] values) {
         this.values = values;
     }
@@ -22,6 +25,9 @@ public class EvenIterator implements Iterator<Integer> {
         for (int i = index; i < values.length; i++) {
             if (values[i] % 2 == 0) {
                 result = true;
+                nextEvenElem = values[i];
+                index = i;
+                break;
             }
         }
         return result;
@@ -30,15 +36,12 @@ public class EvenIterator implements Iterator<Integer> {
     @Override
     public Integer next() {
         int result = 0;
-        for (int i = index; i < values.length; i++) {
-            if (values[i] % 2 == 0) {
-                result = values[i];
-                index++;
-                break;
-            } else {
-                throw new UnsupportedOperationException();
-            }
+        if (hasNext()) {
+            result = nextEvenElem;
+            index++;
+            return result;
+        } else {
+            throw new NoSuchElementException();
         }
-        return result;
     }
 }
