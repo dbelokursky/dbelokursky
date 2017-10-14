@@ -25,7 +25,6 @@ public class EvenIterator implements Iterator<Integer> {
         for (int i = index; i < values.length; i++) {
             if (values[i] % 2 == 0) {
                 result = true;
-                nextEvenElem = values[i];
                 index = i;
                 break;
             }
@@ -37,8 +36,7 @@ public class EvenIterator implements Iterator<Integer> {
     public Integer next() {
         int result = 0;
         if (hasNext()) {
-            result = nextEvenElem;
-            index++;
+            result = values[index++];
             return result;
         } else {
             throw new NoSuchElementException();
