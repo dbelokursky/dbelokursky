@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
  */
 public class ArrayIteratorTest {
 
-    ArrayIterator arrayIterator = new ArrayIterator(new int[][]{{1, 2}, {3, 4}});
+    ArrayIterator arrayIterator = new ArrayIterator(new int[][]{{1, 2, 3}, {4, 5, 6}});
 
     @Test
     public void hasNextTest() {
@@ -27,8 +27,11 @@ public class ArrayIteratorTest {
     public void nextTest() {
         arrayIterator.next();
         arrayIterator.next();
+        arrayIterator.next();
+        arrayIterator.next();
+        arrayIterator.next();
         int result = arrayIterator.next();
-        int expected = 3;
+        int expected = 6;
         assertThat(result, is(expected));
     }
 }

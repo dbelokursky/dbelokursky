@@ -21,7 +21,7 @@ public class ArrayIterator implements Iterator<Integer> {
 
     public ArrayIterator(int[][] values) {
         this.values = values;
-        this.size = values.length + values[yind].length;
+        this.size = values[yind].length * 2;
     }
 
     @Override
