@@ -3,7 +3,6 @@ package ru.job4j.iterator;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 import static org.hamcrest.core.Is.is;
@@ -18,9 +17,9 @@ public class ConverterTest {
     @Test
     public void convertTest() {
         Iterator<Iterator<Integer>> it = Arrays.asList(
-                Collections.singletonList(1).iterator(),
-                Collections.singletonList(2).iterator(),
-                Collections.singletonList(3).iterator()
+                Arrays.asList(1, 2, 3).iterator(),
+                Arrays.asList(4, 5, 6).iterator(),
+                Arrays.asList(7, 8, 9).iterator()
         ).iterator();
         Iterator<Integer> convert = new Converter().convert(it);
         convert.next();

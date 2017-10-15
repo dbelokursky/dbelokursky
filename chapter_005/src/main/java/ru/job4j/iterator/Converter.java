@@ -1,6 +1,7 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Dmitry Belokursky
@@ -8,18 +9,44 @@ import java.util.Iterator;
  */
 public class Converter {
 
+    private Iterator<Integer> currentIterator;
+
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
-                return it.hasNext();
+                selectIterator();
+                boolean result = false;
+                if (currentIterator == null) {
+                    result = false;
+                }
+                if (currentIterator.hasNext()) {
+                    result = true;
+                }
+                if (it.hasNext()) {
+                    currentIterator = it.next();
+                    result = currentIterator.hasNext();
+                }
+                return result;
             }
 
             @Override
             public Integer next() {
-                return it.next().next();
+                selectIterator();
+                if (currentIterator == null) {
+                    throw new NoSuchElementException();
+                }
+                if (!currentIterator.hasNext() && it.hasNext()) {
+                    currentIterator = it.next();
+                }
+                return currentIterator.next();
+            }
+
+            private void selectIterator() {
+                if (currentIterator == null && it.hasNext()) {
+                    currentIterator = it.next();
+                }
             }
         };
-
     }
 }
