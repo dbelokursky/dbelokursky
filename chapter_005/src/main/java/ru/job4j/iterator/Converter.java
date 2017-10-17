@@ -18,14 +18,14 @@ public class Converter {
                 selectIterator();
                 boolean result = false;
                 if (currentIterator == null) {
-                    result = false;
+                    return false;
                 }
                 if (currentIterator.hasNext()) {
-                    result = true;
+                    return true;
                 }
                 if (it.hasNext()) {
                     currentIterator = it.next();
-                    result = currentIterator.hasNext();
+                    return currentIterator.hasNext();
                 }
                 return result;
             }
