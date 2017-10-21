@@ -1,18 +1,29 @@
 package ru.job4j.generic;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * @author Dmitry Belokursky
  * @since 19.10.17.
  */
-public class SimpleArray<T> {
+public class SimpleArray<T> implements Iterator<T> {
 
     private Object[] values;
 
     private int index;
 
+    private int capacity;
+
     public SimpleArray(int capacity) {
         this.values = new Object[capacity];
         this.index = 0;
+        this.capacity = capacity;
+    }
+
+    public SimpleArray() {
+        this.values = new Object[10];
+        this.capacity = 10;
     }
 
     public void add(T element) {
@@ -50,6 +61,28 @@ public class SimpleArray<T> {
             return (T) values[index];
         } else {
             throw new IndexOutOfBoundsException();
+        }
+    }
+
+    public int length() {
+        return capacity;
+    }
+
+    @Override
+    public boolean hasNext() {
+        boolean result = false;
+        if (index > 0 && index < capacity) {
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
+    public T next() {
+        if (hasNext()) {
+            return (T) values[index++];
+        } else {
+            throw new NoSuchElementException();
         }
     }
 }
