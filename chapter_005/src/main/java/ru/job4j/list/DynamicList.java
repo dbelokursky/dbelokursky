@@ -1,5 +1,6 @@
 package ru.job4j.list;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -13,32 +14,25 @@ public class DynamicList<E> implements Iterable<E> {
 
     private int index;
 
-    private int capacity;
-
     private int size;
 
     public DynamicList(int capacity) {
         if (capacity > 0 && capacity < Integer.MAX_VALUE) {
             this.container = new Object[capacity];
-            this.capacity = capacity;
             this.size = 0;
         }
     }
 
     public DynamicList() {
         this.container = new Object[100];
-        capacity = container.length;
         this.size = 0;
     }
 
     public void add(E value) {
-        if (index < capacity) {
+        if (index < container.length) {
             container[index++] = value;
         } else {
-            Object[] tmp = new Object[capacity * 2];
-            System.arraycopy(container, 0, tmp, 0, capacity);
-            capacity *= 2;
-            container = tmp;
+            container = Arrays.copyOf(container, container.length * 2);
             container[index++] = value;
         }
         size++;
