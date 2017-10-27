@@ -33,7 +33,7 @@ public class SimpleArrayTest {
     @Test
     public void delete() throws Exception {
         sa.add(1);
-        boolean result = sa.delete(1);
+        boolean result = sa.delete("1");
         boolean expected = true;
         assertThat(result, is(expected));
     }

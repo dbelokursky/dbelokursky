@@ -21,4 +21,8 @@ public abstract class AbstractStore<T> {
         }
         throw new NoSuchElementException();
     }
+
+    public boolean delete(String id) {
+        return store.delete(id);
+    }
 }

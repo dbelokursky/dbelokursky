@@ -44,11 +44,12 @@ public class SimpleArray<T> implements Iterator<T> {
         return result;
     }
 
-    public boolean delete(T element) {
+    public boolean delete(String id) {
         boolean result = false;
         for (int i = 0; i < values.length; i++) {
-            if (values[i].equals(element)) {
-                System.arraycopy(values, i + 1, values, i, values.length - i - 1);
+            String string = ((Base) values[i]).getId();
+            if (string.equals(id)) {
+                System.arraycopy(values, i + 1, values, i, index--);
                 result = true;
                 break;
             }
