@@ -11,6 +11,8 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 
     private Node<E> head;
 
+    private Node<E> tail;
+
     private int size;
 
     public SinglyLinkedList() {
@@ -45,7 +47,14 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     }
 
     public void addFirst(E item) {
-        head = new Node<E>(item, head);
+        Node<E> newNode = new Node<>(item, head, null);
+        if (tail == null && head != null) {
+            tail = head;
+        }
+        if (head != null) {
+            head.prev = newNode;
+        }
+        head = newNode;
         size++;
     }
 
@@ -54,7 +63,7 @@ public class SinglyLinkedList<E> implements Iterable<E> {
     }
 
     public void addLast(E item) {
-        Node<E> newItem = new Node<>(item, null);
+        Node<E> newItem = new Node<>(item, null, null);
         Node<E> tmp = head;
         if (head == null) {
             addFirst(item);
@@ -63,11 +72,13 @@ public class SinglyLinkedList<E> implements Iterable<E> {
                 tmp = tmp.next;
             }
             tmp.next = newItem;
+            tail = tmp.next;
+            tail.prev = tmp;
             size++;
         }
     }
 
-    E get(int index) {
+    public E get(int index) {
         Node<E> current = head;
         E result = null;
         if (index == 0) {
@@ -81,15 +92,64 @@ public class SinglyLinkedList<E> implements Iterable<E> {
         return result;
     }
 
+    public E removeLast() {
+        Node<E> removedNode;
+        if (size > 1) {
+            removedNode = tail;
+            tail = tail.prev;
+            tail.next = null;
+            size--;
+        } else {
+            removedNode = head;
+            tail = head = null;
+        }
+        return removedNode.item;
+    }
+
+    public E removeFirst() {
+        Node<E> removedNode;
+        if (size > 1) {
+            removedNode = head;
+            head = head.next;
+            head.prev = null;
+            size--;
+        } else {
+            removedNode = head;
+            tail = head = null;
+        }
+        return removedNode.item;
+    }
+
+    @Override
+    public String toString() {
+        return "SinglyLinkedList{" +
+                "head=" + head +
+                ", tail=" + tail +
+                ", size=" + size +
+                '}';
+    }
+
     private static class Node<E> {
 
         E item;
 
         Node<E> next;
 
-        public Node(E item, Node<E> next) {
+        Node<E> prev;
+
+        public Node(E item, Node<E> next, Node<E> prev) {
             this.item = item;
             this.next = next;
+            this.prev = prev;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "item=" + item +
+                    ", next=" + next +
+                    ", prev=" +
+                    '}';
         }
     }
 }

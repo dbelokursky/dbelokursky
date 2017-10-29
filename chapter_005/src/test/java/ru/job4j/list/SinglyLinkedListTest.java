@@ -31,6 +31,8 @@ public class SinglyLinkedListTest {
         dll.addFirst("3");
         dll.addFirst("4");
         dll.addFirst("5");
+        dll.removeLast();
+        System.out.println(dll);
         String result = dll.get(0);
         String expected = "5";
         assertThat(result, is(expected));
@@ -73,6 +75,9 @@ public class SinglyLinkedListTest {
         dll.addLast("3");
         dll.addLast("4");
         dll.addLast("5");
+        System.out.println(dll);
+        dll.removeLast();
+        System.out.println(dll);
         Iterator<String> it = dll.iterator();
         String result = it.next();
         String expected = "0";
