@@ -18,7 +18,7 @@ public class Node<T> {
         Node<T> fCursor = first;
         Node<T> sCursor = first.next.next;
         boolean result = false;
-        while (sCursor != null) {
+        while (sCursor.next != null) {
             fCursor = fCursor.next;
             sCursor = sCursor.next.next;
             if (fCursor == sCursor) {
