@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class NodeTest {
 
     @Test
-    public void hashCycleTest() throws Exception {
+    public void hashCycleTestWithCycle() throws Exception {
         Node first = new Node(1);
         Node two = new Node(2);
         Node third = new Node(3);
@@ -28,4 +28,19 @@ public class NodeTest {
         assertThat(result, is(expected));
     }
 
+    @Test
+    public void hashCycleTestWithoutCycle() {
+        Node first = new Node(1);
+        Node two = new Node(2);
+        Node third = new Node(3);
+        Node four = new Node(4);
+
+        first.next = two;
+        two.next = third;
+        third.next = four;
+
+        boolean result = first.hashCycle(first);
+        boolean expected = false;
+        assertThat(result, is(expected));
+    }
 }
