@@ -27,13 +27,15 @@ public class SimpleSet<E> implements Iterator<E> {
 
     public void add(E e) {
         if (!contains(e)) {
-            if (index < container.length) {
-                container[index++] = e;
-            } else {
-                container = Arrays.copyOf(container, container.length * 2);
-                container[index++] = e;
-            }
+            ensureCapacity();
+            container[index++] = e;
             size++;
+        }
+    }
+
+    private void ensureCapacity() {
+        if (!(index < container.length)) {
+            container = Arrays.copyOf(container, container.length * 2);
         }
     }
 
