@@ -27,7 +27,7 @@ public class SimpleLinkedSet<E> implements Iterator<E> {
     private boolean contains(E e) {
         boolean result = false;
         for (Object o : container) {
-            if (e == null && e.equals(o)) {
+            if (e != null && e.equals(o)) {
                 result = true;
                 break;
             }
