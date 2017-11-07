@@ -1,6 +1,7 @@
 package ru.job4j.set;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dmitry Belokursky
@@ -8,7 +9,7 @@ import java.util.HashMap;
  */
 public class SimpleHashSet<E> {
 
-    private HashMap<Integer, E> container;
+    private Map<Integer, E> container;
 
     public SimpleHashSet() {
         this.container = new HashMap<>(16);

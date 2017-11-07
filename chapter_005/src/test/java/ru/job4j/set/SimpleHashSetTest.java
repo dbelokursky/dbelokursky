@@ -19,7 +19,6 @@ public class SimpleHashSetTest {
         simpleHashSet.add("first");
         simpleHashSet.add("second");
         simpleHashSet.add("third");
-        System.out.println(simpleHashSet);
     }
 
     @Test
