@@ -28,31 +28,16 @@ public class User {
         User user = (User) o;
 
         if (children != user.children) return false;
-        return name.equals(user.name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getChildren() {
-        return children;
-    }
-
-    public void setChildren(int children) {
-        this.children = children;
+        if (!name.equals(user.name)) return false;
+        return birthday.equals(user.birthday);
     }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + children;
+        result = 31 * result + birthday.hashCode();
         return result;
-
     }
 
     @Override
