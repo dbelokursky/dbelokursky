@@ -10,35 +10,35 @@ import static org.junit.Assert.assertThat;
  * @author Dmitry Belokursky
  * @since 07.11.17.
  */
-public class SimpleHashSetTest {
+public class SimpleHashTableTest {
 
-    SimpleHashSet<String> simpleHashSet = new SimpleHashSet<>();
+    SimpleHashTable<String> simpleHashTable = new SimpleHashTable<>();
 
     @Before
     public void before() {
-        simpleHashSet.add("first");
-        simpleHashSet.add("second");
-        simpleHashSet.add("third");
+        simpleHashTable.add("first");
+        simpleHashTable.add("second");
+        simpleHashTable.add("third");
     }
 
     @Test
     public void add() throws Exception {
-        boolean result = simpleHashSet.contains("second");
+        boolean result = simpleHashTable.contains("second");
         boolean expected = true;
         assertThat(result, is(expected));
     }
 
     @Test
     public void contains() throws Exception {
-        boolean result = simpleHashSet.contains("first");
+        boolean result = simpleHashTable.contains("first");
         boolean expected = true;
         assertThat(result, is(expected));
     }
 
     @Test
     public void remove() throws Exception {
-        simpleHashSet.remove("first");
-        boolean result = simpleHashSet.contains("first");
+        simpleHashTable.remove("first");
+        boolean result = simpleHashTable.contains("first");
         boolean expected = false;
         assertThat(result, is(expected));
     }
