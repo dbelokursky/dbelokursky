@@ -15,8 +15,6 @@ public class SimpleHashTable<E> {
 
     private final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    private int capacity;
-
     private LinkedList<E>[] container;
 
     private int ind;
@@ -27,7 +25,6 @@ public class SimpleHashTable<E> {
 
     public SimpleHashTable() {
         this.INITIAL_CAPACITY = 16;
-        this.capacity = INITIAL_CAPACITY;
         this.container = new LinkedList[INITIAL_CAPACITY];
         this.size = 0;
         fillContainer();
@@ -40,58 +37,51 @@ public class SimpleHashTable<E> {
     }
 
     private boolean shouldBeIncreased() {
-        threshold = 1.0f * size / capacity;
+        threshold = 1.0f * size / container.length;
         return threshold > DEFAULT_LOAD_FACTOR;
     }
 
     public boolean add(E e) {
-        boolean result = false;
-        if (!shouldBeIncreased()) {
-            ind = Math.abs(e.hashCode() % capacity);
-            result = container[ind].add(e);
-            size++;
-        } else {
-            LinkedList<E>[] oldContainer = container;
-            container = new LinkedList[capacity *= 2];
-            fillContainer();
-            for (int i = 0; i < oldContainer.length; i++) {
-                if (oldContainer[i].size() > 0) {
-                    container[Math.abs(oldContainer[i].peek().hashCode() % capacity)] = oldContainer[i];
-                }
-            }
-            container[e.hashCode() % capacity].add(e);
-            size++;
+        boolean result;
+        if (shouldBeIncreased()) {
+            increaseContainer();
         }
-
+        ind = Math.abs(e.hashCode() % container.length);
+        result = container[ind].add(e);
+        size++;
         return result;
     }
 
-    public boolean contains(E e) {
-        boolean result = false;
-        for (int i = 0; i < capacity; i++) {
-            if (container[i].contains(e)) {
-                result = true;
-                break;
+    private void increaseContainer() {
+        LinkedList<E>[] oldContainer = container;
+        container = new LinkedList[container.length * 2];
+        fillContainer();
+        for (int i = 0; i < oldContainer.length; i++) {
+            if (oldContainer[i].size() > 0) {
+                ind = Math.abs(oldContainer[i].peek().hashCode() % container.length);
+                container[ind] = oldContainer[i];
             }
         }
-        return result;
+    }
+
+    public boolean contains(E e) {
+        return container[Math.abs(e.hashCode() % container.length)].contains(e);
     }
 
     public boolean remove(E e) {
         boolean result = false;
-        ind = e.hashCode() % capacity;
+        ind = e.hashCode() % container.length;
         if (contains(e)) {
-            container[ind].remove(e);
-            result = true;
+            result = container[ind].remove(e);
             size--;
         }
-        return true;
+        return result;
     }
 
     @Override
     public String toString() {
         return "SimpleHashTable{" +
-                "capacity=" + capacity +
+                "capacity=" + container.length +
                 ", container=" + Arrays.toString(container) +
                 ", size=" + size +
                 ", threshold=" + threshold +
