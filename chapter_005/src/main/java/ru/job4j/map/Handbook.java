@@ -13,23 +13,14 @@ public class Handbook<K, V> {
 
     private int size;
 
-    private int capacity;
-
     private float threshold;
 
     private float loadFactor;
 
     private Node<K, V>[] container;
 
-    public Handbook(int INITIAL_CAPACITY) {
-        this.capacity = this.INITIAL_CAPACITY = INITIAL_CAPACITY;
-        this.size = 0;
-        this.container = new Node[INITIAL_CAPACITY];
-        this.loadFactor = 0.75f;
-    }
-
     public Handbook() {
-        this.capacity = this.INITIAL_CAPACITY = 16;
+        INITIAL_CAPACITY = 16;
         this.size = 0;
         this.container = new Node[INITIAL_CAPACITY];
         this.loadFactor = 0.75f;
@@ -37,36 +28,38 @@ public class Handbook<K, V> {
 
     public boolean insert(K key, V value) {
         boolean result = false;
+        int ind = key.hashCode() % container.length;
         Node<K, V> newNode = new Node<>(key, value);
-        if (!shouldBeIncreased()) {
-            if (container[newNode.key.hashCode() % capacity] == null) {
-                container[newNode.key.hashCode() % capacity] = newNode;
-                size++;
-                result = true;
-            }
-        } else {
-            Node<K, V>[] oldContainer = container;
-            container = new Node[capacity *= 2];
-            for (int i = 0; i < oldContainer.length; i++) {
-                if (oldContainer[i] != null) {
-                    container[oldContainer[i].key.hashCode() % capacity] = oldContainer[i];
-                }
-            }
-            container[newNode.key.hashCode() % capacity] = newNode;
+        if (shouldBeIncreased()) {
+            increaseContainer();
+        }
+        if (container[ind] == null) {
+            container[ind] = newNode;
             size++;
             result = true;
         }
         return result;
     }
 
+    private void increaseContainer() {
+        Node<K, V>[] oldContainer = container;
+        container = new Node[container.length * 2];
+        for (int i = 0; i < oldContainer.length; i++) {
+            if (oldContainer[i] != null) {
+                container[oldContainer[i].key.hashCode() % container.length] = oldContainer[i];
+            }
+        }
+    }
+
     private boolean shouldBeIncreased() {
-        threshold = 1.0f * size / capacity;
+        threshold = 1.0f * size / container.length;
         return threshold > loadFactor;
     }
 
     public V get(K key) {
-        if (container[key.hashCode() % capacity] != null) {
-            return container[key.hashCode() % capacity].value;
+        int ind = key.hashCode() % container.length;
+        if (container[ind] != null) {
+            return container[ind].value;
         } else {
             throw new NoSuchElementException();
         }
@@ -74,8 +67,10 @@ public class Handbook<K, V> {
     }
 
     public boolean delete(K key) {
-        if (container[key.hashCode() % capacity] != null) {
-            container[key.hashCode() % capacity] = null;
+        int ind = key.hashCode() % container.length;
+        if (container[ind] != null) {
+            container[ind] = null;
+            size--;
             return true;
         } else {
             throw new NoSuchElementException();
@@ -86,7 +81,7 @@ public class Handbook<K, V> {
     public String toString() {
         return "Handbook{" +
                 "size=" + size +
-                ", capacity=" + capacity +
+                ", capacity=" + container.length +
                 ", threshold=" + threshold +
                 ", container=" + Arrays.toString(container) +
                 "}";
