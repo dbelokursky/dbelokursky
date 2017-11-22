@@ -12,6 +12,8 @@ public class Company implements ICompanyService {
 
     public final long employeeCount;
 
+    private long cntr = 0;
+
     Company(Company parent, long employeeCount) {
         this.parent = parent;
         this.employeeCount = employeeCount;
@@ -19,27 +21,31 @@ public class Company implements ICompanyService {
 
     @Override
     public long getEmployeeCountForCompanyAndChildren(Company company, LinkedList<Company> companies) {
-        long cntr = 0;
-        for (Company com : companies) {
-            long tmpCntr = 0;
-            while (com != null) {
-                tmpCntr += com.employeeCount;
-                if (com.equals(company)) {
-                    cntr += tmpCntr - company.employeeCount;
-                    break;
-                }
-                com = com.parent;
+        long tmpCntr = 0;
+        Company currentCompany = companies.poll();
+
+        if (currentCompany != null) {
+            tmpCntr += currentCompany.employeeCount;
+            currentCompany = currentCompany.parent;
+            if (currentCompany.equals(company)) {
+                cntr += tmpCntr;
             }
         }
-        return cntr += company.employeeCount;
+        if (companies.size() == 0) {
+            cntr += company.employeeCount;
+            return cntr;
+        }
+        getEmployeeCountForCompanyAndChildren(company, companies);
+        return cntr;
     }
 
     @Override
     public Company getTopLevelParent(Company child) {
-        while (child.parent != null) {
-            child = child.parent;
+        if (child.parent == null) {
+            return child;
         }
-        return child;
+        child = child.parent;
+        return getTopLevelParent(child);
     }
 
     @Override
