@@ -1,12 +1,25 @@
 package ru.job4j.tree;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * @author Dmitry Belokursky
  * @since 25.11.17.
  */
-public class SimpleBST<E extends Comparable<E>> {
+public class SimpleBST<E extends Comparable<E>> implements Iterator {
 
     private Node<E> root;
+
+    private ArrayList<Node<E>> allNodes;
+
+    private int cursor;
+
+    public SimpleBST() {
+        cursor = 0;
+        this.allNodes = new ArrayList<>();
+    }
 
     public boolean add(E value) {
         boolean result = false;
@@ -41,6 +54,34 @@ public class SimpleBST<E extends Comparable<E>> {
         return "SimpleBST{" +
                 "root=" + root +
                 '}';
+    }
+
+    private void addTreeNodesToList(Node<E> currentNode) {
+
+        if (currentNode != null) {
+
+            addTreeNodesToList(currentNode.left);
+            addTreeNodesToList(currentNode.right);
+            allNodes.add(currentNode);
+
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (allNodes.size() == 0) {
+            addTreeNodesToList(root);
+        }
+        return cursor < allNodes.size();
+    }
+
+    @Override
+    public Node<E> next() {
+        if (hasNext()) {
+            return allNodes.get(cursor++);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     private class Node<E> {
