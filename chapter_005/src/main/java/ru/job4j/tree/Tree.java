@@ -10,30 +10,33 @@ import java.util.List;
  */
 public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
-    Node<E> root;
+    private Node<E> root;
 
-    List<E> allNodes;
+    private List<E> allNodes;
+
+    private boolean isFound;
+
+    private Node<E> foundNode;
+
 
     public Tree() {
         this.allNodes = new ArrayList<>();
+        this.isFound = false;
     }
 
     private Node<E> findNode(Node<E> currentRoot, E parent) {
-        boolean isFound = false;
-        Node<E> result;
         if (currentRoot == null || currentRoot.children.size() == 0) {
             return null;
         }
         if (currentRoot.children.size() > 0) {
-
             if (isFound) {
-                return null;
+                return foundNode;
             }
             for (Node<E> current : currentRoot.children) {
                 if (current.value.compareTo(parent) == 0) {
-                    result = current;
+                    foundNode = current;
                     isFound = true;
-                    return current;
+                    return foundNode;
                 }
                 currentRoot = current;
             }
