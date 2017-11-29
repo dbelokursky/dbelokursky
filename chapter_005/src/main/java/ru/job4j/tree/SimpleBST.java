@@ -2,6 +2,7 @@ package ru.job4j.tree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -12,7 +13,7 @@ public class SimpleBST<E extends Comparable<E>> implements Iterator {
 
     private Node<E> root;
 
-    private ArrayList<Node<E>> allNodes;
+    private List<Node<E>> allNodes;
 
     private int cursor;
 
@@ -57,13 +58,10 @@ public class SimpleBST<E extends Comparable<E>> implements Iterator {
     }
 
     private void addTreeNodesToList(Node<E> currentNode) {
-
         if (currentNode != null) {
-
             addTreeNodesToList(currentNode.left);
             addTreeNodesToList(currentNode.right);
             allNodes.add(currentNode);
-
         }
     }
 
