@@ -3,6 +3,7 @@ package ru.job4j.tree;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @author Dmitry Belokursky
@@ -12,7 +13,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     private Node<E> root;
 
-    private List<E> allNodes;
+    private List<Node<E>> allNodes;
+
+    private int index;
 
     private boolean isFound;
 
@@ -22,6 +25,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     public Tree() {
         this.allNodes = new ArrayList<>();
         this.isFound = false;
+        this.index = 0;
+    }
+
+    public boolean addTreeNodesToList(Node<E> currentRoot) {
+        boolean result = false;
+        if (currentRoot == null || currentRoot.children.size() == 0) {
+            allNodes.add(0, root);
+            return result;
+        }
+        for (Node<E> node : currentRoot.children) {
+            allNodes.add(node);
+            currentRoot = node;
+            result = true;
+        }
+        addTreeNodesToList(currentRoot);
+        return result;
     }
 
     private Node<E> findNode(Node<E> currentRoot, E parent) {
@@ -75,7 +94,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            @Override
+            public boolean hasNext() {
+                if (allNodes.size() == 0) {
+                    addTreeNodesToList(root);
+                }
+                return index < allNodes.size();
+            }
+
+            @Override
+            public E next() {
+                if (hasNext()) {
+                    return allNodes.get(index++).value;
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
+        };
     }
 
     @Override
@@ -99,10 +135,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "value=" + value +
-                    ", children=" + children +
-                    '}';
+            return "Node{" + "value=" + value + '}';
         }
     }
 }
