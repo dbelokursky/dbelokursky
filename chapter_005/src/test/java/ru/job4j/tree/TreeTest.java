@@ -16,6 +16,7 @@ public class TreeTest {
         stree.add(3, 4);
         stree.add(4, 5);
         System.out.println(stree);
+        System.out.println("---------------");
     }
 
     @Test

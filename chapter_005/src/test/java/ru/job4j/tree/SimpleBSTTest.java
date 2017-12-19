@@ -13,14 +13,9 @@ public class SimpleBSTTest {
         SimpleBST simpleBST = new SimpleBST();
         simpleBST.add(10);
         simpleBST.add(2);
-
         System.out.println(simpleBST.hasNext());
         System.out.println(simpleBST.next());
         System.out.println(simpleBST.next());
         System.out.println(simpleBST.hasNext());
-        System.out.println(simpleBST.next());
-
-
     }
-
 }

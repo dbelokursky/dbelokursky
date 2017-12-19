@@ -28,10 +28,19 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         this.index = 0;
     }
 
-    public boolean addTreeNodesToList(Node<E> currentRoot) {
+//    private boolean isBinary(Node<E> currentRoot) {
+//        boolean result = false;
+//        if (currentRoot == null || currentRoot.children.size() == 0) {
+//            return result;
+//        }
+//        ret
+//    }
+
+    private boolean addTreeNodesToList(Node<E> currentRoot) {
         boolean result = false;
         if (currentRoot == null || currentRoot.children.size() == 0) {
             allNodes.add(0, root);
+            result = true;
             return result;
         }
         for (Node<E> node : currentRoot.children) {
