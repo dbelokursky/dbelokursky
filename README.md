@@ -1,7 +1,6 @@
 # Учебный репозиторий проекта [job4j](http://job4j.ru/)
 
-![job4j.ru](http://job4j.ru/img/logomini.png)
-
+[![Build Status](https://travis-ci.org/dbelokursky/dbelokursky.svg?branch=master)](https://travis-ci.org/dbelokursky/dbelokursky)
 Инструменты:
 - Maven, Gradle
 - jUnit
