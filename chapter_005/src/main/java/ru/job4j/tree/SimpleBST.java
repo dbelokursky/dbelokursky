@@ -52,9 +52,7 @@ public class SimpleBST<E extends Comparable<E>> implements Iterator {
 
     @Override
     public String toString() {
-        return "SimpleBST{" +
-                "root=" + root +
-                '}';
+        return "SimpleBST{" + "root=" + root + '}';
     }
 
     private void addTreeNodesToList(Node<E> currentNode) {
@@ -96,11 +94,10 @@ public class SimpleBST<E extends Comparable<E>> implements Iterator {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "value=" + value +
-                    ", left=" + left +
-                    ", right=" + right +
-                    '}';
+            return "Node{"
+                    + "value=" + value
+                    + ", left=" + left
+                    + ", right=" + right + '}';
         }
     }
 }

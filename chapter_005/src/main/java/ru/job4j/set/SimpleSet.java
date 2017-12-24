@@ -52,10 +52,10 @@ public class SimpleSet<E> implements Iterator<E> {
 
     @Override
     public String toString() {
-        return "SimpleSet{" +
-                "container=" + Arrays.toString(container) +
-                ", index=" + index +
-                '}';
+        return "SimpleSet{"
+                + "container="
+                + Arrays.toString(container)
+                + ", index=" + index + '}';
     }
 
     @Override

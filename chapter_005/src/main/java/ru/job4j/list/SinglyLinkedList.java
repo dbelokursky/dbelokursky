@@ -101,7 +101,8 @@ public class SinglyLinkedList<E> implements Iterable<E> {
             size--;
         } else {
             removedNode = head;
-            tail = head = null;
+            head = null;
+            tail = null;
         }
         return removedNode.item;
     }
@@ -115,18 +116,18 @@ public class SinglyLinkedList<E> implements Iterable<E> {
             size--;
         } else {
             removedNode = head;
-            tail = head = null;
+            head = null;
+            tail = null;
         }
         return removedNode.item;
     }
 
     @Override
     public String toString() {
-        return "SinglyLinkedList{" +
-                "head=" + head +
-                ", tail=" + tail +
-                ", size=" + size +
-                '}';
+        return "SinglyLinkedList{"
+                + "head=" + head
+                + ", tail=" + tail
+                + ", size=" + size + '}';
     }
 
     private static class Node<E> {
@@ -145,11 +146,10 @@ public class SinglyLinkedList<E> implements Iterable<E> {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "item=" + item +
-                    ", next=" + next +
-                    ", prev=" +
-                    '}';
+            return "Node{"
+                    + "item=" + item
+                    + ", next=" + next
+                    + ", prev=" + '}';
         }
     }
 }

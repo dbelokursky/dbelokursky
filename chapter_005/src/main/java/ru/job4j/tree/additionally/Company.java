@@ -50,20 +50,25 @@ public class Company implements ICompanyService {
 
     @Override
     public String toString() {
-        return "Company{" +
-                "parent=" + parent +
-                ", employeeCount=" + employeeCount +
-                '}';
+        return "Company{"
+                + "parent=" + parent
+                + ", employeeCount="
+                + employeeCount + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Company company = (Company) o;
+        if (employeeCount != company.employeeCount) {
+            return false;
+        }
 
-        if (employeeCount != company.employeeCount) return false;
         return parent != null ? parent.equals(company.parent) : company.parent == null;
     }
 

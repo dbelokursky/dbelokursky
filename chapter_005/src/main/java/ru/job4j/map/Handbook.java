@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  */
 public class Handbook<K, V> {
 
-    private final int INITIAL_CAPACITY;
+    private static final int INITIAL_CAPACITY = 16;
 
     private int size;
 
@@ -20,7 +20,6 @@ public class Handbook<K, V> {
     private Node<K, V>[] container;
 
     public Handbook() {
-        INITIAL_CAPACITY = 16;
         this.size = 0;
         this.container = new Node[INITIAL_CAPACITY];
         this.loadFactor = 0.75f;
@@ -79,12 +78,11 @@ public class Handbook<K, V> {
 
     @Override
     public String toString() {
-        return "Handbook{" +
-                "size=" + size +
-                ", capacity=" + container.length +
-                ", threshold=" + threshold +
-                ", container=" + Arrays.toString(container) +
-                "}";
+        return "Handbook{"
+                + "size=" + size
+                + ", capacity=" + container.length
+                + ", threshold=" + threshold
+                + ", container=" + Arrays.toString(container) + "}";
     }
 
     static class Node<K, V> {
@@ -100,12 +98,16 @@ public class Handbook<K, V> {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Node<?, ?> node = (Node<?, ?>) o;
-
-            if (!key.equals(node.key)) return false;
+            if (!key.equals(node.key)) {
+                return false;
+            }
             return value.equals(node.value);
         }
 
@@ -116,10 +118,9 @@ public class Handbook<K, V> {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "key=" + key +
-                    ", value=" + value +
-                    "}\n";
+            return "Node{"
+                    + "key=" + key
+                    + ", value=" + value + "}\n";
         }
     }
 }

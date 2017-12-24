@@ -11,9 +11,9 @@ import java.util.LinkedList;
 
 public class SimpleHashTable<E> {
 
-    private final int INITIAL_CAPACITY;
+    private static final int INITIAL_CAPACITY = 16;
 
-    private final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     private LinkedList<E>[] container;
 
@@ -24,7 +24,6 @@ public class SimpleHashTable<E> {
     private float threshold;
 
     public SimpleHashTable() {
-        this.INITIAL_CAPACITY = 16;
         this.container = new LinkedList[INITIAL_CAPACITY];
         this.size = 0;
         fillContainer();
@@ -80,11 +79,10 @@ public class SimpleHashTable<E> {
 
     @Override
     public String toString() {
-        return "SimpleHashTable{" +
-                "capacity=" + container.length +
-                ", container=" + Arrays.toString(container) +
-                ", size=" + size +
-                ", threshold=" + threshold +
-                '}';
+        return "SimpleHashTable{"
+                + "capacity=" + container.length
+                + ", container=" + Arrays.toString(container)
+                + ", size=" + size
+                + ", threshold=" + threshold + '}';
     }
 }

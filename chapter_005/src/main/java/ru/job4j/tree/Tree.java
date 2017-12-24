@@ -125,10 +125,10 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     @Override
     public String toString() {
-        return "Tree{" +
-                "root=" + root +
-                ", allNodes=" + allNodes +
-                '}';
+        return "Tree{"
+                + "root=" + root
+                + ", allNodes=" + allNodes
+                + '}';
     }
 
     class Node<E> {

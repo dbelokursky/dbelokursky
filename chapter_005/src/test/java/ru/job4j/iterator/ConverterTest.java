@@ -24,28 +24,26 @@ public class ConverterTest {
         Converter converter = new Converter();
         Iterator<Integer> it = converter.convert(its);
 
-        {
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(1));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(2));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(3));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(4));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(5));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(6));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(7));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(8));
-            assertThat(it.hasNext(), is(true));
-            assertThat(it.next(), is(9));
-            assertThat(it.hasNext(), is(false));
-            it.next();
-        }
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(1));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(2));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(3));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(4));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(5));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(6));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(7));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(8));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(9));
+        assertThat(it.hasNext(), is(false));
+        it.next();
     }
 
     @Test
