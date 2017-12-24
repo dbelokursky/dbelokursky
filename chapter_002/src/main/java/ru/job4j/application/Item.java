@@ -28,16 +28,23 @@ public class Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Item item = (Item) o;
-
-        if (getName() != null ? !getName().equals(item.getName()) : item.getName() != null) return false;
-        if (getDescription() != null ? !getDescription().equals(item.getDescription()) : item.getDescription() != null)
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
+        Item item = (Item) o;
+        if (getName() != null ? !getName().equals(item.getName()) : item.getName() != null) {
+            return false;
+        }
+        if (getDescription() != null ? !getDescription().equals(item.getDescription()) : item.getDescription() != null) {
+            return false;
+        }
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        if (!Arrays.equals(getComments(), item.getComments())) return false;
+        if (!Arrays.equals(getComments(), item.getComments())) {
+            return false;
+        }
         return getId() != null ? getId().equals(item.getId()) : item.getId() == null;
     }
 

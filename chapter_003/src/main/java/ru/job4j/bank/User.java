@@ -30,12 +30,16 @@ public class User implements Comparable<User> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
-
-        if (!getName().equals(user.getName())) return false;
+        if (!getName().equals(user.getName())) {
+            return false;
+        }
         return getPassport().equals(user.getPassport());
     }
 
@@ -48,9 +52,8 @@ public class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", passport='" + passport + '\'' +
-                '}';
+        return "User{"
+                + "name='" + name + '\''
+                + ", passport='" + passport + '\'' + '}';
     }
 }

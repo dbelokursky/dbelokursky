@@ -13,12 +13,16 @@ public class Cell {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Cell cell = (Cell) o;
-
-        if (getRowPosition() != cell.getRowPosition()) return false;
+        if (getRowPosition() != cell.getRowPosition()) {
+            return false;
+        }
         return getColPosition() == cell.getColPosition();
     }
 

@@ -27,12 +27,16 @@ public abstract class Figure {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Figure figure = (Figure) o;
-
-        if (!textRepresentation.equals(figure.textRepresentation)) return false;
+        if (!textRepresentation.equals(figure.textRepresentation)) {
+            return false;
+        }
         return position.equals(figure.position);
     }
 

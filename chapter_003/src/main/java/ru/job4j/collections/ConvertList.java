@@ -31,7 +31,7 @@ public class ConvertList {
             }
 
             Iterator<Integer> iter = list.iterator();
-            int result[][] = new int[rows][rowLength];
+            int[][] result = new int[rows][rowLength];
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < rowLength; j++) {
                     if (iter.hasNext()) {

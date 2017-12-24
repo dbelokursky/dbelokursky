@@ -86,7 +86,7 @@ public class Tracker {
                 tmp[tInd++] = items[i];
             }
         }
-        Item result[] = new Item[tInd];
+        Item[] result = new Item[tInd];
         System.arraycopy(tmp, 0, result, 0, tInd);
         return result;
     }

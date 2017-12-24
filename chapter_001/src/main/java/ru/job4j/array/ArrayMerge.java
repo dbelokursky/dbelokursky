@@ -18,7 +18,7 @@ public class ArrayMerge {
         int rInd = 0;
 
         if (fArr.length == 0) {
-            System.arraycopy(sArr, 0, result,0, sArr.length);
+            System.arraycopy(sArr, 0, result, 0, sArr.length);
         } else if (sArr.length == 0) {
             System.arraycopy(fArr, 0, result, 0, fArr.length);
         } else {

@@ -14,12 +14,12 @@ public class Exchange {
         this.textRepresentation = new StringBuilder();
     }
 
-    public String getExchangeWays(int denomination, int coins[]) {
+    public String getExchangeWays(int denomination, int[] coins) {
         calculateExchangeWays(denomination, coins, 0);
         return textRepresentation.toString();
     }
 
-    private void calculateExchangeWays(int denomination, int coins[], int position) {
+    private void calculateExchangeWays(int denomination, int[] coins, int position) {
         if (denomination == 0) {
             for (int r : this.waysOfExchange) {
                 this.textRepresentation.append(r).append(" ");

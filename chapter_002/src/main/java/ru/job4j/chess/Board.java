@@ -23,8 +23,8 @@ public class Board {
      * Начальная расстановка Пешек.
      */
     private void setPawns() {
-        int whitePawsRow = 6;//начальная позиция белых пешек(2-ой ряд)
-        int blackPawRow = 1;//начальная позиция черных пешек(7-ой ряд)
+        int whitePawsRow = 6; //начальная позиция белых пешек(2-ой ряд)
+        int blackPawRow = 1; //начальная позиция черных пешек(7-ой ряд)
         for (int i = 0; i < BOARD_SIZE; i++) {
             figures[figureInd++] = new Pawn(new Cell(whitePawsRow, i));
             figures[figureInd++] = new Pawn(new Cell(blackPawRow, i));
