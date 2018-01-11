@@ -4,7 +4,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.jws.Oneway;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
@@ -15,16 +14,14 @@ import java.util.*;
  */
 public class OrderBook {
 
-    private Map<String, Order> orderBook;
-
+    private final String fileName;
+    private Map<String, Order> orders;
     private List<Order> ordersList;
 
-    private final String fileName;
-
     public OrderBook() {
-        this.orderBook = new HashMap<>(1_000_000);
+        this.orders = new HashMap<>(1_000_000);
         this.ordersList = new ArrayList<>(800_000);
-        this.fileName = "/mnt/terra1/Download/orders.xml";
+        this.fileName = "orders.xml";
     }
 
     public boolean parseFile() {
@@ -39,10 +36,10 @@ public class OrderBook {
                             attributes.getValue("price"),
                             Integer.parseInt(attributes.getValue("volume")),
                             attributes.getValue("orderId"));
-                    orderBook.put(currentOrder.getOrderId(), currentOrder);
+                    orders.put(currentOrder.getOrderId(), currentOrder);
                 }
                 if (qName.equals("DeleteOrder")) {
-                    orderBook.remove(attributes.getValue("orderId"));
+                    orders.remove(attributes.getValue("orderId"));
                 }
             }
         };
@@ -58,50 +55,18 @@ public class OrderBook {
     }
 
     public void getSortedOrdersList() {
-        ordersList.addAll(orderBook.values());
-        ordersList.sort(new Comparator<Order>() {
-            @Override
-            public int compare(Order o1, Order o2) {
-                int result = o1.getBook().compareTo(o2.getBook());
-                if (result == 0) {
-                    result = o1.getOperation().compareTo(o2.getOperation());
-                }
-                if (result == 0) {
-                    result = o1.getPrice().compareTo(o2.getPrice());
-                }
-                return result;
-            }
-        });
-    }
+        ordersList.addAll(orders.values());
 
-    public void groupByPrice() {
-        if (ordersList.size() == 0) {
-            getSortedOrdersList();
-        }
-        List<Order> tmp = new ArrayList<>(500_000);
-        int total = 0;
-        for (int i = 0; i < ordersList.size() - 1; i++) {
-            Order currentOrder = ordersList.get(i);
-            Order nextOrder = ordersList.get(i + 1);
-
-            if (currentOrder.getPrice().equals(nextOrder.getPrice())) {
-                total += currentOrder.getVolume();
-            } else {
-                tmp.add(currentOrder);
-            }
-        }
+        ordersList.sort(Comparator.comparing(Order::getBook)
+                  .thenComparing(Order::getOperation)
+                  .thenComparing(Order::getPrice));
     }
 
     public void print() {
-        if (ordersList.size() == 0) {
-            getSortedOrdersList();
-        }
-        for (Order order : ordersList) {
-            System.out.println(order);
-        }
+        orders.values().stream().forEach(System.out::println);
     }
 
     public int size() {
-        return orderBook.size();
+        return orders.size();
     }
 }
