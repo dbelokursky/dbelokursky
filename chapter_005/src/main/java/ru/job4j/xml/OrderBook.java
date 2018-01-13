@@ -20,7 +20,7 @@ public class OrderBook {
 
     public OrderBook() {
         this.orders = new HashMap<>(1_000_000);
-        this.fileName = "/mnt/terra1/Download/orders.xml";
+        this.fileName = "orders.xml";
     }
 
     public boolean parseFile() {
