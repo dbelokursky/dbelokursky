@@ -7,6 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitry Belokursky
@@ -16,12 +17,10 @@ public class OrderBook {
 
     private final String fileName;
     private Map<String, Order> orders;
-    private List<Order> ordersList;
 
     public OrderBook() {
         this.orders = new HashMap<>(1_000_000);
-        this.ordersList = new ArrayList<>(800_000);
-        this.fileName = "orders.xml";
+        this.fileName = "/mnt/terra1/Download/orders.xml";
     }
 
     public boolean parseFile() {
@@ -33,7 +32,7 @@ public class OrderBook {
                     Order currentOrder = new Order(
                             attributes.getValue("book"),
                             attributes.getValue("operation"),
-                            attributes.getValue("price"),
+                            Double.parseDouble(attributes.getValue("price")),
                             Integer.parseInt(attributes.getValue("volume")),
                             attributes.getValue("orderId"));
                     orders.put(currentOrder.getOrderId(), currentOrder);
@@ -54,16 +53,30 @@ public class OrderBook {
         return result;
     }
 
-    public void getSortedOrdersList() {
-        ordersList.addAll(orders.values());
-
-        ordersList.sort(Comparator.comparing(Order::getBook)
-                  .thenComparing(Order::getOperation)
-                  .thenComparing(Order::getPrice));
-    }
-
     public void print() {
-        orders.values().stream().forEach(System.out::println);
+        System.out.println("ASK");
+        System.out.println("Volume@Price");
+        orders.values().stream()
+                .filter(Order -> Order.getBook().equals("book-1") && Order.getOperation().equals("SELL"))
+                .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
+                .entrySet()
+                .stream()
+                .map(e -> new Order("", "", e.getKey(), e.getValue(), ""))
+                .sorted((o1, o2) -> -o1.getPrice().compareTo(o2.getPrice()))
+                .collect(Collectors.toList())
+                .forEach(System.out::println);
+
+        System.out.println("BID");
+        System.out.println("Volume@Price");
+        orders.values().stream()
+                .filter(Order -> Order.getBook().equals("book-1") && Order.getOperation().equals("BUY"))
+                .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
+                .entrySet()
+                .stream()
+                .map(e -> new Order("", "", e.getKey(), e.getValue(), ""))
+                .sorted((o1, o2) -> -o1.getPrice().compareTo(o2.getPrice()))
+                .collect(Collectors.toList())
+                .forEach(System.out::println);
     }
 
     public int size() {

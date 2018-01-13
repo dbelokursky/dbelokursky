@@ -12,13 +12,13 @@ public class Order {
 
     private final String operation;
 
-    private final String price;
+    private final Double price;
 
     private final Integer volume;
 
     private final String orderId;
 
-    public Order(String book, String operation, String price, Integer volume, String orderId) {
+    public Order(String book, String operation, double price, Integer volume, String orderId) {
         this.book = book;
         this.operation = operation;
         this.price = price;
@@ -34,7 +34,7 @@ public class Order {
         return operation;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -70,6 +70,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return  book + " " + operation + "  " + volume + "@" + price;
+        return  volume + "@" + price;
     }
 }

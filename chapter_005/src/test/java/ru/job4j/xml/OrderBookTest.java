@@ -30,6 +30,6 @@ public class OrderBookTest {
         orderBook.parseFile();
         orderBook.print();
 
-        System.out.println(orderBook.size());
+//        System.out.println(orderBook.size());
     }
 }
