@@ -28,7 +28,7 @@ public class OrderBookTest {
 
         OrderBook orderBook = new OrderBook();
         orderBook.parseFile();
-        orderBook.print();
+        orderBook.print("book-2");
 
 //        System.out.println(orderBook.size());
     }

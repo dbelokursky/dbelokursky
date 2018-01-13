@@ -19,7 +19,7 @@ public class OrderBook {
     private Map<String, Order> orders;
 
     public OrderBook() {
-        this.orders = new HashMap<>(1_000_000);
+        this.orders = new HashMap<>();
         this.fileName = "orders.xml";
     }
 
@@ -53,33 +53,30 @@ public class OrderBook {
         return result;
     }
 
-    public void print() {
+    public void print(String bookName) {
+        System.out.println(bookName);
         System.out.println("ASK");
         System.out.println("Volume@Price");
         orders.values().stream()
-                .filter(Order -> Order.getBook().equals("book-1") && Order.getOperation().equals("SELL"))
+                .filter(Order -> Order.getBook().equals(bookName) && Order.getOperation().equals("SELL"))
                 .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
                 .entrySet()
                 .stream()
-                .map(e -> new Order("", "", e.getKey(), e.getValue(), ""))
-                .sorted((o1, o2) -> -o1.getPrice().compareTo(o2.getPrice()))
+                .map(e -> new Order(bookName, "SELL", e.getKey(), e.getValue(), ""))
+                .sorted(Comparator.comparing(Order::getPrice))
                 .collect(Collectors.toList())
                 .forEach(System.out::println);
-
+        System.out.println();
         System.out.println("BID");
         System.out.println("Volume@Price");
         orders.values().stream()
-                .filter(Order -> Order.getBook().equals("book-1") && Order.getOperation().equals("BUY"))
+                .filter(Order -> Order.getBook().equals(bookName) && Order.getOperation().equals("BUY"))
                 .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
                 .entrySet()
                 .stream()
-                .map(e -> new Order("", "", e.getKey(), e.getValue(), ""))
+                .map(e -> new Order(bookName, "BUY", e.getKey(), e.getValue(), ""))
                 .sorted((o1, o2) -> -o1.getPrice().compareTo(o2.getPrice()))
                 .collect(Collectors.toList())
                 .forEach(System.out::println);
-    }
-
-    public int size() {
-        return orders.size();
     }
 }
