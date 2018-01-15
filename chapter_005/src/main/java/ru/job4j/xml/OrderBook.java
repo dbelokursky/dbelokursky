@@ -6,7 +6,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class OrderBook {
 
     private final String fileName;
+
     private Map<String, Order> orders;
 
     public OrderBook() {
@@ -54,29 +58,29 @@ public class OrderBook {
     }
 
     public void print(String bookName) {
-        System.out.println(bookName);
-        System.out.println("ASK");
-        System.out.println("Volume@Price");
-        orders.values().stream()
+
+        List<Order> ask = orders.values().stream()
                 .filter(Order -> Order.getBook().equals(bookName) && Order.getOperation().equals("SELL"))
                 .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
                 .entrySet()
                 .stream()
                 .map(e -> new Order(bookName, "SELL", e.getKey(), e.getValue(), ""))
                 .sorted(Comparator.comparing(Order::getPrice))
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
-        System.out.println();
-        System.out.println("BID");
-        System.out.println("Volume@Price");
-        orders.values().stream()
+                .collect(Collectors.toList());
+
+        List<Order> bid = orders.values().stream()
                 .filter(Order -> Order.getBook().equals(bookName) && Order.getOperation().equals("BUY"))
                 .collect(Collectors.groupingBy(Order::getPrice, Collectors.summingInt(Order::getVolume)))
                 .entrySet()
                 .stream()
                 .map(e -> new Order(bookName, "BUY", e.getKey(), e.getValue(), ""))
-                .sorted((o1, o2) -> -o1.getPrice().compareTo(o2.getPrice()))
-                .collect(Collectors.toList())
-                .forEach(System.out::println);
+                .sorted(Comparator.comparing(Order::getPrice).reversed())
+                .collect(Collectors.toList());
+
+        System.out.println(bookName);
+        System.out.println("     ASK             BID");
+        System.out.println("Volume@Price    Volume@Price");
+        ask.forEach(System.out::println);
+        bid.forEach(System.out::println);
     }
 }
