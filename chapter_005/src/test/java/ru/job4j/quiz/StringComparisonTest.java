@@ -26,4 +26,20 @@ public class StringComparisonTest {
         boolean result = sc.containsAll("cool", "look");
         assertThat(result, is(expected));
     }
+
+    @Test
+    public void containsAllLinearTrueTest() {
+        StringComparison sc = new StringComparison();
+        boolean expected = true;
+        boolean result = sc.containsAllLinear("cool", "looc");
+        assertThat(result, is(expected) );
+    }
+
+    @Test
+    public void containsAllLinearFalseTest() {
+        StringComparison sc = new StringComparison();
+        boolean expected = false;
+        boolean result = sc.containsAllLinear("cool", "look");
+        assertThat(result, is(expected) );
+    }
 }

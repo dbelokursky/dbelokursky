@@ -23,6 +23,27 @@ public class StringComparison {
         return sort(first).equals(sort(second));
     }
 
+    public boolean containsAllLinear(String first, String second) {
+        if (first.length() != second.length()) {
+            return false;
+        }
+
+        int codePoints = 1_112_064; //utf-8
+        int[] symbols = new int[codePoints];
+        char[] firstArr = first.toLowerCase().toCharArray();
+
+        for (char c : firstArr) {
+            symbols[c]++;
+        }
+
+        for (int i = 0; i < second.length(); i++) {
+            if (--symbols[second.charAt(i)] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Sorts characters of the string.
      *
