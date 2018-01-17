@@ -32,7 +32,7 @@ public class StringComparisonTest {
         StringComparison sc = new StringComparison();
         boolean expected = true;
         boolean result = sc.containsAllLinear("cool", "looc");
-        assertThat(result, is(expected) );
+        assertThat(result, is(expected));
     }
 
     @Test
@@ -40,6 +40,6 @@ public class StringComparisonTest {
         StringComparison sc = new StringComparison();
         boolean expected = false;
         boolean result = sc.containsAllLinear("cool", "look");
-        assertThat(result, is(expected) );
+        assertThat(result, is(expected));
     }
 }
