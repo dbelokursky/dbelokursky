@@ -6,10 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -77,10 +74,26 @@ public class OrderBook {
                 .sorted(Comparator.comparing(Order::getPrice).reversed())
                 .collect(Collectors.toList());
 
+        Iterator<Order> askIt = ask.listIterator();
+        Iterator<Order> bidIt = bid.listIterator();
+
         System.out.println(bookName);
         System.out.println("     ASK             BID");
-        System.out.println("Volume@Price    Volume@Price");
-        ask.forEach(System.out::println);
-        bid.forEach(System.out::println);
+
+        while (bidIt.hasNext()) {
+            if (askIt.hasNext()) {
+                System.out.println(bidIt.next() + "         " + askIt.next());
+            } else {
+                System.out.println(bidIt.next() + "         " + "-----------");
+            }
+
+
+        }
+
+//        System.out.println(bookName);
+//        System.out.println("     ASK             BID");
+//        System.out.println("Volume@Price    Volume@Price");
+//        ask.forEach(System.out::println);
+//        bid.forEach(System.out::println);
     }
 }
