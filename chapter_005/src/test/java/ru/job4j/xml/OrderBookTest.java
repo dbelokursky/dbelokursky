@@ -19,17 +19,8 @@ public class OrderBookTest {
 
     @Test
     public void parseFileTest() {
-//        try {
-//            PrintStream stream = new PrintStream(new FileOutputStream("/tmp/sorted.txt"));
-//            System.setOut(stream);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         OrderBook orderBook = new OrderBook();
         orderBook.parseFile();
         orderBook.print("book-2");
-
-//        System.out.println(orderBook.size());
     }
 }
