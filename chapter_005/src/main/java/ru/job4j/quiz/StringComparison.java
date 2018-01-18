@@ -28,7 +28,7 @@ public class StringComparison {
             return false;
         }
 
-        int codePoints = 1_112_064; //utf-8
+        int codePoints = 65535; //utf-8
         int[] symbols = new int[codePoints];
         char[] firstArr = first.toLowerCase().toCharArray();
 
