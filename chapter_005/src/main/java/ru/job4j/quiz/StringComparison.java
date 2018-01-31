@@ -71,7 +71,7 @@ public class StringComparison {
         }
 
         for (char c : charMap.keySet()) {
-            if (charMap.get(c) != 0 || charMap.get(c) == null) {
+            if (charMap.get(c) != 0) {
                 return false;
             }
         }
