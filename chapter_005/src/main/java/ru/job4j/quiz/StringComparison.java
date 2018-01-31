@@ -1,6 +1,8 @@
 package ru.job4j.quiz;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dmitry Belokursky
@@ -23,7 +25,7 @@ public class StringComparison {
         return sort(first).equals(sort(second));
     }
 
-    public boolean containsAllLinear(String first, String second) {
+    public boolean containsAllWithArr(String first, String second) {
         if (first.length() != second.length()) {
             return false;
         }
@@ -38,6 +40,38 @@ public class StringComparison {
 
         for (int i = 0; i < second.length(); i++) {
             if (--symbols[second.charAt(i)] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean containsAllWithMap(String first, String second) {
+        if (first.length() != second.length()) {
+            return false;
+        }
+        char[] firstArr = first.toLowerCase().toCharArray();
+        char[] secondArr = second.toLowerCase().toCharArray();
+        Map<Character, Integer> charMap = new HashMap<>();
+
+        for (char c : firstArr) {
+            int counter = 1;
+            if (charMap.containsKey(c)) {
+                counter = charMap.get(c) + 1;
+            }
+            charMap.put(c, counter);
+        }
+
+        for (char c : secondArr) {
+            int counter = -1;
+            if (charMap.containsKey(c)) {
+                counter = charMap.get(c) - 1;
+                charMap.put(c, counter);
+            }
+        }
+
+        for (char c : charMap.keySet()) {
+            if (charMap.get(c) != 0 || charMap.get(c) == null) {
                 return false;
             }
         }
