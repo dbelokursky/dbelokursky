@@ -28,18 +28,34 @@ public class StringComparisonTest {
     }
 
     @Test
-    public void containsAllLinearTrueTest() {
+    public void containsAllLinearWithArrTrueTest() {
         StringComparison sc = new StringComparison();
         boolean expected = true;
-        boolean result = sc.containsAllLinear("cool", "looc");
+        boolean result = sc.containsAllWithArr("cool", "looc");
         assertThat(result, is(expected));
     }
 
     @Test
-    public void containsAllLinearFalseTest() {
+    public void containsAllWithArrFalseTest() {
         StringComparison sc = new StringComparison();
         boolean expected = false;
-        boolean result = sc.containsAllLinear("cool", "look");
+        boolean result = sc.containsAllWithArr("cool", "look");
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void containsAllWithMapTrueTest() {
+        StringComparison sc = new StringComparison();
+        boolean expected = true;
+        boolean result = sc.containsAllWithMap("cool", "looc");
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void containsAllWithMapFalseTest() {
+        StringComparison sc = new StringComparison();
+        boolean expected = false;
+        boolean result = sc.containsAllWithMap("cool", "look");
         assertThat(result, is(expected));
     }
 }
