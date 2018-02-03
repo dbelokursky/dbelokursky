@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @ThreadSafe
 public class ConcurrentDynamicList<E> implements Iterable<E> {
 
-    private final int DEFAULT_CAPACITY = 10;
+    private final int defaultCapacity = 10;
 
     @GuardedBy("this")
     private Object[] container;
@@ -35,7 +35,7 @@ public class ConcurrentDynamicList<E> implements Iterable<E> {
     }
 
     public ConcurrentDynamicList() {
-        this.container = new Object[DEFAULT_CAPACITY];
+        this.container = new Object[defaultCapacity];
         this.size = 0;
         modCount = 0;
     }
