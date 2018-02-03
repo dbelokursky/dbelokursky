@@ -53,11 +53,7 @@ public class DynamicList<E> implements Iterable<E> {
 
             @Override
             public boolean hasNext() {
-                boolean result = false;
-                if (i >= 0 && i < size) {
-                    result = true;
-                }
-                return result;
+                return  i >= 0 && i < size;
             }
 
             @Override
