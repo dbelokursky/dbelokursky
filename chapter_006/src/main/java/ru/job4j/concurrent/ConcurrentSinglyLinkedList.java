@@ -1,6 +1,7 @@
 package ru.job4j.concurrent;
 
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.ConcurrentModificationException;
@@ -20,8 +21,10 @@ public class ConcurrentSinglyLinkedList<E> implements Iterable<E> {
     @GuardedBy("this")
     private Node<E> tail;
 
+    @GuardedBy("this")
     private int size;
 
+    @GuardedBy("this")
     private int modCount;
 
     public ConcurrentSinglyLinkedList() {
@@ -152,6 +155,7 @@ public class ConcurrentSinglyLinkedList<E> implements Iterable<E> {
         };
     }
 
+    @NotThreadSafe
     private static class Node<E> {
 
         final private E item;
@@ -167,7 +171,7 @@ public class ConcurrentSinglyLinkedList<E> implements Iterable<E> {
         }
 
         @Override
-        public String toString() {
+        public synchronized String toString() {
             return "Node{"
                     + "item=" + item
                     + ", next=" + next

@@ -20,10 +20,13 @@ public class ConcurrentDynamicList<E> implements Iterable<E> {
     @GuardedBy("this")
     private Object[] container;
 
+    @GuardedBy("this")
     private int index;
 
+    @GuardedBy("this")
     private int size;
 
+    @GuardedBy("this")
     private int modCount;
 
     public ConcurrentDynamicList(int capacity) {
