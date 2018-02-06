@@ -116,7 +116,7 @@ public class ConcurrentSinglyLinkedList<E> implements Iterable<E> {
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return "SinglyLinkedList{"
                 + "head=" + head
                 + ", tail=" + tail
