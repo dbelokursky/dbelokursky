@@ -22,30 +22,27 @@ public class SimpleBlockingQueue<T> {
         this.queue = new LinkedList<>();
     }
 
-    public void offer(T value) throws InterruptedException {
-        while (true) {
-            synchronized (this) {
-                while (queue.size() == capacity) {
-                    this.wait();
-                }
-                queue.add(value);
-                System.out.println("Hello from producer");
-                this.notify();
-            }
+    public void offer(T value) throws InterruptedException { synchronized (this) {
+        while (queue.size() == capacity) {
+            this.wait();
         }
+        queue.add(value);
+        System.out.println("Hello from producer");
+        this.notify();
+    }
 
     }
 
     public T pool() throws InterruptedException {
-        while (true) {
-            synchronized (this) {
-                while (queue.size() == 0) {
-                    this.wait();
-                }
-                queue.poll();
-                System.out.println("Hello from consumer");
-                this.notify();
+        T result;
+        synchronized (this) {
+            while (queue.size() == 0) {
+                this.wait();
             }
+            result = queue.poll();
+            System.out.println("Hello from consumer");
+            this.notify();
         }
+        return result;
     }
 }
