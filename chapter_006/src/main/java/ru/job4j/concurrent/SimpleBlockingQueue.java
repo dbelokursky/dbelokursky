@@ -1,6 +1,5 @@
 package ru.job4j.concurrent;
 
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.LinkedList;
@@ -14,7 +13,7 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
 
     private final int capacity;
-    @GuardedBy("this")
+
     private Queue<T> queue;
 
     public SimpleBlockingQueue(int capacity) {
@@ -24,13 +23,12 @@ public class SimpleBlockingQueue<T> {
 
     public void offer(T value) throws InterruptedException {
         synchronized (this) {
-        while (queue.size() == capacity) {
-            this.wait();
+            while (queue.size() == capacity) {
+                this.wait();
+            }
+            queue.add(value);
+            this.notify();
         }
-        queue.add(value);
-        this.notify();
-    }
-
     }
 
     public T pool() throws InterruptedException {
