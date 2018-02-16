@@ -3,15 +3,14 @@ package ru.job4j;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author Dmitry Belokursky
  * @since 07.02.18.
  */
 @ThreadSafe
-public class ThreadPool implements Executor {
+public class ThreadPool {
 
     private final int availableProcessors;
 
@@ -21,36 +20,39 @@ public class ThreadPool implements Executor {
 
     public ThreadPool() {
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
-        this.workQueue = new ConcurrentLinkedQueue<>();
+        this.workQueue = new LinkedBlockingQueue<>();
         this.isRunning = true;
+    }
 
+    public void init() {
         for (int i = 0; i < availableProcessors; i++) {
             new Thread(new Worker()).start();
         }
     }
 
     public void add(Runnable work) {
-        execute(work);
+        if (isRunning) {
+            workQueue.offer(work);
+            notifyAll();
+        }
     }
 
     public void shutdown() {
         isRunning = false;
     }
 
-    @Override
-    public void execute(Runnable work) {
-        if (isRunning) {
-            workQueue.offer(work);
-        }
-    }
-
     private final class Worker implements Runnable {
         @Override
         public void run() {
             while (isRunning) {
-                Runnable nextTask = workQueue.poll();
-                if (nextTask != null) {
-                    nextTask.run();
+                if (workQueue.size() == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    workQueue.poll().run();
                 }
             }
         }
