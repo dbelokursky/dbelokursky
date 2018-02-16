@@ -25,7 +25,9 @@ public class SimpleLock {
     }
 
     public synchronized void unlock() {
-        this.locked = false;
-        notifyAll();
+        if (this.locked) {
+            this.locked = false;
+            notifyAll();
+        }
     }
 }
