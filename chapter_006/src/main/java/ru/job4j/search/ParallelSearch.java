@@ -12,7 +12,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Dmitry Belokursky
@@ -32,7 +31,7 @@ public class ParallelSearch extends SimpleFileVisitor<Path> {
     private Queue<Path> files;
 
     @GuardedBy("this")
-    private List<Path> result;
+    private Queue<Path> result;
 
     private volatile boolean isOver;
 
@@ -41,7 +40,7 @@ public class ParallelSearch extends SimpleFileVisitor<Path> {
         this.searchPhrase = text;
         this.extensions = extensions;
         this.files = new ConcurrentLinkedQueue<>();
-        this.result = new CopyOnWriteArrayList<>();
+        this.result = new ConcurrentLinkedQueue<>();
         this.isOver = false;
     }
 
