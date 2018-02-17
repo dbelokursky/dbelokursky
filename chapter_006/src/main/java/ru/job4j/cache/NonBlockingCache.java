@@ -23,11 +23,11 @@ public class NonBlockingCache {
 
     public Task update(String name, String description) throws OptimisticException {
         Task task = cache.get(name);
-        int expectedVersion = task.getVersion().get();
-        if (expectedVersion == (cache.get(name).getVersion().get())) {
-            return cache.computeIfPresent(task.getName(), (k, v) -> new Task(task.getName(), description, v.getVersion().incrementAndGet()));
+        Task result = cache.computeIfPresent(task.getName(), (k, v) -> new Task(task.getName(), description, v.getVersion() + 1));
+        if (result != null) {
+            return task;
         } else {
-            throw new OptimisticException("Concurrent modification");
+            throw new OptimisticException("Unsuccessful update.");
         }
     }
 

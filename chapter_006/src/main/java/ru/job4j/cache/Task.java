@@ -4,7 +4,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Dmitry Belokursky
@@ -20,24 +19,24 @@ public final class Task {
     private final String description;
 
     @GuardedBy("this")
-    private final AtomicInteger version;
+    private final Integer version;
 
     public Task(String name) {
         this.name = name;
-        this.version = new AtomicInteger(0);
+        this.version = 0;
         this.description = "";
     }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.version = new AtomicInteger(0);
+        this.version = 0;
     }
 
     public Task(String name, String description, int version) {
         this.name = name;
         this.description = description;
-        this.version = new AtomicInteger(version);
+        this.version = version;
     }
 
     public synchronized String getName() {
@@ -48,7 +47,7 @@ public final class Task {
         return description;
     }
 
-    public synchronized AtomicInteger getVersion() {
+    public synchronized int getVersion() {
         return version;
     }
 
