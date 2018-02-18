@@ -11,22 +11,26 @@ import net.jcip.annotations.ThreadSafe;
 public class SimpleLock {
 
     @GuardedBy("this")
-    private boolean locked;
+    private boolean isLocked;
+
+    @GuardedBy("this")
+    private Thread currentThread;
 
     public SimpleLock() {
-        this.locked = false;
+        this.isLocked = false;
     }
 
     public synchronized void lock() throws InterruptedException {
-        while (this.locked) {
+        this.currentThread = Thread.currentThread();
+        while (this.isLocked) {
             this.wait();
         }
-        this.locked = true;
+        this.isLocked = true;
     }
 
     public synchronized void unlock() {
-        if (this.locked) {
-            this.locked = false;
+        if (this.isLocked && currentThread.equals(Thread.currentThread())) {
+            this.isLocked = false;
             notifyAll();
         }
     }

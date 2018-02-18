@@ -22,10 +22,13 @@ public class NonBlockingCache {
     }
 
     public Task update(String name, String description) throws OptimisticException {
-        Task task = cache.get(name);
-        Task result = cache.computeIfPresent(task.getName(), (k, v) -> new Task(task.getName(), description, v.getVersion() + 1));
+        Task oldTask = cache.get(name);
+        int oldTaskVersion = oldTask.getVersion();
+        Task newTask = new Task(name, description, oldTaskVersion + 1);
+        Task result = cache.computeIfPresent(name, (k, v) ->
+                cache.get(name).getVersion() == oldTaskVersion ? cache.replace(name, newTask) : null);
         if (result != null) {
-            return task;
+            return result;
         } else {
             throw new OptimisticException("Unsuccessful update.");
         }
