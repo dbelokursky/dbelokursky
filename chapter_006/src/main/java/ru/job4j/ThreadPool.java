@@ -3,6 +3,8 @@ package ru.job4j;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -16,11 +18,14 @@ public class ThreadPool {
 
     private final Queue<Runnable> workQueue;
 
+    private final Timer timer;
+
     private volatile boolean isRunning;
 
     public ThreadPool() {
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
         this.workQueue = new LinkedBlockingQueue<>();
+        this.timer = new Timer();
         this.isRunning = true;
     }
 
@@ -33,7 +38,6 @@ public class ThreadPool {
     public void add(Runnable work) {
         if (isRunning) {
             workQueue.offer(work);
-            notifyAll();
         }
     }
 
@@ -45,14 +49,14 @@ public class ThreadPool {
         @Override
         public void run() {
             while (isRunning) {
-                if (workQueue.size() == 0) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    workQueue.poll().run();
+                Runnable work = workQueue.poll();
+                if (work != null) {
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            work.run();
+                        }
+                    }, 100, 500);
                 }
             }
         }
