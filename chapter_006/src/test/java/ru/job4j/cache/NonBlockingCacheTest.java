@@ -22,7 +22,7 @@ public class NonBlockingCacheTest {
     }
 
     @Test
-    public void update() throws OptimisticException {
+    public void updateTest() throws OptimisticException {
         NonBlockingCache nbc = new NonBlockingCache();
         Task task = new Task("test");
         nbc.add(task);
@@ -33,7 +33,7 @@ public class NonBlockingCacheTest {
     }
 
     @Test
-    public void delete() {
+    public void deleteTest() {
         NonBlockingCache nbc = new NonBlockingCache();
         Task task = new Task("test");
         nbc.add(task);
