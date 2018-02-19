@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ThreadSafe
 public class NonBlockingCache {
 
-    private final ConcurrentHashMap<String, Task> cache;
+    private ConcurrentHashMap<String, Task> cache;
 
     public NonBlockingCache() {
         this.cache = new ConcurrentHashMap<>();
@@ -25,8 +25,7 @@ public class NonBlockingCache {
         Task oldTask = cache.get(name);
         int oldTaskVersion = oldTask.getVersion();
         Task newTask = new Task(name, description, oldTaskVersion + 1);
-        Task result = cache.computeIfPresent(name, (k, v) ->
-                cache.get(name).getVersion() == oldTaskVersion ? cache.replace(name, newTask) : null);
+        Task result = cache.computeIfPresent(name, (k, v) -> cache.get(name).getVersion() == oldTaskVersion ? newTask : null);
         if (result != null) {
             return result;
         } else {
