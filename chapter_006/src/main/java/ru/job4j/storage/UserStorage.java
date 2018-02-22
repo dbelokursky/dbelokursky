@@ -26,23 +26,23 @@ public class UserStorage {
         return true;
     }
 
-    public synchronized boolean update(final User user) {
+    public boolean update(final User user) {
         return (users.put(user.getId(), user) != null);
     }
 
-    public synchronized boolean delete(final User user) {
+    public boolean delete(final User user) {
         return (users.remove(user.getId()) != null);
     }
 
-    public synchronized boolean transfer(final int fromId, final int toId, final int amount) {
+    public boolean transfer(final int fromId, final int toId, final int amount) {
         boolean result = false;
         User from = users.get(fromId);
         User to = users.get(toId);
         if (from.getAmount() >= amount) {
             from.setAmount(from.getAmount() - amount);
-            users.put(fromId, from);
+            users.replace(fromId, from);
             to.setAmount(to.getAmount() + amount);
-            users.put(toId, to);
+            users.replace(toId, to);
             result = true;
         }
         return result;
@@ -52,7 +52,7 @@ public class UserStorage {
         return users.size();
     }
 
-    public synchronized User getById(int id) {
+    public User getById(int id) {
         return users.get(id);
     }
 
