@@ -21,16 +21,19 @@ public class SimpleLock {
     }
 
     public synchronized void lock() throws InterruptedException {
-        this.currentThread = Thread.currentThread();
-        while (this.isLocked) {
-            this.wait();
+        if (!this.isLocked) {
+            this.currentThread = Thread.currentThread();
+            while (this.isLocked) {
+                this.wait();
+            }
+            this.isLocked = true;
         }
-        this.isLocked = true;
     }
 
     public synchronized void unlock() {
         if (this.isLocked && currentThread.equals(Thread.currentThread())) {
             this.isLocked = false;
+            currentThread = null;
             notifyAll();
         }
     }
