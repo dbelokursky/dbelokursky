@@ -19,6 +19,8 @@ public class Player implements Callable<Player> {
 
     private final Field field;
 
+    private volatile String direction;
+
     public Player(String name, int verticalPosition, int horizontalPosition, Field field) {
         this.name = name;
         this.verticalPosition = verticalPosition;
@@ -34,40 +36,72 @@ public class Player implements Callable<Player> {
         field.getField()[initialPosition][initialPosition].lock();
     }
 
-    @Override
-    public Player call() throws Exception {
-        if (checkPosition(this.verticalPosition + 1, this.horizontalPosition)) {
-            if (field.getField()[verticalPosition + 1][horizontalPosition].tryLock(500, TimeUnit.MILLISECONDS)) {
-                field.getField()[verticalPosition][horizontalPosition].unlock();
-                System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
-                return new Player(this.name, verticalPosition + 1, horizontalPosition, field);
-            }
-        }
-        if (checkPosition(this.verticalPosition - 1, this.horizontalPosition)) {
-            if (field.getField()[verticalPosition - 1][horizontalPosition].tryLock(500, TimeUnit.MILLISECONDS)) {
-                field.getField()[verticalPosition][horizontalPosition].unlock();
-                System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
-                return new Player(this.name, verticalPosition - 1, horizontalPosition, field);
-            }
-        }
+    public Player turnRight() throws InterruptedException {
         if (checkPosition(this.verticalPosition, this.horizontalPosition + 1)) {
             if (field.getField()[verticalPosition][horizontalPosition + 1].tryLock(500, TimeUnit.MILLISECONDS)) {
                 field.getField()[verticalPosition][horizontalPosition].unlock();
                 System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
-                return new Player(this.name, verticalPosition, horizontalPosition + 1, field);
+                direction = "right";
+                return call();
             }
         }
-        if (checkPosition(this.verticalPosition, this.horizontalPosition + 1)) {
+        return new Player(name, verticalPosition, horizontalPosition, field);
+    }
+
+    public Player turnLeft() throws InterruptedException {
+        if (checkPosition(this.verticalPosition, this.horizontalPosition - 1)) {
             if (field.getField()[verticalPosition][horizontalPosition - 1].tryLock(500, TimeUnit.MILLISECONDS)) {
                 field.getField()[verticalPosition][horizontalPosition].unlock();
                 System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
-                return new Player(this.name, verticalPosition, horizontalPosition + 1, field);
+                direction = "left";
+                return call();
             }
+        }
+        return new Player(name, verticalPosition, horizontalPosition, field);
+    }
+
+    public Player turnUp() throws InterruptedException {
+        if (checkPosition(this.verticalPosition + 1, this.horizontalPosition)) {
+            if (field.getField()[verticalPosition + 1][horizontalPosition].tryLock(500, TimeUnit.MILLISECONDS)) {
+                field.getField()[verticalPosition][horizontalPosition].unlock();
+                System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
+                direction = "up";
+                return call();
+            }
+        }
+        return new Player(name, verticalPosition, horizontalPosition, field);
+    }
+
+    public Player turnDown() throws InterruptedException {
+        if (checkPosition(this.verticalPosition - 1, this.horizontalPosition)) {
+            if (field.getField()[verticalPosition - 1][horizontalPosition].tryLock(500, TimeUnit.MILLISECONDS)) {
+                field.getField()[verticalPosition][horizontalPosition].unlock();
+                System.out.println(name + " vertical " + verticalPosition + " horizontal " + horizontalPosition);
+                direction = "down";
+                return call();
+            }
+        }
+        return new Player(name, verticalPosition, horizontalPosition, field);
+    }
+
+    @Override
+    public Player call() {
+        if (direction.equals("right")) {
+            return new Player(this.name, verticalPosition, horizontalPosition + 1, field);
+        }
+        if (direction.equals("left")) {
+            return new Player(this.name, verticalPosition, horizontalPosition - 1, field);
+        }
+        if (direction.equals("up")) {
+            return new Player(this.name, verticalPosition + 1, horizontalPosition, field);
+        }
+        if (direction.equals("down")) {
+            return new Player(this.name, verticalPosition - 1, horizontalPosition, field);
         }
         return null;
     }
 
-    private boolean checkPosition(int horizontalPosition, int verticalPosition) {
+    private boolean checkPosition(int verticalPosition, int horizontalPosition) {
         return horizontalPosition >= 0 && horizontalPosition < field.getField().length
                 && verticalPosition >= 0 && verticalPosition < field.getField().length;
     }
