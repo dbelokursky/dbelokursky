@@ -58,7 +58,7 @@ WHERE expired_date BETWEEN '2018-03-01' AND '2018-03-30';
 SELECT *
 FROM product
 WHERE price = (SELECT max(price)
-               FROM product)
+               FROM product);
 
 --5. Написать запрос, который выводит количество всех продуктов определенного типа.
 
@@ -96,7 +96,7 @@ WHERE type_id = 4;
 
 SELECT *
 FROM product
-WHERE count < 10
+WHERE count < 10;
 
 SELECT (prod.name, t.name)
 FROM product AS prod
