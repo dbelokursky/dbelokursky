@@ -24,36 +24,6 @@ public class Tracker {
     }
 
     /**
-     * Обновляет заявку в массиве items.
-     *
-     * @param item новая заявка.
-     */
-    public void update(Item item) {
-        for (int i = 0; i < cursor; i++) {
-            if (item != null && item.getId().equals(items[i].getId())) {
-                items[i].setName(item.getName());
-                items[i].setDescription(item.getDescription());
-                break;
-            }
-        }
-    }
-
-    /**
-     * Удаляет ячейку в массиве items. Все значения справа от удаляемого элемента - на одну ячейку влево.
-     *
-     * @param item заявка.
-     */
-    public void delete(Item item) {
-        for (int i = 0; i < cursor; i++) {
-            if (item != null && item.getId().equals(items[i].getId())) {
-                System.arraycopy(items, i + 1, items, i, cursor);
-                cursor--;
-                break;
-            }
-        }
-    }
-
-    /**
      * Возвращает копию массива items без null элементов.
      *
      * @return копия массива без null элементов.
@@ -88,23 +58,6 @@ public class Tracker {
         }
         Item[] result = new Item[tInd];
         System.arraycopy(tmp, 0, result, 0, tInd);
-        return result;
-    }
-
-    /**
-     * Проверяет элементы массива items, сравнивая id с аргументом String id
-     *
-     * @param id id заявки
-     * @return возвращает найденный Item. Если Item не найден - возвращает null.
-     */
-    public Item findById(String id) {
-        Item result = null;
-        for (int i = 0; i < cursor; i++) {
-            if (id.equals(items[i].getId())) {
-                result = items[i];
-                break;
-            }
-        }
         return result;
     }
 }

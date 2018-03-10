@@ -19,27 +19,27 @@ public class Comment {
         this.date = new Date();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

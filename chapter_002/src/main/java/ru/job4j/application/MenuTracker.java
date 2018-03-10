@@ -1,28 +1,18 @@
 package ru.job4j.application;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
+
 
 /**
  * @author Dmitry Belokursky
  * @since 09.07.17.
  */
 
-class EditItem extends BaseAction {
-
-    EditItem(String name, int key) {
-        super(name, key);
-    }
-
-    @Override
-    public void execute(Input input, Tracker tracker) {
-        String id = input.ask("Введите ID заявки: ");
-        String name = input.ask("Введите новое имя заявки :");
-        String description = input.ask("Введите новое описание заявки: ");
-        Item item = new Item(name, description);
-        item.setId(id);
-        tracker.update(item);
-    }
-}
 
 public class MenuTracker {
 
@@ -30,30 +20,48 @@ public class MenuTracker {
 
     private Tracker tracker;
 
-    private UserAction[] actions = new UserAction[6];
+    private UserAction[] actions = new UserAction[7];
 
-    private int position = 0;
+    private int position = 1;
 
     MenuTracker(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
 
+
     public UserAction[] getActions() {
         return actions;
     }
 
     public void fillActions() {
-        this.actions[position++] = this.new AddItem("Add the new item.", 0);
-        this.actions[position++] = new MenuTracker.ShowItems("Show items.", 1);
-        this.actions[position++] = new EditItem("Edit item.", 2);
-        this.actions[position++] = this.new DeleteItem("Delete item.", 3);
-        this.actions[position++] = this.new FindItemById("Find item by id.", 4);
-        this.actions[position++] = this.new FindItemByName("Find item by name.", 5);
+        getConnection();
+        this.actions[position++] = this.new AddItem("Add the new item.", 1);
+        this.actions[position++] = new MenuTracker.ShowItems("Show items.", 2);
+        this.actions[position++] = this.new EditItem("Edit item.", 3);
+        this.actions[position++] = this.new DeleteItem("Delete item.", 4);
+        this.actions[position++] = this.new FindItemById("Find item by id.", 5);
+        this.actions[position++] = this.new FindItemByName("Find item by name.", 6);
     }
 
-    public void addAction(UserAction action) {
-        this.actions[position++] = action;
+    private Connection getConnection() {
+        Connection connection = null;
+        Properties properties = new Properties();
+        try {
+            FileInputStream inputStream = new FileInputStream("./chapter_002/src/main/java/ru/job4j/application/db.properties");
+            properties.load(inputStream);
+            connection = DriverManager.getConnection(properties.getProperty("url"),
+                    properties.getProperty("username"),
+                    properties.getProperty("password"));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connection;
     }
 
     public ArrayList<Integer> getMenuRange() {
@@ -65,8 +73,21 @@ public class MenuTracker {
     }
 
     public void show() {
-        for (UserAction action : actions) {
-            System.out.println(action.info());
+        Connection connection = getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM actions;");
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -75,10 +96,40 @@ public class MenuTracker {
     }
 
     private void itemNotFound() {
-        System.out.println("Заявка не найдена.");
+        System.out.println("Item not found.");
     }
 
-    private static class ShowItems extends BaseAction {
+    private class EditItem extends BaseAction {
+
+        EditItem(String name, int key) {
+            super(name, key);
+        }
+
+        @Override
+        public void execute(Input input, Tracker tracker) {
+            String id = input.ask("Enter the ID of the item: ");
+            String name = input.ask("Enter a new name for the item:");
+            String description = input.ask("Enter a new description for the item: ");
+            Connection connection = getConnection();
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE id = ?");
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, description);
+                preparedStatement.setInt(3, Integer.parseInt(id));
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class ShowItems extends BaseAction {
 
         ShowItems(String name, int key) {
             super(name, key);
@@ -86,12 +137,25 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("Список заявок: ");
-            int itemNum = 1;
-            for (Item i : tracker.findAll()) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("№").append(itemNum++).append(" ").append(i.toString());
-                System.out.println(sb.toString());
+            System.out.println("List of items: ");
+            Connection connection = getConnection();
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM items;");
+                while (resultSet.next()) {
+                    System.out.println(resultSet.getInt("id") + " " +
+                            resultSet.getString("name") + " " +
+                            resultSet.getString("description"));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -104,8 +168,23 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            String name = input.ask("Введите имя заявки: ");
-            String desc = input.ask("Введите описание заявки: ");
+            String name = input.ask("Enter the name of the item: ");
+            String desc = input.ask("Enter the description of the item: ");
+            Connection connection = getConnection();
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO items (name, description) VALUES (?, ?)");
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, desc);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
             tracker.add(new Item(name, desc));
         }
     }
@@ -118,13 +197,18 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            String id = input.ask("Введите ID заявки: ");
-            Item item = tracker.findById(id);
-            if (item != null) {
-                tracker.delete(item);
-                System.out.println("Заявка удалена.");
-            } else {
-                itemNotFound();
+            String id = input.ask("Enter the ID of the item: ");
+            Connection connection = getConnection();
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM items WHERE id = ?;");
+                preparedStatement.setInt(1, Integer.parseInt(id));
+                if (preparedStatement.executeUpdate() == 0) {
+                    itemNotFound();
+                } else {
+                    System.out.println("The item is removed.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -137,12 +221,23 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            String id = input.ask("Введите ID заявки: ");
-            Item item = tracker.findById(id);
-            if (item != null) {
-                System.out.println(item.toString());
-            } else {
-                itemNotFound();
+            String id = input.ask("Enter the ID of the item: ");
+            Connection connection = getConnection();
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM items WHERE id = ?;");
+                preparedStatement.setInt(1, Integer.parseInt(id));
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    do {
+                        System.out.println(resultSet.getInt("id") + " " +
+                                resultSet.getString("name") + " " +
+                                resultSet.getString("description"));
+                    } while (resultSet.next());
+                } else {
+                    itemNotFound();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -155,15 +250,24 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            String name = input.ask("Введите название заявки: ");
-            Item[] foundItems = null;
-            foundItems = tracker.findByName(name);
-            if (foundItems.length >= 1) {
-                for (Item i : foundItems) {
-                    System.out.println(i.toString());
+            Connection connection = getConnection();
+            String name = input.ask("Enter the name of the item: ");
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM items WHERE name LIKE ?;");
+                preparedStatement.setString(1, name);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    do {
+                        System.out.println(resultSet.getInt("id") + " " +
+                                resultSet.getString("name") + " " +
+                                resultSet.getString("description"));
+
+                    } while (resultSet.next());
+                } else if (!resultSet.next()) {
+                    itemNotFound();
                 }
-            } else {
-                itemNotFound();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
