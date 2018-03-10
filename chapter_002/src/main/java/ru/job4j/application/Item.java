@@ -25,17 +25,20 @@ public class Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Item item = (Item) o;
-        return Objects.equals(getName(), item.getName()) &&
-                Objects.equals(getDescription(), item.getDescription()) &&
-                Arrays.equals(getComments(), item.getComments());
+        return Objects.equals(getName(), item.getName())
+                && Objects.equals(getDescription(), item.getDescription())
+                && Arrays.equals(getComments(), item.getComments());
     }
 
     @Override
     public int hashCode() {
-
         int result = Objects.hash(getName(), getDescription());
         result = 31 * result + Arrays.hashCode(getComments());
         return result;

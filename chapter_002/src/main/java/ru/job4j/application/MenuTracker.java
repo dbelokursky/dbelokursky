@@ -143,9 +143,9 @@ public class MenuTracker {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM items;");
                 while (resultSet.next()) {
-                    System.out.println(resultSet.getInt("id") + " " +
-                            resultSet.getString("name") + " " +
-                            resultSet.getString("description"));
+                    System.out.println(resultSet.getInt("id") + " "
+                            + resultSet.getString("name") + " "
+                            + resultSet.getString("description"));
                 }
 
             } catch (SQLException e) {
@@ -229,9 +229,9 @@ public class MenuTracker {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     do {
-                        System.out.println(resultSet.getInt("id") + " " +
-                                resultSet.getString("name") + " " +
-                                resultSet.getString("description"));
+                        System.out.println(resultSet.getInt("id") + " "
+                                + resultSet.getString("name") + " "
+                                + resultSet.getString("description"));
                     } while (resultSet.next());
                 } else {
                     itemNotFound();
@@ -258,9 +258,9 @@ public class MenuTracker {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     do {
-                        System.out.println(resultSet.getInt("id") + " " +
-                                resultSet.getString("name") + " " +
-                                resultSet.getString("description"));
+                        System.out.println(resultSet.getInt("id") + " "
+                                + resultSet.getString("name") + " "
+                                + resultSet.getString("description"));
 
                     } while (resultSet.next());
                 } else if (!resultSet.next()) {
