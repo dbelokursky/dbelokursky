@@ -1,41 +1,31 @@
 package ru.job4j.application;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-
 
 /**
  * @author Dmitry Belokursky
  * @since 09.07.17.
  */
-
-
 public class MenuTracker {
 
     private Input input;
-
-    private Tracker tracker;
 
     private UserAction[] actions = new UserAction[7];
 
     private int position = 1;
 
-    MenuTracker(Input input, Tracker tracker) {
+    MenuTracker(Input input) {
         this.input = input;
-        this.tracker = tracker;
     }
-
 
     public UserAction[] getActions() {
         return actions;
     }
 
     public void fillActions() {
-        getConnection();
         this.actions[position++] = this.new AddItem("Add the new item.", 1);
         this.actions[position++] = new MenuTracker.ShowItems("Show items.", 2);
         this.actions[position++] = this.new EditItem("Edit item.", 3);
@@ -53,12 +43,7 @@ public class MenuTracker {
             connection = DriverManager.getConnection(properties.getProperty("url"),
                     properties.getProperty("username"),
                     properties.getProperty("password"));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return connection;
@@ -73,8 +58,7 @@ public class MenuTracker {
     }
 
     public void show() {
-        Connection connection = getConnection();
-        try {
+        try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM actions;");
             while (resultSet.next()) {
@@ -82,17 +66,11 @@ public class MenuTracker {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void select(int key) {
-        this.actions[key].execute(this.input, this.tracker);
+        this.actions[key].execute(this.input);
     }
 
     private void itemNotFound() {
@@ -106,12 +84,11 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input) {
             String id = input.ask("Enter the ID of the item: ");
             String name = input.ask("Enter a new name for the item:");
             String description = input.ask("Enter a new description for the item: ");
-            Connection connection = getConnection();
-            try {
+            try (Connection connection = getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE items SET name = ?, description = ? WHERE id = ?");
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, description);
@@ -119,12 +96,6 @@ public class MenuTracker {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -136,10 +107,9 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input) {
             System.out.println("List of items: ");
-            Connection connection = getConnection();
-            try {
+            try (Connection connection = getConnection()) {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM items;");
                 while (resultSet.next()) {
@@ -147,15 +117,8 @@ public class MenuTracker {
                             + resultSet.getString("name") + " "
                             + resultSet.getString("description"));
                 }
-
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -167,25 +130,17 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input) {
             String name = input.ask("Enter the name of the item: ");
             String desc = input.ask("Enter the description of the item: ");
-            Connection connection = getConnection();
-            try {
+            try (Connection connection = getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO items (name, description) VALUES (?, ?)");
                 preparedStatement.setString(1, name);
                 preparedStatement.setString(2, desc);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
-            tracker.add(new Item(name, desc));
         }
     }
 
@@ -196,10 +151,9 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input) {
             String id = input.ask("Enter the ID of the item: ");
-            Connection connection = getConnection();
-            try {
+            try (Connection connection = getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM items WHERE id = ?;");
                 preparedStatement.setInt(1, Integer.parseInt(id));
                 if (preparedStatement.executeUpdate() == 0) {
@@ -220,10 +174,9 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input) {
             String id = input.ask("Enter the ID of the item: ");
-            Connection connection = getConnection();
-            try {
+            try (Connection connection = getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM items WHERE id = ?;");
                 preparedStatement.setInt(1, Integer.parseInt(id));
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -249,10 +202,9 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
-            Connection connection = getConnection();
+        public void execute(Input input) {
             String name = input.ask("Enter the name of the item: ");
-            try {
+            try (Connection connection = getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM items WHERE name LIKE ?;");
                 preparedStatement.setString(1, name);
                 ResultSet resultSet = preparedStatement.executeQuery();

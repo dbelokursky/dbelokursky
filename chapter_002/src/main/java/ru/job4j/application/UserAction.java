@@ -10,5 +10,5 @@ public interface UserAction {
 
     String info();
 
-    void execute(Input input, Tracker tracker);
+    void execute(Input input);
 }
