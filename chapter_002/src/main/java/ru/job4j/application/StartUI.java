@@ -50,7 +50,6 @@ public class StartUI {
             Connection connection = DriverManager.getConnection(properties.getProperty("url"),
                     properties.getProperty("username"),
                     properties.getProperty("password"));
-            Statement statement = null;
             ScriptRunner scriptRunner = new ScriptRunner(connection);
             Reader reader = new BufferedReader(new FileReader(pathToSqlFile));
             scriptRunner.runScript(reader);
