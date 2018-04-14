@@ -6,8 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,8 +34,6 @@ public class Parser extends TimerTask {
 
     private static final String BASE_URL = "http://www.sql.ru/forum/job-offers/";
 
-    private static final String PATH = "./chapter_007/src/main/java/ru/job4j/parser/resources/";
-
     private static final Logger LOGGER = Logger.getLogger("Parser.class");
 
     private List<String> urls = new ArrayList<>();
@@ -44,11 +42,11 @@ public class Parser extends TimerTask {
 
     @Override
     public void run() {
-        org.apache.log4j.PropertyConfigurator.configure(PATH + "log4j.properties");
+        org.apache.log4j.PropertyConfigurator.configure(ClassLoader.getSystemResource("log4j.properties"));
         Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream(PATH + "parser.properties")) {
-            properties.load(fileInputStream);
-        } catch (IOException e) {
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("parser.properties")) {
+            properties.load(inputStream);
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         try {

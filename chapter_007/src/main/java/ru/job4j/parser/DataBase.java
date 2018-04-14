@@ -14,16 +14,14 @@ import java.util.Properties;
  */
 public class DataBase {
 
-    private static final String PATH = "./chapter_007/src/main/java/ru/job4j/parser/resources/";
-
     private static final Logger LOGGER = Logger.getLogger("DataBase.class");
 
     private Connection connection;
 
     protected Connection getConnection() {
         Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream(PATH + "parser.properties")) {
-            properties.load(fileInputStream);
+        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("parser.properties")) {
+            properties.load(inputStream);
             connection = DriverManager.getConnection(
                     properties.getProperty("url"),
                     properties.getProperty("username"),
@@ -36,13 +34,13 @@ public class DataBase {
 
     protected void executeInitSql() {
         PrintStream stdOut = System.out;
-        try (PrintStream ps = new PrintStream(new File(PATH + "init.sql.log"))) {
+        try (PrintStream ps = new PrintStream(new File(ClassLoader.getSystemResource("init.sql.log").getFile()))) {
             System.setOut(ps);
         } catch (FileNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
         }
         ScriptRunner scriptRunner = new ScriptRunner(connection);
-        try (Reader reader = new BufferedReader(new FileReader(PATH + "init.sql"))) {
+        try (Reader reader = new BufferedReader(new FileReader(ClassLoader.getSystemResource("init.sql").getFile()))) {
             scriptRunner.runScript(reader);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -65,11 +63,16 @@ public class DataBase {
         return firstLaunch;
     }
 
-    protected void insertRecord(Connection connection, String name, String url, Date date) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO joboffers (name, url, last_update_time) VALUES (?, ?, ?) ON CONFLICT DO NOTHING");
-        ps.setString(1, name);
-        ps.setString(2, url);
-        ps.setTimestamp(3, new Timestamp(date.getTime()));
-        ps.executeUpdate();
+    protected void insertRecord(Connection connection, String name, String url, Date date) {
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("INSERT INTO joboffers (name, url, last_update_time) VALUES (?, ?, ?) ON CONFLICT DO NOTHING");
+            ps.setString(1, name);
+            ps.setString(2, url);
+            ps.setTimestamp(3, new Timestamp(date.getTime()));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 }
