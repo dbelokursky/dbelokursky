@@ -1,10 +1,14 @@
 package ru.job4j.crud;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import java.io.FileInputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -17,6 +21,25 @@ public class UserStore {
 
     private static final UserStore USER_STORE = new UserStore();
 
+    private static BasicDataSource dataSource;
+
+    static {
+        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/WEB-INF/resources/log4j.properties");
+        Properties properties = new Properties();
+        try (FileInputStream inputStream = new FileInputStream("/opt/tomcat/webapps/it/WEB-INF/resources/db.properties")) {
+            properties.load(inputStream);
+            dataSource = new BasicDataSource();
+            dataSource.setDriverClassName(properties.getProperty("driverClassName"));
+            dataSource.setUrl(properties.getProperty("url"));
+            dataSource.setUsername(properties.getProperty("username"));
+            dataSource.setPassword(properties.getProperty("password"));
+            dataSource.setMinIdle(Integer.parseInt(properties.getProperty("minIdle")));
+            dataSource.setMaxIdle(Integer.parseInt(properties.getProperty("maxIdle")));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
     private UserStore() {
     }
 
@@ -24,28 +47,14 @@ public class UserStore {
         return USER_STORE;
     }
 
-    protected Connection getConnection(HttpServlet servlet) {
-        org.apache.log4j.PropertyConfigurator.configure(servlet.getServletContext().getRealPath("/WEB-INF/resources/log4j.properties"));
-        Properties properties = new Properties();
-        Connection connection = null;
-        try (FileInputStream fileInputStream = new FileInputStream(servlet.getServletContext().getRealPath("/WEB-INF/resources/db.properties"))) {
-            properties.load(fileInputStream);
-            Class.forName(properties.getProperty("driverClassName"));
-            connection = DriverManager.getConnection(
-                    properties.getProperty("url"),
-                    properties.getProperty("username"),
-                    properties.getProperty("password"));
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return connection;
+    protected BasicDataSource getDataSource(HttpServlet servlet) {
+        return dataSource;
     }
 
-    protected boolean addUser(User user, HttpServlet servlet) {
+    protected boolean addUser(User user) {
         boolean result = false;
-        try (Connection connection = getConnection(servlet)) {
-            String addUserQuery = "INSERT INTO user_store(name, login, email, create_date) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(addUserQuery);
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO user_store(name, login, email, create_date) VALUES (?, ?, ?, ?)");
             ps.setString(1, user.getName());
             ps.setString(2, user.getLogin());
             ps.setString(3, user.getEmail());
@@ -58,9 +67,9 @@ public class UserStore {
         return result;
     }
 
-    protected boolean editUser(int userId, User newUser, HttpServlet servlet) {
+    protected boolean editUser(int userId, User newUser) {
         boolean result = false;
-        try (Connection connection = getConnection(servlet)) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("UPDATE user_store SET name = ?, login = ?, email = ? WHERE id = ?");
             ps.setString(1, newUser.getName());
             ps.setString(2, newUser.getLogin());
@@ -73,10 +82,10 @@ public class UserStore {
         return result;
     }
 
-    protected String getUser(int userId, HttpServlet servlet) {
+    protected String getUser(int userId) {
         StringBuilder sb = new StringBuilder();
-        try (Connection connection = getConnection(servlet)) {
-            PreparedStatement ps = connection.prepareStatement("SELECT (name, login, email) FROM user_store WHERE id = ?");
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM user_store WHERE id = ?");
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -96,9 +105,9 @@ public class UserStore {
         return sb.toString();
     }
 
-    protected boolean removeUser(int userId, HttpServlet servlet) {
+    protected boolean removeUser(int userId) {
         boolean result = false;
-        try (Connection connection = getConnection(servlet)) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM user_store WHERE id = ?");
             ps.setInt(1, userId);
             result = ps.execute();

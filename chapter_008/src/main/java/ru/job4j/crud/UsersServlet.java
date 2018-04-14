@@ -23,7 +23,7 @@ public class UsersServlet extends HttpServlet {
         resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
             int userId = Integer.parseInt(req.getParameter("userId"));
-            writer.append(users.getUser(userId, this));
+            writer.append(users.getUser(userId));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -36,7 +36,7 @@ public class UsersServlet extends HttpServlet {
         String email = req.getParameter("email");
         int userId = Integer.parseInt(req.getParameter("userId"));
         User user = new User(name, login, email);
-        users.editUser(userId, user, this);
+        users.editUser(userId, user);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class UsersServlet extends HttpServlet {
         String login = req.getParameter("login");
         String email = req.getParameter("email");
         User user = new User(name, login, email);
-        users.addUser(user, this);
+        users.addUser(user);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         int userId = Integer.parseInt(req.getParameter("userId"));
-        users.removeUser(userId, this);
+        users.removeUser(userId);
     }
 }
