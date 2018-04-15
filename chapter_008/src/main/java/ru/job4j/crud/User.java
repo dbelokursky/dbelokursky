@@ -8,6 +8,8 @@ import java.sql.Timestamp;
  */
 public class User {
 
+    private int id;
+
     private String name;
 
     private String login;
@@ -21,6 +23,18 @@ public class User {
         this.login = login;
         this.email = email;
         this.createDate = new Timestamp(System.currentTimeMillis());
+    }
+
+    public User(int id, String name, String login, String email, Timestamp createDate) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -37,5 +51,15 @@ public class User {
 
     public Timestamp getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 }

@@ -16,14 +16,14 @@ public class UsersServlet extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger("UsersServlet.class");
 
-    private final UserStore users = UserStore.getInstance();
+    private final UserStore users = UserStore.INSTANCE;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
             int userId = Integer.parseInt(req.getParameter("userId"));
-            writer.append(users.getUser(userId));
+            writer.append(users.getUser(userId).toString());
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

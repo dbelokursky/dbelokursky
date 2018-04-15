@@ -3,23 +3,20 @@ package ru.job4j.crud;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServlet;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
  * @author Dmitry Belokursky
  * @since 08.04.18.
  */
-public class UserStore {
+public enum UserStore {
+
+    INSTANCE;
 
     private static final Logger LOGGER = Logger.getLogger("UserStore.class");
-
-    private static final UserStore USER_STORE = new UserStore();
 
     private static BasicDataSource dataSource;
 
@@ -38,17 +35,6 @@ public class UserStore {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
-    }
-
-    private UserStore() {
-    }
-
-    public static UserStore getInstance() {
-        return USER_STORE;
-    }
-
-    protected BasicDataSource getDataSource(HttpServlet servlet) {
-        return dataSource;
     }
 
     protected boolean addUser(User user) {
@@ -82,27 +68,24 @@ public class UserStore {
         return result;
     }
 
-    protected String getUser(int userId) {
-        StringBuilder sb = new StringBuilder();
+    protected User getUser(int userId) {
+        User user = null;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM user_store WHERE id = ?");
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                sb.append(rs.getInt("id"))
-                        .append(" ")
-                        .append(rs.getString("name"))
-                        .append(" ")
-                        .append(rs.getString("login"))
-                        .append(" ")
-                        .append(rs.getString("email"))
-                        .append(" ")
-                        .append(rs.getTimestamp("create_date"));
+                user = new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("login"),
+                        rs.getString("email"),
+                        rs.getTimestamp("create_date"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return sb.toString();
+        return user;
     }
 
     protected boolean removeUser(int userId) {
@@ -111,6 +94,20 @@ public class UserStore {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM user_store WHERE id = ?");
             ps.setInt(1, userId);
             result = ps.execute();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return result;
+    }
+
+    protected ArrayList<Integer> getAllUsersIds() {
+        ArrayList<Integer> result = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT id FROM user_store");
+            while (rs.next()) {
+                result.add(rs.getInt("id"));
+            }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }

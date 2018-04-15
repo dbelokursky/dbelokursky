@@ -21,4 +21,31 @@
         <servlet-name>UsersServlet</servlet-name>
         <url-pattern>/crud</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserCreate</servlet-name>
+        <servlet-class>ru.job4j.crud.UserCreate</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserCreate</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserEdit</servlet-name>
+        <servlet-class>ru.job4j.crud.UserEdit</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserEdit</servlet-name>
+        <url-pattern>/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserList</servlet-name>
+        <servlet-class>ru.job4j.crud.UserList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserList</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
 </web-app>
