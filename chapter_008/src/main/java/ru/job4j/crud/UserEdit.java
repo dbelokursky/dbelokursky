@@ -3,8 +3,8 @@ package ru.job4j.crud;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author Dmitry Belokursky
@@ -16,60 +16,16 @@ public class UserEdit extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(
-                "<!DOCTYPE html>"
-                        + "<html lang='ru'>"
-                        + "    <head>"
-                        + "        <meta charset='utf-8'>"
-                        + "        <title>Edit user</title>"
-                        + "        <a href='/it/list'>Users list</a>"
-                        + "        <h1>Edit user</h1>"
-                        + "        <table border=1 bordercolor=black cellpadding=5>"
-                        + "        <tr>"
-                        + "        <th>ID</th>"
-                        + "        <th>Name</th>"
-                        + "        <th>Login</th>"
-                        + "        <th>Email</th>"
-                        + "        <th>Edit</th>"
-                        + "        </tr>"
-                        +          printIntoTable(userStore.getUser(Integer.parseInt(req.getParameter("userId"))))
-                        + "        </table>"
-                        + "    </head>"
-                        + "    <body>"
-                        + "    </body>"
-                        + "</html>");
-        writer.flush();
+        resp.sendRedirect(String.format("%s/list.jsp", req.getContextPath()));
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        writer.append(
-                "<!DOCTYPE html>"
-                        + "<html lang='ru'>"
-                        + "    <head>"
-                        + "        <meta charset='utf-8'>"
-                        + "        <title>Edit user</title>"
-                        + "        <h1>Edit user</h1>"
-                        + "        <a href='/it/list'>Users list</a>"
-                        + "        <table border=1 bordercolor=black cellpadding=5>"
-                        + "        <tr>"
-                        + "        <th>ID</th>"
-                        + "        <th>Name</th>"
-                        + "        <th>Login</th>"
-                        + "        <th>Email</th>"
-                        + "        <th>Edit</th>"
-                        + "        </tr>"
-                        + printIntoTable(userStore.getUser(Integer.parseInt(req.getParameter("userId"))))
-                        + "        </table>"
-                        + "    </head>"
-                        + "    <body>"
-                        + "    </body>"
-                        + "</html>");
-        writer.flush();
+        HttpSession session = req.getSession();
+        session.setAttribute("user", printIntoTable(userStore.getUser(Integer.parseInt(req.getParameter("userId")))));
         User user = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
         userStore.editUser(Integer.parseInt(req.getParameter("userId")), user);
+        resp.sendRedirect(String.format("%s/edit.jsp", req.getContextPath()));
     }
 
     public String printIntoTable(User user) {

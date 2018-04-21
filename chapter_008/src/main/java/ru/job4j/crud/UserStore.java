@@ -37,7 +37,7 @@ public enum UserStore {
         }
     }
 
-    protected boolean addUser(User user) {
+    public boolean addUser(User user) {
         boolean result = false;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO user_store(name, login, email, create_date) VALUES (?, ?, ?, ?)");
@@ -53,7 +53,7 @@ public enum UserStore {
         return result;
     }
 
-    protected boolean editUser(int userId, User newUser) {
+    public boolean editUser(int userId, User newUser) {
         boolean result = false;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("UPDATE user_store SET name = ?, login = ?, email = ? WHERE id = ?");
@@ -68,7 +68,7 @@ public enum UserStore {
         return result;
     }
 
-    protected User getUser(int userId) {
+    public User getUser(int userId) {
         User user = null;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM user_store WHERE id = ?");
@@ -88,7 +88,7 @@ public enum UserStore {
         return user;
     }
 
-    protected boolean removeUser(int userId) {
+    public boolean removeUser(int userId) {
         boolean result = false;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM user_store WHERE id = ?");
@@ -100,7 +100,7 @@ public enum UserStore {
         return result;
     }
 
-    protected ArrayList<Integer> getAllUsersIds() {
+    public ArrayList<Integer> getAllUsersIds() {
         ArrayList<Integer> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
