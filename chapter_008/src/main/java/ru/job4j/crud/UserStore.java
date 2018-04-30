@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -100,17 +101,23 @@ public enum UserStore {
         return result;
     }
 
-    public ArrayList<Integer> getAllUsersIds() {
-        ArrayList<Integer> result = new ArrayList<>();
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id FROM user_store");
+            ResultSet rs = statement.executeQuery("SELECT id, name, login, email, create_date FROM user_store");
             while (rs.next()) {
-                result.add(rs.getInt("id"));
+                User user = new User(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("login"),
+                        rs.getString("email"),
+                        rs.getTimestamp("create_date"));
+                allUsers.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return result;
+        return allUsers;
     }
 }

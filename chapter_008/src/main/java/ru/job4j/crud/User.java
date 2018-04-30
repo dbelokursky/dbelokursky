@@ -52,10 +52,4 @@ public class User {
     public Timestamp getCreateDate() {
         return createDate;
     }
-
-    @Override
-    public String toString() {
-        return "User{" + "name='" + name + ", login='" + login
-                + ", email='" + email + ", createDate=" + createDate + '}';
-    }
 }
