@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.apache.log4j.Logger;
+import ru.job4j.crud.models.User;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +35,9 @@ public class UsersServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
+        String password = req.getParameter("password");
         int userId = Integer.parseInt(req.getParameter("userId"));
-        User user = new User(name, login, email);
+        User user = new User(name, login, email, password);
         users.editUser(userId, user);
     }
 
@@ -44,7 +46,8 @@ public class UsersServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
-        User user = new User(name, login, email);
+        String password = req.getParameter("password");
+        User user = new User(name, login, email, password);
         users.addUser(user);
     }
 

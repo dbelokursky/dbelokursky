@@ -1,4 +1,4 @@
-package ru.job4j.crud;
+package ru.job4j.crud.models;
 
 import java.sql.Timestamp;
 
@@ -18,23 +18,43 @@ public class User {
 
     private Timestamp createDate;
 
-    public User(String name, String login, String email) {
+    private String password;
+
+    private Role role;
+
+    public User(String name, String login, String email, String password) {
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = new Timestamp(System.currentTimeMillis());
+        this.password = password;
+        this.role = new Role("USER");
     }
 
-    public User(int id, String name, String login, String email, Timestamp createDate) {
+    public User(String name, String login, String email, String password, String role) {
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.role = new Role(role);
+    }
+
+    public User(int id, String name, String login, String email, Timestamp createDate, String password, String role) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.email = email;
         this.createDate = createDate;
+        this.password = password;
+        this.role = new Role(role);
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {
@@ -47,6 +67,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public Timestamp getCreateDate() {

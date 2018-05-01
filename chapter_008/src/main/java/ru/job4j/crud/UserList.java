@@ -22,7 +22,11 @@ public class UserList extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             req.setAttribute("users", userStore.getAllUsers());
-            req.getRequestDispatcher("/WEB-INF/views/user/list.jsp").forward(req, resp);
+            if (req.getSession().getAttribute("role").equals("USER")) {
+                req.getRequestDispatcher("/WEB-INF/views/user/ListUserView.jsp").forward(req, resp);
+            } else if (req.getSession().getAttribute("role").equals("ADMIN")) {
+                req.getRequestDispatcher("/WEB-INF/views/admin/ListAdminView.jsp").forward(req, resp);
+            }
         } catch (ServletException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -31,6 +35,6 @@ public class UserList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         userStore.removeUser(Integer.parseInt(req.getParameter("userId")));
-        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/list", req.getContextPath()));
     }
 }

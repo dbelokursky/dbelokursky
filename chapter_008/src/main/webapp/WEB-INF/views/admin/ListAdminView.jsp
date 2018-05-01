@@ -17,17 +17,19 @@
         <th>Login</th>
         <th>Email</th>
         <th>Create date</th>
+        <th>Role</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <c:forEach items="${users}" var="user">
         <tr>
-            <form action=${pageContext.servletContext.contextPath} method='post'>
+            <form action=${pageContext.servletContext.contextPath}/list method='post'>
                 <td><input type='text' name='userId' value=${user.id} size=3 readonly></td>
                 <td>${user.name}</td>
                 <td>${user.login}</td>
                 <td>${user.email}</td>
                 <td>${user.createDate}</td>
+                <td>${user.role.name}</td>
                 <td><input type='submit' value='Edit' formaction=${pageContext.servletContext.contextPath}/edit></td>
                 <td><input type='submit' value='Delete' formaction=${pageContext.servletContext.contextPath}/list></td>
             </form>

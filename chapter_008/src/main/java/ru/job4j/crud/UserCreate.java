@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.apache.log4j.Logger;
+import ru.job4j.crud.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ public class UserCreate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            req.getRequestDispatcher("/WEB-INF/views/user/create.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/admin/CreateAdminView.jsp").forward(req, resp);
         } catch (ServletException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -29,10 +30,14 @@ public class UserCreate extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = new User(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+        User user = new User(
+                req.getParameter("name"),
+                req.getParameter("login"),
+                req.getParameter("email"),
+                req.getParameter("password"));
         userStore.addUser(user);
         try {
-            req.getRequestDispatcher("/WEB-INF/views/user/create.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/admin/CreateAdminView.jsp").forward(req, resp);
         } catch (ServletException e) {
             LOGGER.error(e.getMessage(), e);
         }
