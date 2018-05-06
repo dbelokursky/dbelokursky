@@ -19,11 +19,11 @@ public class UserEditTest {
 
     @Test
     public void checkEditUserViewRedirect() throws IOException {
-        UserStore userStore = UserStore.INSTANCE;
+        UserStore store = UserStore.INSTANCE;
         UserEdit userEdit = new UserEdit();
         User user = new User("editTest", "editTest", "editTest", "editTest");
-        userStore.addUser(user);
-        int id = userStore.isExists(user.getLogin(), user.getPassword()).getId();
+        store.addUser(user);
+        int id = store.isExists(user.getLogin(), user.getPassword()).getId();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
@@ -34,7 +34,7 @@ public class UserEditTest {
         when(request.getSession()).thenReturn(session);
         userEdit.doPost(request, response);
         verify(request).getRequestDispatcher("/WEB-INF/views/user/EditUserView.jsp");
-        userStore.removeUser(id);
+        store.removeUser(id);
     }
 
     @Test

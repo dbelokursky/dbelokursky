@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
  */
 public class UserListTest {
 
-    private static final UserStore userStore = UserStore.INSTANCE;
+    private static final UserStore USER_STORE = UserStore.INSTANCE;
 
     @Test
     public void checkUserListViewRedirect() throws IOException {
@@ -52,10 +52,10 @@ public class UserListTest {
     @Test
     public void removeUserTest() {
         User user = new User("test", "test", "test@test.com", "test");
-        userStore.addUser(user);
-        user = userStore.isExists(user.getLogin(), user.getPassword());
-        userStore.removeUser(user.getId());
-        User result = userStore.isExists(user.getLogin(), user.getPassword());
+        USER_STORE.addUser(user);
+        user = USER_STORE.isExists(user.getLogin(), user.getPassword());
+        USER_STORE.removeUser(user.getId());
+        User result = USER_STORE.isExists(user.getLogin(), user.getPassword());
         User expected = null;
         assertThat(result, is(expected));
     }
