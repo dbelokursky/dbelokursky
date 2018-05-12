@@ -51,7 +51,7 @@ public class UserListTest {
 
     @Test
     public void removeUserTest() {
-        User user = new User("test", "test", "test@test.com", "test");
+        User user = new User("test", "test", "test@test.com", "test", "test", "test");
         USER_STORE.addUser(user);
         user = USER_STORE.isExists(user.getLogin(), user.getPassword());
         USER_STORE.removeUser(user.getId());

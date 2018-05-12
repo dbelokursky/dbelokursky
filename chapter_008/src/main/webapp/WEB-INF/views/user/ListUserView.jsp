@@ -7,13 +7,12 @@
     <meta charset='utf-8'>
     <title>Users list</title>
     <h1>Users list</h1>
+    <link rel="stylesheet" href="resources/css/tables.css">
+    <link rel="stylesheet" href="resources/css/buttons.css">
 </head>
 <body>
 
 <table border=1 bordercolor=black cellpadding=5>
-    <form action=${pageContext.servletContext.contextPath}/edit method='post'>
-        <input type='submit' value='Edit my account'>
-    </form>
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -21,6 +20,8 @@
         <th>Email</th>
         <th>Create date</th>
         <th>Role</th>
+        <th>Country</th>
+        <th>City</th>
     </tr>
     <c:forEach items="${users}" var="user">
         <tr>
@@ -31,10 +32,16 @@
                 <td>${user.email}</td>
                 <td>${user.createDate}</td>
                 <td>${user.role.name}</td>
+                <td>${user.country}</td>
+                <td>${user.city}</td>
             </form>
         </tr>
     </c:forEach>
 </table>
+
+<form action=${pageContext.servletContext.contextPath}/edit method='post'>
+    <input type='submit' value='Edit my account' class="action-button shadow animate green">
+</form>
 </body>
 </html>
 

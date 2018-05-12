@@ -32,7 +32,7 @@ public class UserCreateTest {
     @Test
     public void createUserTest() {
         UserStore userStore = UserStore.INSTANCE;
-        User user = new User("createTest", "createTest", "createTest@mail.com", "createTest");
+        User user = new User("createTest", "createTest", "createTest@mail.com", "createTest", "createTest", "createTest");
         userStore.addUser(user);
         User result = userStore.isExists(user.getLogin(), user.getPassword());
         assertTrue(result != null);

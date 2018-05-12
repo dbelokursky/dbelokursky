@@ -7,6 +7,8 @@
     <meta charset='utf-8'>
     <title>Users list</title>
     <h1>Users list</h1>
+    <link rel="stylesheet" href="resources/css/tables.css">
+    <link rel="stylesheet" href="resources/css/buttons.css">
 </head>
 <body>
 
@@ -18,6 +20,8 @@
         <th>Email</th>
         <th>Create date</th>
         <th>Role</th>
+        <th>Country</th>
+        <th>City</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -30,8 +34,12 @@
                 <td>${user.email}</td>
                 <td>${user.createDate}</td>
                 <td>${user.role.name}</td>
-                <td><input type='submit' value='Edit' formaction=${pageContext.servletContext.contextPath}/edit></td>
-                <td><input type='submit' value='Delete' formaction=${pageContext.servletContext.contextPath}/list></td>
+                <td>${user.country}</td>
+                <td>${user.city}</td>
+                <td><input type='submit' value='Edit' class="action-button shadow animate green"
+                           formaction=${pageContext.servletContext.contextPath}/edit></td>
+                <td><input type='submit' value='Delete' class="action-button shadow animate red"
+                           formaction=${pageContext.servletContext.contextPath}/list></td>
             </form>
         </tr>
     </c:forEach>

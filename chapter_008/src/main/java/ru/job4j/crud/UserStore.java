@@ -6,9 +6,7 @@ import ru.job4j.crud.models.User;
 
 import java.io.FileInputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Dmitry Belokursky
@@ -23,9 +21,9 @@ public enum UserStore {
     private static BasicDataSource dataSource;
 
     static {
-        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/WEB-INF/resources/log4j.properties");
+        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/resources/log4j.properties");
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream("/opt/tomcat/webapps/it/WEB-INF/resources/db.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("/opt/tomcat/webapps/it/resources/db.properties")) {
             properties.load(inputStream);
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName(properties.getProperty("driverClassName"));
@@ -42,13 +40,15 @@ public enum UserStore {
     public boolean addUser(User user) {
         boolean result = false;
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO user_store(name, login, email, create_date, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO user_store(name, login, email, create_date, password, role, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, user.getName());
             ps.setString(2, user.getLogin());
             ps.setString(3, user.getEmail());
             ps.setTimestamp(4, user.getCreateDate());
             ps.setString(5, user.getPassword());
             ps.setString(6, user.getRole().getName());
+            ps.setString(7, user.getCountry());
+            ps.setString(8, user.getCity());
             ps.execute();
             result = true;
         } catch (SQLException e) {
@@ -60,13 +60,15 @@ public enum UserStore {
     public boolean editUser(int userId, User newUser) {
         boolean result = false;
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE user_store SET name = ?, login = ?, email = ?, password = ?, role = ? WHERE id = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE user_store SET name = ?, login = ?, email = ?, password = ?, role = ?, country = ?, city = ? WHERE id = ?");
             ps.setString(1, newUser.getName());
             ps.setString(2, newUser.getLogin());
             ps.setString(3, newUser.getEmail());
             ps.setString(4, newUser.getPassword());
             ps.setString(5, newUser.getRole().getName());
-            ps.setInt(6, userId);
+            ps.setString(6, newUser.getCountry());
+            ps.setString(7, newUser.getCity());
+            ps.setInt(8, userId);
             result = ps.execute();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -88,7 +90,9 @@ public enum UserStore {
                         rs.getString("email"),
                         rs.getTimestamp("create_date"),
                         rs.getString("password"),
-                        rs.getString("role"));
+                        rs.getString("role"),
+                        rs.getString("country"),
+                        rs.getString("city"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -112,7 +116,7 @@ public enum UserStore {
         List<User> allUsers = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id, name, login, email, create_date, password, role FROM user_store");
+            ResultSet rs = statement.executeQuery("SELECT id, name, login, email, create_date, password, role, country, city FROM user_store");
             while (rs.next()) {
                 User user = new User(
                         rs.getInt("id"),
@@ -121,7 +125,9 @@ public enum UserStore {
                         rs.getString("email"),
                         rs.getTimestamp("create_date"),
                         rs.getString("password"),
-                        rs.getString("role"));
+                        rs.getString("role"),
+                        rs.getString("country"),
+                        rs.getString("city"));
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -133,7 +139,7 @@ public enum UserStore {
     public User isExists(String login, String password) {
         User user = null;
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT id, name, login, email, password, create_date, role FROM user_store WHERE login = ? AND password = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT id, name, login, email, password, create_date, role, country, city FROM user_store WHERE login = ? AND password = ?");
             ps.setString(1, login);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
@@ -145,11 +151,47 @@ public enum UserStore {
                         rs.getString("email"),
                         rs.getTimestamp("create_date"),
                         rs.getString("password"),
-                        rs.getString("role"));
+                        rs.getString("role"),
+                        rs.getString("country"),
+                        rs.getString("city"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
         return user;
+    }
+
+    public Map<Integer, String> getSimilarCountries(String query) {
+        Map<Integer, String> result = new HashMap<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("SELECT country_id, name FROM country WHERE lower(name) LIKE ?");
+            StringBuilder sb = new StringBuilder();
+            sb.append("%").append(query.toLowerCase()).append("%");
+            ps.setString(1, sb.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getInt("country_id"), rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return result;
+    }
+
+    public List<String> getSimilarCities(String query) {
+        List<String> result = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("SELECT name FROM city WHERE lower(name) LIKE  ?");
+            StringBuilder sb = new StringBuilder();
+            sb.append("%").append(query.toLowerCase()).append("%");
+            ps.setString(1, sb.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return result;
     }
 }

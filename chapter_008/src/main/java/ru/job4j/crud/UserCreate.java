@@ -30,11 +30,15 @@ public class UserCreate extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         User user = new User(
                 req.getParameter("name"),
                 req.getParameter("login"),
                 req.getParameter("email"),
-                req.getParameter("password"));
+                req.getParameter("password"),
+                req.getParameter("country"),
+                req.getParameter("city"));
         userStore.addUser(user);
         try {
             req.getRequestDispatcher("/WEB-INF/views/admin/CreateAdminView.jsp").forward(req, resp);

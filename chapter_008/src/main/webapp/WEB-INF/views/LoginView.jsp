@@ -1,17 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/LoginInputValidation.js"></script>
 
 <html>
 <head>
     <title>Log in</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="resources/css/form.css">
 </head>
 <body>
-<form action=${pageContext.servletContext.contextPath}/login method="post">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="login" size="15">
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" size="15">
-    <input type="submit">
+<h1>Please login</h1>
+<div class="form">
+    <form onsubmit="return checkForm(this)" action=${pageContext.servletContext.contextPath}/login method="post">
+        <input name="login" type="text" placeholder="Login"/>
+        <input name="password" type="password" placeholder="Password"/>
+        <input type="submit"/>
 </form>
+</div>
 </body>
 </html>
