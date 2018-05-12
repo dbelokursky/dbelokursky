@@ -3,24 +3,6 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-    <servlet>
-        <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>ru.job4j.EchoServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>ru.job4j.crud.UsersServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/crud</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>UserCreate</servlet-name>
@@ -58,12 +40,30 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>ru.job4j.crud.AuthorizationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <servlet>
+        <servlet-name>Countries</servlet-name>
+        <servlet-class>ru.job4j.crud.Countries</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Countries</servlet-name>
+        <url-pattern>/countries</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Cities</servlet-name>
+        <servlet-class>ru.job4j.crud.Cities</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Cities</servlet-name>
+        <url-pattern>/cities</url-pattern>
+    </servlet-mapping>
+
+    <!--<filter>-->
+    <!--<filter-name>AuthorizationFilter</filter-name>-->
+    <!--<filter-class>ru.job4j.crud.AuthorizationFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+    <!--<filter-name>AuthorizationFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 </web-app>
