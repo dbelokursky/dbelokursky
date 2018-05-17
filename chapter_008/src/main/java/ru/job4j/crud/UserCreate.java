@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.apache.log4j.Logger;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
 import javax.servlet.ServletException;
@@ -37,6 +38,7 @@ public class UserCreate extends HttpServlet {
         user.setLogin(req.getParameter("login"));
         user.setEmail(req.getParameter("email"));
         user.setPassword(req.getParameter("password"));
+        user.setRole(new Role(req.getParameter("role")));
         user.setCountry(req.getParameter("country"));
         user.setCity(req.getParameter("city"));
         userStore.addUser(user);

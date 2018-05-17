@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.sql.*;
 import java.util.*;
 
@@ -23,10 +23,9 @@ public enum UserStore {
 
     static {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream loggerProperties = classLoader.getResourceAsStream("resources/log4j.properties");
-        org.apache.log4j.PropertyConfigurator.configure(loggerProperties);
+        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/resources/log4j.properties");
         Properties properties = new Properties();
-        try (InputStream dbProperties = classLoader.getResourceAsStream("resources/db.properties")) {
+        try (FileInputStream dbProperties = new FileInputStream("/opt/tomcat/webapps/it/resources/db.properties")) {
             properties.load(dbProperties);
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName(properties.getProperty("driverClassName"));

@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.junit.Test;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
 import javax.servlet.RequestDispatcher;
@@ -56,6 +57,7 @@ public class UserListTest {
         user.setLogin("remove");
         user.setPassword("remove");
         user.setEmail("remove@");
+        user.setRole(new Role("USER"));
         user.setCountry("remove");
         user.setCity("remove");
         USER_STORE.addUser(user);

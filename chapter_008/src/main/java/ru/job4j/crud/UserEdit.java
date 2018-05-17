@@ -56,7 +56,8 @@ public class UserEdit extends HttpServlet {
                 user.setLogin(req.getParameter("login"));
                 user.setEmail(req.getParameter("email"));
                 user.setPassword(req.getParameter("password"));
-                user.setPassword(req.getParameter("country"));
+                user.setRole(new Role(req.getParameter("role")));
+                user.setCountry(req.getParameter("country"));
                 user.setCity(req.getParameter("city"));
                 userStore.editUser(userId, user);
                 req.getRequestDispatcher("/WEB-INF/views/user/EditUserView.jsp").forward(req, resp);

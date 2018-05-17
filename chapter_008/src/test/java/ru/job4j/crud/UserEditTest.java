@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.junit.Test;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
 import javax.servlet.RequestDispatcher;
@@ -26,6 +27,7 @@ public class UserEditTest {
         user.setLogin("editTestAdmin");
         user.setPassword("editTestAdmin");
         user.setEmail("editTestAdmin@");
+        user.setRole(new Role("USER"));
         user.setCountry("editTestAdmin");
         user.setCity("editTestAdmin");
         store.addUser(user);
@@ -52,6 +54,7 @@ public class UserEditTest {
         user.setLogin("editTestAdmin");
         user.setPassword("editTestAdmin");
         user.setEmail("editTestAdmin@");
+        user.setRole(new Role("ADMIN"));
         user.setCountry("editTestAdmin");
         user.setCity("editTestAdmin");
         userStore.addUser(user);

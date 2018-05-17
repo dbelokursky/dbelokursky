@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.junit.Test;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +25,11 @@ public class UserLoginTest {
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
         User user = new User();
-        user.setName("login");
-        user.setLogin("login");
+        user.setName("login_redirect");
+        user.setLogin("login_name");
         user.setPassword("login");
         user.setEmail("login@");
+        user.setRole(new Role("USER"));
         user.setCountry("login");
         user.setCity("login");
         userStore.addUser(user);
@@ -37,7 +39,7 @@ public class UserLoginTest {
         when(request.getSession()).thenReturn(session);
         when(request.getContextPath()).thenReturn("http://localhost:8080/it");
         userLogin.doPost(request, response);
-        verify(response).sendRedirect("http://localhost:8080/it/list");
+        verify(response).sendRedirect("http://localhost:8080/it/login");
         userStore.removeUser(id);
     }
 
