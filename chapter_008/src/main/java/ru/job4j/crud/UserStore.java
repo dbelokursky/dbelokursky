@@ -2,9 +2,10 @@ package ru.job4j.crud;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.log4j.Logger;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.*;
 
@@ -21,10 +22,12 @@ public enum UserStore {
     private static BasicDataSource dataSource;
 
     static {
-        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/resources/log4j.properties");
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream loggerProperties = classLoader.getResourceAsStream("resources/log4j.properties");
+        org.apache.log4j.PropertyConfigurator.configure(loggerProperties);
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream("/opt/tomcat/webapps/it/resources/db.properties")) {
-            properties.load(inputStream);
+        try (InputStream dbProperties = classLoader.getResourceAsStream("resources/db.properties")) {
+            properties.load(dbProperties);
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName(properties.getProperty("driverClassName"));
             dataSource.setUrl(properties.getProperty("url"));
@@ -83,16 +86,16 @@ public enum UserStore {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                user = new User(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("login"),
-                        rs.getString("email"),
-                        rs.getTimestamp("create_date"),
-                        rs.getString("password"),
-                        rs.getString("role"),
-                        rs.getString("country"),
-                        rs.getString("city"));
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setLogin(rs.getString("login"));
+                user.setEmail(rs.getString("email"));
+                user.setCreateDate(rs.getTimestamp("create_date"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(new Role(rs.getString("role")));
+                user.setCountry(rs.getString("country"));
+                user.setCity(rs.getString("city"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -118,16 +121,16 @@ public enum UserStore {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT id, name, login, email, create_date, password, role, country, city FROM user_store");
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("login"),
-                        rs.getString("email"),
-                        rs.getTimestamp("create_date"),
-                        rs.getString("password"),
-                        rs.getString("role"),
-                        rs.getString("country"),
-                        rs.getString("city"));
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setLogin(rs.getString("login"));
+                user.setEmail(rs.getString("email"));
+                user.setCreateDate(rs.getTimestamp("create_date"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(new Role(rs.getString("role")));
+                user.setCountry(rs.getString("country"));
+                user.setCity(rs.getString("city"));
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -144,16 +147,16 @@ public enum UserStore {
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                user = new User(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("login"),
-                        rs.getString("email"),
-                        rs.getTimestamp("create_date"),
-                        rs.getString("password"),
-                        rs.getString("role"),
-                        rs.getString("country"),
-                        rs.getString("city"));
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setLogin(rs.getString("login"));
+                user.setEmail(rs.getString("email"));
+                user.setCreateDate(rs.getTimestamp("create_date"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(new Role(rs.getString("role")));
+                user.setCountry(rs.getString("country"));
+                user.setCity(rs.getString("city"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

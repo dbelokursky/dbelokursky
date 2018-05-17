@@ -1,6 +1,7 @@
 package ru.job4j.crud;
 
 import org.apache.log4j.Logger;
+import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
 import javax.servlet.ServletException;
@@ -37,26 +38,26 @@ public class UserEdit extends HttpServlet {
             if (userRole.equals("ADMIN")) {
                 int userId = Integer.parseInt(req.getParameter("userId"));
                 req.setAttribute("user", userStore.getUser(userId));
-                User user = new User(
-                        req.getParameter("name"),
-                        req.getParameter("login"),
-                        req.getParameter("email"),
-                        req.getParameter("password"),
-                        req.getParameter("role"),
-                        req.getParameter("country"),
-                        req.getParameter("city"));
+                User user = new User();
+                user.setName(req.getParameter("name"));
+                user.setLogin(req.getParameter("login"));
+                user.setEmail(req.getParameter("email"));
+                user.setPassword(req.getParameter("password"));
+                user.setRole(new Role(req.getParameter("role")));
+                user.setCountry(req.getParameter("country"));
+                user.setCity(req.getParameter("city"));
                 userStore.editUser(userId, user);
                 req.getRequestDispatcher("/WEB-INF/views/admin/EditAdminView.jsp").forward(req, resp);
             } else if (userRole.equals("USER")) {
                 int userId = Integer.parseInt(String.valueOf(req.getSession().getAttribute("id")));
                 req.setAttribute("user", userStore.getUser(userId));
-                User user = new User(
-                        req.getParameter("name"),
-                        req.getParameter("login"),
-                        req.getParameter("email"),
-                        req.getParameter("password"),
-                        req.getParameter("country"),
-                        req.getParameter("city"));
+                User user = new User();
+                user.setName(req.getParameter("name"));
+                user.setLogin(req.getParameter("login"));
+                user.setEmail(req.getParameter("email"));
+                user.setPassword(req.getParameter("password"));
+                user.setPassword(req.getParameter("country"));
+                user.setCity(req.getParameter("city"));
                 userStore.editUser(userId, user);
                 req.getRequestDispatcher("/WEB-INF/views/user/EditUserView.jsp").forward(req, resp);
             }

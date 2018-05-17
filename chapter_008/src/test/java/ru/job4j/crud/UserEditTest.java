@@ -21,7 +21,13 @@ public class UserEditTest {
     public void checkEditUserViewRedirect() throws IOException {
         UserStore store = UserStore.INSTANCE;
         UserEdit userEdit = new UserEdit();
-        User user = new User("editTest", "editTest", "editTest", "editTest", "editTest", "editTest");
+        User user = new User();
+        user.setName("editTestAdmin");
+        user.setLogin("editTestAdmin");
+        user.setPassword("editTestAdmin");
+        user.setEmail("editTestAdmin@");
+        user.setCountry("editTestAdmin");
+        user.setCity("editTestAdmin");
         store.addUser(user);
         int id = store.isExists(user.getLogin(), user.getPassword()).getId();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -41,7 +47,13 @@ public class UserEditTest {
     public void checkEditAdminViewRedirect() throws IOException {
         UserStore userStore = UserStore.INSTANCE;
         UserEdit userEdit = new UserEdit();
-        User user = new User("editTestAdmin", "editTestAdmin", "editTestAdmin", "editTestAdmin", "editTestAdmin", "editTestAdmin");
+        User user = new User();
+        user.setName("editTestAdmin");
+        user.setLogin("editTestAdmin");
+        user.setPassword("editTestAdmin");
+        user.setEmail("editTestAdmin@");
+        user.setCountry("editTestAdmin");
+        user.setCity("editTestAdmin");
         userStore.addUser(user);
         int id = userStore.isExists(user.getLogin(), user.getPassword()).getId();
         HttpServletRequest request = mock(HttpServletRequest.class);

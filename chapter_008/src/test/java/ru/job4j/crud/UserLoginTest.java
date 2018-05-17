@@ -23,7 +23,13 @@ public class UserLoginTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         HttpSession session = mock(HttpSession.class);
-        User user = new User("loginTest", "loginTest", "loginTest", "loginTest", "loginTest", "loginTest");
+        User user = new User();
+        user.setName("login");
+        user.setLogin("login");
+        user.setPassword("login");
+        user.setEmail("login@");
+        user.setCountry("login");
+        user.setCity("login");
         userStore.addUser(user);
         int id = userStore.isExists(user.getLogin(), user.getPassword()).getId();
         when(request.getParameter("login")).thenReturn(user.getName());
