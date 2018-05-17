@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface MusicTypeDao {
 
-    boolean add(MusicType musicType);
+    void add(MusicType musicType);
 
-    boolean update(int id, MusicType musicType);
+    void update(int id, MusicType musicType);
 
-    boolean delete(int id);
+    void delete(int id);
 
     MusicType findById(int id);
 

@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface AddressDao {
 
-    boolean add(Address address);
+    void add(Address address);
 
-    boolean update(int id, Address address);
+    void update(int id, Address address);
 
-    boolean delete(int id);
+    void delete(int id);
 
     Address findById(int id);
 

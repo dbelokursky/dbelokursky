@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface RoleDao {
 
-    boolean add(Role role);
+    void add(Role role);
 
-    boolean update(int id, Role role);
+    void update(int id, Role role);
 
-    boolean delete(int id);
+    void delete(int id);
 
     Role findById(int id);
 
