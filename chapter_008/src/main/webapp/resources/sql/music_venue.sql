@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS music_type (
 );
 
 CREATE TABLE IF NOT EXISTS address (
-  id     SERIAL PRIMARY KEY,
-  contry VARCHAR(20),
-  city   VARCHAR(20),
-  street VARCHAR(20),
-  unit   VARCHAR(20),
-  zip    INTEGER
+  id      SERIAL PRIMARY KEY,
+  country VARCHAR(20),
+  city    VARCHAR(20),
+  street  VARCHAR(20),
+  unit    VARCHAR(20),
+  zip     INTEGER
 );
 
 

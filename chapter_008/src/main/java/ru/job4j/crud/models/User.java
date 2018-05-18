@@ -21,7 +21,9 @@ public class User {
     private String city;
 
     private Timestamp createDate;
+
     private String password;
+
     private Role role;
 
     public void setId(int id) {
