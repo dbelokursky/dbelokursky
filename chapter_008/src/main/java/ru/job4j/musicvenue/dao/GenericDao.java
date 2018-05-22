@@ -1,4 +1,4 @@
-package ru.job4j.musicvenue;
+package ru.job4j.musicvenue.dao;
 
 import ru.job4j.musicvenue.models.BaseEntity;
 

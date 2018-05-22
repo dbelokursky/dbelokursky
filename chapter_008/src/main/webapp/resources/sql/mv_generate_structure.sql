@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS role (
 );
 
 CREATE TABLE IF NOT EXISTS address (
-  id      INTEGER PRIMARY KEY,
+  id      SERIAL PRIMARY KEY,
   country VARCHAR(20) NOT NULL,
   city    VARCHAR(20) NOT NULL,
   street  VARCHAR(20) NOT NULL,
@@ -21,17 +21,18 @@ CREATE TABLE mv_user (
   role_id    INTEGER REFERENCES role (id)    NOT NULL,
   address_id INTEGER REFERENCES address (id) NOT NULL UNIQUE
 );
+
 CREATE TABLE IF NOT EXISTS music_type (
   id   SERIAL PRIMARY KEY,
   name VARCHAR(20) NOT NULL UNIQUE
 );
-
 
 CREATE TABLE IF NOT EXISTS user_music (
   user_id  INTEGER REFERENCES mv_user (id)    NOT NULL,
   music_id INTEGER REFERENCES music_type (id) NOT NULL,
   UNIQUE (user_id, music_id)
 );
+
 
 
 

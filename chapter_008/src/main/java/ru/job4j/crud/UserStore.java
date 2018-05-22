@@ -22,7 +22,6 @@ public enum UserStore {
     private static BasicDataSource dataSource;
 
     static {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/resources/log4j.properties");
         Properties properties = new Properties();
         try (FileInputStream dbProperties = new FileInputStream("/opt/tomcat/webapps/it/resources/db.properties")) {

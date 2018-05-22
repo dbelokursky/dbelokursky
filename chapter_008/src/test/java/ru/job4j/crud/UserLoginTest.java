@@ -26,8 +26,8 @@ public class UserLoginTest {
         HttpSession session = mock(HttpSession.class);
         User user = new User();
         user.setName("login_redirect");
-        user.setLogin("login_name");
-        user.setPassword("login");
+        user.setLogin("1");
+        user.setPassword("1");
         user.setEmail("login@");
         user.setRole(new Role("USER"));
         user.setCountry("login");

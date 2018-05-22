@@ -16,8 +16,18 @@ public class Address extends BaseEntity {
 
     private int zip;
 
-    public String getCountry() {
+    public Address() {
+    }
 
+    public Address(String country, String city, String street, String unit, int zip) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.unit = unit;
+        this.zip = zip;
+    }
+
+    public String getCountry() {
         return country;
     }
 
@@ -55,5 +65,29 @@ public class Address extends BaseEntity {
 
     public void setZip(int zip) {
         this.zip = zip;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (getZip() != address.getZip()) return false;
+        if (!getCountry().equals(address.getCountry())) return false;
+        if (!getCity().equals(address.getCity())) return false;
+        if (!getStreet().equals(address.getStreet())) return false;
+        return getUnit().equals(address.getUnit());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCountry().hashCode();
+        result = 31 * result + getCity().hashCode();
+        result = 31 * result + getStreet().hashCode();
+        result = 31 * result + getUnit().hashCode();
+        result = 31 * result + getZip();
+        return result;
     }
 }

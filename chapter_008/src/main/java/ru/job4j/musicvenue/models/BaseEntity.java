@@ -1,6 +1,7 @@
 package ru.job4j.musicvenue.models;
 
-public class BaseEntity {
+public abstract class BaseEntity {
+
     private int id;
 
     public int getId() {
