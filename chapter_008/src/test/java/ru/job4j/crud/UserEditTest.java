@@ -68,7 +68,7 @@ public class UserEditTest {
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
         when(request.getSession()).thenReturn(session);
         userEdit.doPost(request, response);
-        verify(request).getRequestDispatcher("/WEB-INF/views/admin/EditAdminView.jsp");
+        verify(request).getRequestDispatcher("/WEB-INF/views/admin/Edit.jsp");
         userStore.removeUser(id);
     }
 }

@@ -47,7 +47,7 @@ public class UserEdit extends HttpServlet {
                 user.setCountry(req.getParameter("country"));
                 user.setCity(req.getParameter("city"));
                 userStore.editUser(userId, user);
-                req.getRequestDispatcher("/WEB-INF/views/admin/EditAdminView.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/admin/Edit.jsp").forward(req, resp);
             } else if (userRole.equals("USER")) {
                 int userId = Integer.parseInt(String.valueOf(req.getSession().getAttribute("id")));
                 req.setAttribute("user", userStore.getUser(userId));

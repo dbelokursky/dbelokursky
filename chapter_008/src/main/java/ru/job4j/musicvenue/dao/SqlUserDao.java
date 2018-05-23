@@ -65,14 +65,19 @@ public class SqlUserDao implements UserDao {
 
     @Override
     public User findById(int id) {
-        User user = new User();
+        User user = null;
         try (Connection connection = daoFactory.getConnection()) {
-            String sql = "SELECT (id, login, password, role_id, address_id) FROM mv_user WHERE id = ?";
+            String sql = "SELECT id, login, password, role_id, address_id FROM mv_user WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                user = createUser(user, resultSet);
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRoleId(resultSet.getInt("role_id"));
+                user.setAddressId(resultSet.getInt("address_id"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -84,12 +89,16 @@ public class SqlUserDao implements UserDao {
     public List<User> findAll() {
         List<User> allUsers = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection()) {
-            String sql = "SELECT (id, login, password, role_id, address_id) FROM mv_user";
+            String sql = "SELECT id, login, password, role_id, address_id FROM mv_user";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
-                user = createUser(user, resultSet);
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRoleId(resultSet.getInt("role_id"));
+                user.setAddressId(resultSet.getInt("address_id"));
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -107,7 +116,12 @@ public class SqlUserDao implements UserDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                user = createUser(user, resultSet);
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setRoleId(resultSet.getInt("role_id"));
+                user.setAddressId(resultSet.getInt("address_id"));
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

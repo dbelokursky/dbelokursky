@@ -1,4 +1,4 @@
-package ru.job4j.musicvenue;
+package ru.job4j.musicvenue.controllers;
 
 import ru.job4j.musicvenue.dao.SqlUserDao;
 import ru.job4j.musicvenue.models.User;
@@ -28,9 +28,7 @@ public class Login extends HttpServlet {
         User user = userDao.isExist(login, password);
         if (user != null) {
             HttpSession session = req.getSession();
-            session.setAttribute("id", user.getId());
-            session.setAttribute("login", user.getLogin());
-            session.setAttribute("role_id", user.getRoleId());
+            session.setAttribute("user", user);
             resp.sendRedirect(String.format("%s/list", req.getContextPath()));
         } else {
             resp.sendRedirect(String.format("%s/login", req.getContextPath()));
