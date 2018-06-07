@@ -69,15 +69,27 @@ public class Address extends BaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Address address = (Address) o;
 
-        if (getZip() != address.getZip()) return false;
-        if (!getCountry().equals(address.getCountry())) return false;
-        if (!getCity().equals(address.getCity())) return false;
-        if (!getStreet().equals(address.getStreet())) return false;
+        if (getZip() != address.getZip()) {
+            return false;
+        }
+        if (!getCountry().equals(address.getCountry())) {
+            return false;
+        }
+        if (!getCity().equals(address.getCity())) {
+            return false;
+        }
+        if (!getStreet().equals(address.getStreet())) {
+            return false;
+        }
         return getUnit().equals(address.getUnit());
     }
 

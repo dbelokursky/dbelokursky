@@ -58,14 +58,25 @@ public class User extends BaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 
-        if (getRoleId() != user.getRoleId()) return false;
-        if (getAddressId() != user.getAddressId()) return false;
-        if (!getLogin().equals(user.getLogin())) return false;
+        if (getRoleId() != user.getRoleId()) {
+            return false;
+        }
+        if (getAddressId() != user.getAddressId()) {
+            return false;
+        }
+        if (!getLogin().equals(user.getLogin())) {
+            return false;
+        }
         return getPassword().equals(user.getPassword());
     }
 

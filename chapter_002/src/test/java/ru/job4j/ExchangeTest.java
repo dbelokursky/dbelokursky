@@ -15,10 +15,14 @@ public class ExchangeTest {
     @Test
     public void getExchangeWaysTest() {
         Exchange ex = new Exchange();
-        String expected = "1 1 1 1 1 1 1 1 1 1 \n"
-                        + "1 1 1 1 1 5 \n"
-                        + "5 5 \n"
-                        + "10 \n";
+        String expected = "1 1 1 1 1 1 1 1 1 1 "
+                + System.getProperty("line.separator")
+                + "1 1 1 1 1 5 "
+                + System.getProperty("line.separator")
+                + "5 5 "
+                + System.getProperty("line.separator")
+                + "10 "
+                + System.getProperty("line.separator");
         String result = ex.getExchangeWays(10, new int[]{1, 5, 10});
         assertThat(result, is(expected));
     }
