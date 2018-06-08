@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import ru.job4j.crud.models.Role;
 import ru.job4j.crud.models.User;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.*;
@@ -22,9 +23,10 @@ public enum UserStore {
     private static BasicDataSource dataSource;
 
     static {
-        org.apache.log4j.PropertyConfigurator.configure("/opt/tomcat/webapps/it/resources/log4j.properties");
+        String basePath = new File("").getAbsolutePath();
+        org.apache.log4j.PropertyConfigurator.configure(basePath + "/resources/log4j.properties");
         Properties properties = new Properties();
-        try (FileInputStream dbProperties = new FileInputStream("/opt/tomcat/webapps/it/resources/db.properties")) {
+        try (FileInputStream dbProperties = new FileInputStream(basePath + "/resources/db.properties")) {
             properties.load(dbProperties);
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName(properties.getProperty("driverClassName"));
