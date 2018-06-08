@@ -24,9 +24,9 @@ public enum UserStore {
 
     static {
         String basePath = new File("").getAbsolutePath();
-        org.apache.log4j.PropertyConfigurator.configure(basePath + "/resources/log4j.properties");
+        org.apache.log4j.PropertyConfigurator.configure(basePath + "/src/main/webapp/resources/log4j.properties");
         Properties properties = new Properties();
-        try (FileInputStream dbProperties = new FileInputStream(basePath + "/resources/db.properties")) {
+        try (FileInputStream dbProperties = new FileInputStream(basePath + "/src/main/webapp/resources/db.properties")) {
             properties.load(dbProperties);
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName(properties.getProperty("driverClassName"));
