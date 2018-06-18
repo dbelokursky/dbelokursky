@@ -5,9 +5,9 @@
     <link href="resources/tables.css" rel="stylesheet">
     <link href="resources/bootstrap.css" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>To do list</title>
+    <title>TODO list</title>
     <script>
-        function loadItems() {
+        function loadAllItems() {
             $.ajax('./items', {
                 method: 'get',
                 complete: function (data) {
@@ -34,13 +34,43 @@
             })
         }
 
-        $(loadItems());
+        function loadNoteDone() {
+            $.ajax('./items', {
+                method: 'get',
+                complete: function (data) {
+                    var result =
+                        "<tr>" +
+                        "<th>ID</th>" +
+                        "<th>Description</th>" +
+                        "<th>Created</th>" +
+                        "<th>Done</th>" +
+                        "</tr>";
+                    var items = JSON.parse(data.responseText);
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].done == false) {
+                            result +=
+                                "<tr>" +
+                                "<td>" + items[i].id + "</td>" +
+                                "<td>" + items[i].description + "</td>" +
+                                "<td>" + items[i].created + "</td>" +
+                                "<td>" + items[i].done + "</td>" +
+                                "</tr>";
+                        }
+                    }
+
+                    var table = document.getElementById("items");
+                    table.innerHTML = result;
+                }
+            })
+        }
+
+        $(loadNoteDone());
 
         function addItem() {
             $.ajax('./items', {
                 method: 'post',
                 data: {description: document.getElementsByName("description")[0].value},
-                complete: loadItems()
+                complete: loadNoteDone()
             });
             return false;
         }
