@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="resources/tables.css" rel="stylesheet">
+    <link href="resources/bootstrap.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>To do list</title>
+    <script>
+        function loadItems() {
+            $.ajax('./items', {
+                method: 'get',
+                complete: function (data) {
+                    var result =
+                        "<tr>" +
+                        "<th>ID</th>" +
+                        "<th>Description</th>" +
+                        "<th>Created</th>" +
+                        "<th>Done</th>" +
+                        "</tr>";
+                    var items = JSON.parse(data.responseText);
+                    for (var i = 0; i < items.length; i++) {
+                        result +=
+                            "<tr>" +
+                            "<td>" + items[i].id + "</td>" +
+                            "<td>" + items[i].description + "</td>" +
+                            "<td>" + items[i].created + "</td>" +
+                            "<td>" + items[i].done + "</td>" +
+                            "</tr>";
+                    }
+                    var table = document.getElementById("items");
+                    table.innerHTML = result;
+                }
+            })
+        }
+
+        $(loadItems());
+
+        function addItem() {
+            $.ajax('./items', {
+                method: 'post',
+                data: {description: document.getElementsByName("description")[0].value},
+                complete: loadItems()
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+<H1>TODO list</H1>
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="description" class="sr-only">Description</label>
+        <input type="text" name="description" id="description" placeholder="Item description">
+    </div>
+    <button class="btn btn-primary mb-2" onclick="return addItem();">Add</button>
+</form>
+<form class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="doneCheckbox">Show done tasks.</label>
+        <input type="checkbox" name="doneCheckbox" id="doneCheckbox" class="form-group mx-sm-3 mb-2">
+    </div>
+</form>
+<div>
+    <table id="items">
+    </table>
+</div>
+</body>
+</html>
