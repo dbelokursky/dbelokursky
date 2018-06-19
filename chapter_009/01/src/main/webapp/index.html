@@ -5,7 +5,7 @@
     <link href="resources/tables.css" rel="stylesheet">
     <link href="resources/bootstrap.css" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>TODO list</title>
+    <title>To do list</title>
     <script>
         function loadAllItems() {
             $.ajax('./items', {
@@ -34,7 +34,27 @@
             })
         }
 
-        function loadNoteDone() {
+
+        $(loadItems());
+
+        function addItem() {
+            $.ajax('./items', {
+                method: 'post',
+                data: {description: document.getElementsByName("description")[0].value},
+                complete: loadItems()
+            });
+            return false;
+        }
+
+        function loadItems() {
+            if ($("#doneCheckbox").is(':checked')) {
+                loadAllItems();
+            } else {
+                loadUncompleted();
+            }
+        }
+
+        function loadUncompleted() {
             $.ajax('./items', {
                 method: 'get',
                 complete: function (data) {
@@ -56,31 +76,19 @@
                                 "<td>" + items[i].done + "</td>" +
                                 "</tr>";
                         }
-                    }
 
+                    }
                     var table = document.getElementById("items");
                     table.innerHTML = result;
                 }
             })
         }
-
-        $(loadNoteDone());
-
-        function addItem() {
-            $.ajax('./items', {
-                method: 'post',
-                data: {description: document.getElementsByName("description")[0].value},
-                complete: loadNoteDone()
-            });
-            return false;
-        }
     </script>
 </head>
 <body>
-<H1>TODO list</H1>
+<H1>To Do list</H1>
 <form class="form-inline">
     <div class="form-group mx-sm-3 mb-2">
-        <label for="description" class="sr-only">Description</label>
         <input type="text" name="description" id="description" placeholder="Item description">
     </div>
     <button class="btn btn-primary mb-2" onclick="return addItem();">Add</button>
@@ -88,7 +96,8 @@
 <form class="form-inline">
     <div class="form-group mx-sm-3 mb-2">
         <label for="doneCheckbox">Show done tasks.</label>
-        <input type="checkbox" name="doneCheckbox" id="doneCheckbox" class="form-group mx-sm-3 mb-2">
+        <input type="checkbox" name="doneCheckbox" id="doneCheckbox" class="form-group mx-sm-3 mb-2"
+               onclick="loadItems()">
     </div>
 </form>
 <div>
