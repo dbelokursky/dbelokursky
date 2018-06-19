@@ -54,14 +54,24 @@ public class Item {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Item item = (Item) o;
 
-        if (getId() != item.getId()) return false;
-        if (isDone() != item.isDone()) return false;
-        if (!getDescription().equals(item.getDescription())) return false;
+        if (getId() != item.getId()) {
+            return false;
+        }
+        if (isDone() != item.isDone()) {
+            return false;
+        }
+        if (!getDescription().equals(item.getDescription())) {
+            return false;
+        }
         return getCreated().equals(item.getCreated());
     }
 
