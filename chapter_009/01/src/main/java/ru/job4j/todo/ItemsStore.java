@@ -1,6 +1,7 @@
 package ru.job4j.todo;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -25,36 +26,44 @@ public enum ItemsStore {
     }
 
     public void add(Item item) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.save(item);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public void update(int id, Item newItem) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        newItem.setId(id);
-        session.update(newItem);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            newItem.setId(id);
+            session.update(newItem);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public void delete(int id) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.delete(id);
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.delete(id);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     public List<Item> getAll() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
         List<Item> items = new ArrayList<>();
-        items = session.createQuery("from Item").list();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            items = session.createQuery("from Item").list();
+        } catch (HibernateException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         return items;
     }
 }
