@@ -1,9 +1,9 @@
 package ru.job4j.todo;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
@@ -26,42 +26,58 @@ public enum ItemsStore {
     }
 
     public void add(Item item) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.save(item);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             LOGGER.error(e.getMessage(), e);
         }
     }
 
     public void update(int id, Item newItem) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             newItem.setId(id);
             session.update(newItem);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             LOGGER.error(e.getMessage(), e);
         }
     }
 
     public void delete(int id) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.delete(id);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             LOGGER.error(e.getMessage(), e);
         }
     }
 
     public List<Item> getAll() {
         List<Item> items = new ArrayList<>();
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             items = session.createQuery("from Item").list();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             LOGGER.error(e.getMessage(), e);
         }
         return items;
