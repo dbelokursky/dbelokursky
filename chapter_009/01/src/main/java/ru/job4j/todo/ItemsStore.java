@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -69,21 +68,6 @@ public enum ItemsStore {
         }
     }
 
-    public List<Item> getAll() {
-        List<Item> items = new ArrayList<>();
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            items = session.createQuery("from Item").list();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            LOGGER.error(e.getMessage(), e);
-        }
-        return items;
-    }
-
     private <R> R tx(final Function<Session, R> command) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -98,7 +82,7 @@ public enum ItemsStore {
         }
     }
 
-    public List<Item> getAllNew() {
-        return this.tx(session -> session.createQuery("from Item")).list();
+    public List<Item> getAll() {
+        return tx(session -> session.createQuery("from Item").list());
     }
 }
