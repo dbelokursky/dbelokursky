@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Belokursky
@@ -81,5 +82,23 @@ public enum ItemsStore {
             LOGGER.error(e.getMessage(), e);
         }
         return items;
+    }
+
+    private <R> R tx(final Function<Session, R> command) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            return command.apply(session);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<Item> getAllNew() {
+        return this.tx(session -> session.createQuery("from Item")).list();
     }
 }
