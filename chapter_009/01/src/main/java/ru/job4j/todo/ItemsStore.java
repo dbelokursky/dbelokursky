@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -26,6 +27,23 @@ public enum ItemsStore {
     }
 
     public void add(Item item) {
+        addTransaction((session -> session.save(item)), item);
+    }
+
+    public List<Item> getAll() {
+        return getAllTransaction(session -> session.createQuery("from Item").list());
+    }
+
+    public void update(int id, Item newItem) {
+        updateTransaction(session -> session.update(newItem), id, newItem);
+    }
+
+    public void delete(int id) {
+        deleteTransaction(session -> session.delete(id), id);
+
+    }
+
+    private void addTransaction(Consumer<Session> consumer, Item item) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -39,7 +57,21 @@ public enum ItemsStore {
         }
     }
 
-    public void update(int id, Item newItem) {
+    private <R> R getAllTransaction(final Function<Session, R> command) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            return command.apply(session);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    private void updateTransaction(Consumer<Session> consumer, int id, Item newItem) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -54,7 +86,7 @@ public enum ItemsStore {
         }
     }
 
-    public void delete(int id) {
+    private void deleteTransaction(Consumer<Session> consumer, int id) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -66,23 +98,5 @@ public enum ItemsStore {
             }
             LOGGER.error(e.getMessage(), e);
         }
-    }
-
-    private <R> R tx(final Function<Session, R> command) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            return command.apply(session);
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    public List<Item> getAll() {
-        return tx(session -> session.createQuery("from Item").list());
     }
 }
