@@ -13,10 +13,9 @@
         <property name="connection.pool_size">10</property>
         <property name="show_sql">true</property>
 
-        <mapping resource="ru/job4j/carssale/Car.hbm.xml"/>
-        <mapping resource="ru/job4j/carssale/Engine.hbm.xml"/>
-        <mapping resource="ru/job4j/carssale/Suspension.hbm.xml"/>
-        <mapping resource="ru/job4j/carssale/Transmission.hbm.xml"/>
-
+        <mapping class="ru.job4j.carssale.Car"/>
+        <mapping class="ru.job4j.carssale.Engine"/>
+        <mapping class="ru.job4j.carssale.Transmission"/>
+        <mapping class="ru.job4j.carssale.Suspension"/>
     </session-factory>
 </hibernate-configuration>

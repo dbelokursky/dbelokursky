@@ -7,7 +7,7 @@ import org.hibernate.cfg.Configuration;
  * @author Dmitry Belokursky
  * @since 27.06.18.
  */
-public enum CarStore {
+public enum CarsStore {
 
     INSTANCE;
 
@@ -20,5 +20,14 @@ public enum CarStore {
     public void add(Car car) {
         Engine engine = new Engine();
     }
+
+//    public List<Car> getAll() {
+//        try (Session session = sessionFactory.openSession()) {
+//            Transaction transaction = session.beginTransaction();
+//            List<Car> cars = new ArrayList<>();
+//            session.save(new Car());
+//            cars = session.createQuery("from Car").list();
+//        }
+//    }
 
 }
