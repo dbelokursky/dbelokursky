@@ -18,7 +18,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
-    private int carId;
+    private int id;
 
     @Column(name = "brand")
     private String brand;
@@ -27,11 +27,14 @@ public class Car {
     private String model;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Transmission transmissionId;
+    @JoinColumn(name = "transmission_id")
+    private Transmission transmission;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Suspension suspension_id;
+    @JoinColumn(name = "suspension_id")
+    private Suspension suspension;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Engine engine_id;
+    @JoinColumn(name = "engine_id")
+    private Engine engine;
 }
