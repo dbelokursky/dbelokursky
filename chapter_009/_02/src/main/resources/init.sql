@@ -1,26 +1,27 @@
 CREATE DATABASE cars_sale;
 
 CREATE TABLE transmission (
-  id   SERIAL PRIMARY KEY,
+  transmission_id   SERIAL PRIMARY KEY,
   name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE engine (
-  id   SERIAL PRIMARY KEY,
+  engine_id   SERIAL PRIMARY KEY,
   name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE suspension (
-  id   SERIAL PRIMARY KEY,
+  suspension_id   SERIAL PRIMARY KEY,
   name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE car (
-  id                SERIAL PRIMARY KEY,
-  name              VARCHAR(200),
-  transmission_type INTEGER REFERENCES transmission (id),
-  engine_type       INTEGER REFERENCES engine (id),
-  suspension_type   INTEGER REFERENCES suspension (id)
+  car_id                SERIAL PRIMARY KEY,
+  brand              VARCHAR(200),
+  model              VARCHAR(200),
+  transmission_id INTEGER REFERENCES transmission (transmission_id),
+  engine_id       INTEGER REFERENCES engine (engine_id),
+  suspension_id   INTEGER REFERENCES suspension (suspension_id)
 );
 
 INSERT INTO transmission (name) VALUES ('manual');
@@ -34,5 +35,6 @@ INSERT INTO engine (name) VALUES ('electric');
 INSERT INTO suspension (name) VALUES ('depended');
 INSERT INTO suspension (name) VALUES ('independent');
 
-INSERT INTO car (name, transmission_type, engine_type, suspension_type) VALUES ('car1', 1, 1, 1);
-INSERT INTO car (name, transmission_type, engine_type, suspension_type) VALUES ('car2', 2, 2, 2);
+INSERT INTO car (brand, model, transmission_id, engine_id, suspension_id) VALUES ('BMW', 'X5', 1, 2, 1);
+INSERT INTO car (brand, model, transmission_id, engine_id, suspension_id) VALUES ('Opel', 'Astra', 2, 2, 1);
+INSERT INTO car (brand, model, transmission_id, engine_id, suspension_id) VALUES ('Volkswagen', 'Golf', 2, 1, 1);

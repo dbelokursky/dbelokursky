@@ -1,9 +1,7 @@
 package ru.job4j.carssale;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -12,18 +10,16 @@ import javax.persistence.*;
  * @since 27.06.18.
  */
 
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "engine")
 public class Engine {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "engine_id")
+    private int engineId;
 
     @Column(name = "name")
     private String name;
