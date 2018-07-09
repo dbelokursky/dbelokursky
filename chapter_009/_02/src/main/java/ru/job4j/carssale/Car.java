@@ -37,4 +37,7 @@ public class Car {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "engine_id")
     private Engine engine;
+
+    @Column()
+    private boolean sold;
 }
