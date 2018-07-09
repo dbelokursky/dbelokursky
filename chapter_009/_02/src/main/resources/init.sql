@@ -22,7 +22,7 @@ CREATE TABLE car (
   transmission_id INTEGER REFERENCES transmission (transmission_id),
   engine_id       INTEGER REFERENCES engine (engine_id),
   suspension_id   INTEGER REFERENCES suspension (suspension_id),
-  sold            BOOLEAN
+  sold          BOOLEAN
 );
 
 INSERT INTO transmission (name) VALUES ('manual');

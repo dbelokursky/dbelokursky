@@ -38,6 +38,6 @@ public class Car {
     @JoinColumn(name = "engine_id")
     private Engine engine;
 
-    @Column()
+    @Column(name = "sold")
     private boolean sold;
 }

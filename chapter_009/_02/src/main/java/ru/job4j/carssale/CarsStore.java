@@ -24,7 +24,17 @@ public enum CarsStore {
     }
 
     public void add(Car car) {
-        Engine engine = new Engine();
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.save(car);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            log.error(e.getMessage(), e);
+        }
     }
 
     public List<Car> getAll() {

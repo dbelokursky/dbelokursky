@@ -13,4 +13,13 @@
         <url-pattern>/cars</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CarAdd</servlet-name>
+        <servlet-class>ru.job4j.carssale.CarAdd</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarAdd</servlet-name>
+        <url-pattern>/add</url-pattern>
+    </servlet-mapping>
+
 </web-app>

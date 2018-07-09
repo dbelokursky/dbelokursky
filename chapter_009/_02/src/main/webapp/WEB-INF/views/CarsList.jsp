@@ -6,6 +6,10 @@
 <head>
     <meta charset='utf-8'>
     <title>Cars sale</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <link href="resources/table.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
@@ -60,10 +64,14 @@
 <body>
 <div class="container">
     <div class="row">
+        <form>
+            <button class="btn btn-primary" formaction=${pageContext.servletContext.contextPath}/add>Add</button>
+        </form>
         <div class="panel panel-primary filterable">
             <div class="panel-heading">
                 <h3 class="panel-title">Cars sale</h3>
                 <div class="pull-right">
+
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
                         Filter
                     </button>
@@ -72,21 +80,25 @@
             <table class="table">
                 <thead>
                 <tr class="filters">
+                    <th>Photo</th>
                     <th><input type="text" class="form-control" placeholder="Brand" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Model" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Transmission" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Suspension" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Engine" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Sold" disabled></th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${cars}" var="car">
                     <tr>
+                        <td><img src="http://www.yourdriverinitaly.com/wp-content/uploads/2018/02/vw-beetle.png"></td>
                         <td>${car.brand}</td>
                         <td>${car.model}</td>
                         <td>${car.transmission.name}</td>
                         <td>${car.suspension.name}</td>
                         <td>${car.engine.name}</td>
+                        <td>${car.sold}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
