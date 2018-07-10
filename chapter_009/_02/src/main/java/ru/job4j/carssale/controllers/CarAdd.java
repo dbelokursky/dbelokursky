@@ -1,4 +1,6 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.controllers;
+
+import ru.job4j.carssale.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

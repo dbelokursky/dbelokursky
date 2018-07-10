@@ -3,6 +3,7 @@
 <head>
     <title>Add new car</title>
     <link href="resources/table.css" rel="stylesheet">
+    <link href="resources/uploadButton.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -11,7 +12,6 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Photo</th>
         <th>Brand</th>
         <th>Model</th>
         <th>Transmission</th>
@@ -23,7 +23,6 @@
     </thead>
     <tr>
         <form formaction=${pageContext.servletContext.contextPath}/add>
-            <td></td>
             <td><input name="brand" type="text" class="form-control" placeholder="Brand"></td>
             <td><input name="model" type="text" class="form-control" placeholder="Model"></td>
             <td><input name="transmission" type="text" class="form-control" placeholder="Transmission"></td>
@@ -42,7 +41,20 @@
             </td>
         </form>
     </tr>
-
+</table>
+<table class="table">
+    <tr>
+        <form action="${pageContext.servletContext.contextPath}/upload" method="post" formenctype="multipart/form-data">
+            <td>
+                <label class="btn btn-primary">
+                    Add photo<input type="file" multiple style="display: none;">
+                </label>
+            </td>
+            <td>
+                <input type="submit" class="btn btn-primary">
+            </td>
+        </form>
+    </tr>
 </table>
 </body>
 </html>

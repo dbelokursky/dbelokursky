@@ -80,7 +80,7 @@
             <table class="table">
                 <thead>
                 <tr class="filters">
-                    <th>Photo</th>
+                    <th></th>
                     <th><input type="text" class="form-control" placeholder="Brand" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Model" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Transmission" disabled></th>
@@ -92,7 +92,7 @@
                 <tbody>
                 <c:forEach items="${cars}" var="car">
                     <tr>
-                        <td><img src="http://www.yourdriverinitaly.com/wp-content/uploads/2018/02/vw-beetle.png"></td>
+                        <td><img src="img/vw-beetle.png"></td>
                         <td>${car.brand}</td>
                         <td>${car.model}</td>
                         <td>${car.transmission.name}</td>

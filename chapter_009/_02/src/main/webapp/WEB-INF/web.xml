@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>CarsList</servlet-name>
-        <servlet-class>ru.job4j.carssale.CarsList</servlet-class>
+        <servlet-class>ru.job4j.carssale.controllers.CarsList</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarsList</servlet-name>
@@ -15,11 +15,20 @@
 
     <servlet>
         <servlet-name>CarAdd</servlet-name>
-        <servlet-class>ru.job4j.carssale.CarAdd</servlet-class>
+        <servlet-class>ru.job4j.carssale.controllers.CarAdd</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarAdd</servlet-name>
         <url-pattern>/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ImagesUpload</servlet-name>
+        <servlet-class>ru.job4j.carssale.controllers.ImagesUpload</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImagesUpload</servlet-name>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
 </web-app>
