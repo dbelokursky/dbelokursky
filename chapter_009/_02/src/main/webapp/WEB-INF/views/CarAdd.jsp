@@ -42,19 +42,11 @@
         </form>
     </tr>
 </table>
-<table class="table">
-    <tr>
-        <form action="${pageContext.servletContext.contextPath}/upload" method="post" formenctype="multipart/form-data">
-            <td>
+<form method="post" action="${pageContext.servletContext.contextPath}/upload" enctype="multipart/form-data">
                 <label class="btn btn-primary">
                     Add photo<input type="file" multiple style="display: none;">
                 </label>
-            </td>
-            <td>
-                <input type="submit" class="btn btn-primary">
-            </td>
+    <input type="submit" value="Upload" class="btn btn-primary">
         </form>
-    </tr>
-</table>
 </body>
 </html>

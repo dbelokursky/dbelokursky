@@ -14,16 +14,32 @@ import java.util.List;
 @Log4j
 public class ImagesUpload extends HttpServlet {
 
+    private final String filePath = "/tmp/";
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        ServletFileUpload servletFileUpload = new ServletFileUpload(new DiskFileItemFactory());
-        System.out.println(getServletContext().getRealPath("img"));
+
+        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+
+        diskFileItemFactory.setSizeThreshold(1024 * 1024);
+
+        File tempDir = (File) getServletContext().getAttribute("javax.servlet.context.tempdir");
+
+        diskFileItemFactory.setRepository(tempDir);
+
+        ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
+
+        servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
+        System.out.println("START");
         try {
+            System.out.println("try");
             List<FileItem> images = servletFileUpload.parseRequest(req);
+            System.out.println(images.size());
             for (FileItem img : images) {
-                System.out.println("-----------file-----------");
-                System.out.println(getServletContext().getRealPath("/") + img.getName() + System.currentTimeMillis());
-                img.write(new File(getServletContext().getRealPath("img") + "/" + img.getName()));
+                if (!img.isFormField()) {
+                    System.out.println("-----------file-----------");
+                    img.write(new File("/tmp/" + System.currentTimeMillis()));
+                }
             }
         } catch (Exception e) {
             log(e.getMessage(), e);
