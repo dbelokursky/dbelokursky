@@ -22,7 +22,7 @@
     </tr>
     </thead>
     <tr>
-        <form formaction=${pageContext.servletContext.contextPath}/add>
+        <form id="carAdd">
             <td><input name="brand" type="text" class="form-control" placeholder="Brand"></td>
             <td><input name="model" type="text" class="form-control" placeholder="Model"></td>
             <td><input name="transmission" type="text" class="form-control" placeholder="Transmission"></td>
@@ -35,18 +35,21 @@
                 </select>
             </td>
             <td>
-                <button class="btn btn-primary" formmethod="post">
+                <button formaction=${pageContext.servletContext.contextPath}/add class="btn btn-primary"
+                        formmethod="post">
                     Save
                 </button>
             </td>
         </form>
     </tr>
 </table>
-<form method="post" action="${pageContext.servletContext.contextPath}/upload" enctype="multipart/form-data">
-                <label class="btn btn-primary">
-                    Add photo<input type="file" multiple style="display: none;">
-                </label>
-    <input type="submit" value="Upload" class="btn btn-primary">
-        </form>
+
+<form id="imgUpload" method="post" enctype="multipart/form-data">
+    <label class="btn btn-primary">
+        Add photo<input name="images" type="file" multiple style="display: none;">
+    </label>
+    <input formaction=${pageContext.servletContext.contextPath}/upload type="submit" value="Upload"
+           class="btn btn-primary">
+</form>
 </body>
 </html>

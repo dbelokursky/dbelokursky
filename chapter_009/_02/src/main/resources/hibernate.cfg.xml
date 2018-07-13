@@ -16,9 +16,10 @@
         <property name="use_sql_comments">true</property>
 
 
-        <mapping class="ru.job4j.carssale.Car"/>
-        <mapping class="ru.job4j.carssale.Engine"/>
-        <mapping class="ru.job4j.carssale.Transmission"/>
-        <mapping class="ru.job4j.carssale.Suspension"/>
+        <mapping class="ru.job4j.carssale.models.Car"/>
+        <mapping class="ru.job4j.carssale.models.Engine"/>
+        <mapping class="ru.job4j.carssale.models.Transmission"/>
+        <mapping class="ru.job4j.carssale.models.Suspension"/>
+        <mapping class="ru.job4j.carssale.models.Image"/>
     </session-factory>
 </hibernate-configuration>

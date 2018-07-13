@@ -1,9 +1,11 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dmitry Belokursky
@@ -40,4 +42,8 @@ public class Car {
 
     @Column(name = "sold")
     private boolean sold;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private Set<Image> images = new HashSet<>();
 }

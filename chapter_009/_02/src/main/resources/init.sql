@@ -25,6 +25,14 @@ CREATE TABLE car (
   sold          BOOLEAN
 );
 
+CREATE TABLE image(
+image_id SERIAL PRIMARY KEY,
+car_id INTEGER REFERENCES car(car_id),
+name VARCHAR,
+path VARCHAR
+);
+
+
 INSERT INTO transmission (name) VALUES ('manual');
 INSERT INTO transmission (name) VALUES ('automatic');
 INSERT INTO transmission (name) VALUES ('CVT');

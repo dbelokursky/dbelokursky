@@ -1,4 +1,4 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +13,13 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "transmission")
-public class Transmission {
+@Table(name = "engine")
+public class Engine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transmission_id")
-    private int transmissionId;
+    @Column(name = "engine_id")
+    private int id;
 
     @Column(name = "name")
     private String name;

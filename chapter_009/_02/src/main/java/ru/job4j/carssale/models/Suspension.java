@@ -1,4 +1,4 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class Suspension {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "suspension_id")
-    private int suspensionId;
+    private int id;
 
     @Column(name = "name")
     private String name;
