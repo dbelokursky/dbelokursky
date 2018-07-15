@@ -1,7 +1,9 @@
 package ru.job4j.carssale.models;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,7 +13,9 @@ import java.util.Set;
  * @author Dmitry Belokursky
  * @since 27.06.18.
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "images")
 @NoArgsConstructor
 @Entity
 @Table(name = "car")
@@ -43,7 +47,6 @@ public class Car {
     @Column(name = "sold")
     private boolean sold;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
     private Set<Image> images = new HashSet<>();
 }

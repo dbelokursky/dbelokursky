@@ -91,7 +91,8 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${cars}" var="car">
-                    <tr>
+                    <tr role="button"
+                        onclick="window.location.href='${pageContext.servletContext.contextPath}/carcard?carId=${car.id}' ; return false">
                         <td><img src="img/vw-beetle.png"></td>
                         <td>${car.brand}</td>
                         <td>${car.model}</td>

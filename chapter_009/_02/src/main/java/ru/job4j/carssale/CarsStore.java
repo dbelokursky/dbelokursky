@@ -6,8 +6,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import ru.job4j.carssale.models.Car;
+import ru.job4j.carssale.models.Image;
 
+import javax.persistence.Query;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dmitry Belokursky
@@ -24,10 +28,17 @@ public enum CarsStore {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
-    public void add(Car car) {
+    public void add(Car car, Set<Image> images) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
+            session.save(car);
+            Set<Image> tmpImages = new HashSet<>();
+            for (Image img : images) {
+                img.setCar(car);
+                tmpImages.add(img);
+            }
+            car.setImages(tmpImages);
             session.save(car);
             transaction.commit();
         } catch (Exception e) {
@@ -50,6 +61,23 @@ public enum CarsStore {
                 transaction.rollback();
             }
             log.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public Car getCar(int id) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("from Car where id = (?1)");
+            query.setParameter(1, id);
+            List<Car> cars = query.getResultList();
+            transaction.commit();
+            return cars.get(0);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw e;
         }
     }

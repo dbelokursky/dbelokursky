@@ -31,4 +31,13 @@
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CarCard</servlet-name>
+        <servlet-class>ru.job4j.carssale.controllers.CarCard</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarCard</servlet-name>
+        <url-pattern>/carcard</url-pattern>
+    </servlet-mapping>
+
 </web-app>

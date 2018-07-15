@@ -18,11 +18,13 @@
         <th>Suspension</th>
         <th>Engine</th>
         <th>Status</th>
+        <th>Image</th>
         <th></th>
     </tr>
     </thead>
     <tr>
-        <form id="carAdd">
+        <form id="carAdd" method="post" enctype="multipart/form-data"
+              formaction=${pageContext.servletContext.contextPath}/add>
             <td><input name="brand" type="text" class="form-control" placeholder="Brand"></td>
             <td><input name="model" type="text" class="form-control" placeholder="Model"></td>
             <td><input name="transmission" type="text" class="form-control" placeholder="Transmission"></td>
@@ -35,21 +37,25 @@
                 </select>
             </td>
             <td>
-                <button formaction=${pageContext.servletContext.contextPath}/add class="btn btn-primary"
-                        formmethod="post">
-                    Save
-                </button>
+                <label class="btn btn-primary">
+                    Add photo<input name="images" type="file" multiple style="display: none;">
+                </label>
+            </td>
+            <td>
+                <label class="btn btn-primary">
+                    Save<input type="submit" value="Save" style="display: none;">
+                </label>
             </td>
         </form>
     </tr>
 </table>
 
-<form id="imgUpload" method="post" enctype="multipart/form-data">
-    <label class="btn btn-primary">
-        Add photo<input name="images" type="file" multiple style="display: none;">
-    </label>
-    <input formaction=${pageContext.servletContext.contextPath}/upload type="submit" value="Upload"
-           class="btn btn-primary">
-</form>
+<%--<form id="imgUpload" method="post" enctype="multipart/form-data">--%>
+<%--<label class="btn btn-primary">--%>
+<%--Add photo<input name="images" type="file" multiple style="display: none;">--%>
+<%--</label>--%>
+<%--<input formaction=${pageContext.servletContext.contextPath}/upload type="submit" value="Upload"--%>
+<%--class="btn btn-primary">--%>
+<%--</form>--%>
 </body>
 </html>
