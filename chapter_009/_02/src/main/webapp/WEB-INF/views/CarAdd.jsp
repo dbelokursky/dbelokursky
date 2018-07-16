@@ -49,13 +49,5 @@
         </form>
     </tr>
 </table>
-
-<%--<form id="imgUpload" method="post" enctype="multipart/form-data">--%>
-<%--<label class="btn btn-primary">--%>
-<%--Add photo<input name="images" type="file" multiple style="display: none;">--%>
-<%--</label>--%>
-<%--<input formaction=${pageContext.servletContext.contextPath}/upload type="submit" value="Upload"--%>
-<%--class="btn btn-primary">--%>
-<%--</form>--%>
 </body>
 </html>

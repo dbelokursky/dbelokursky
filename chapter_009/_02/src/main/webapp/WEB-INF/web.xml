@@ -23,15 +23,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ImagesUpload</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.ImagesUpload</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ImagesUpload</servlet-name>
-        <url-pattern>/upload</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>CarCard</servlet-name>
         <servlet-class>ru.job4j.carssale.controllers.CarCard</servlet-class>
     </servlet>
