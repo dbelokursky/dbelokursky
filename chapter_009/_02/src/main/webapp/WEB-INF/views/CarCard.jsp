@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
-    <head>
+    <meta charset='utf-8'>
         <title>Car card</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -13,24 +15,26 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </head>
-</head>
 <body>
 <div class="container">
-    <table class="table">
-        <div class="row">
-            <div class="panel panel-primary filterable">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Cars card</h3>
-                </div>
+    <div class="row">
+        <form>
+            <button class="btn btn-primary" formaction=${pageContext.servletContext.contextPath}/cars>Main</button>
+        </form>
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Cars sale</h3>
+            </div>
+            <table class="table">
                 <thead>
-                <tr>
+                <tr class="filters">
                     <th></th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Transmission</th>
-                    <th>Suspension</th>
-                    <th>Engine</th>
-                    <th>Sold</th>
+                    <th><input type="text" class="form-control" placeholder="Brand" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Model" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Transmission" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Suspension" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Engine" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Sold" disabled></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,9 +48,41 @@
                     <td>${car.sold}</td>
                 </tr>
                 </tbody>
+            </table>
+
+
+            <div class="container">
+                <h2>Carousel Example</h2>
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+
+                        <div class="item active">
+                            <img src="la.jpg" alt="Los Angeles" style="width:100%;">
+                        </div>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
             </div>
         </div>
-    </table>
+    </div>
+</div>
 
 </div>
 </body>

@@ -49,4 +49,8 @@ public class Car {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
     private Set<Image> images = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 }
