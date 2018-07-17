@@ -35,7 +35,7 @@ path VARCHAR
 
 CREATE TABLE owner(
 owner_id SERIAL PRIMARY KEY,
-login VARCHAR(300),
+login VARCHAR(300) UNIQUE,
 password VARCHAR(300)
 );
 
@@ -64,4 +64,5 @@ INSERT INTO car (brand, model, transmission_id, engine_id, suspension_id, sold, 
 VALUES ('Volkswagen', 'Golf', 2, 1, 1, false, 2);
 
 ALTER TABLE car ADD COLUMN owner_id INTEGER REFERENCES owner(owner_id);
+ALTER TABLE owner ADD UNIQUE (login);
 

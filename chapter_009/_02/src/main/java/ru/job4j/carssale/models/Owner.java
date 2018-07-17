@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "cars")
 @NoArgsConstructor
 @Entity
 @Table(name = "owner")
@@ -22,8 +23,8 @@ public class Owner {
     @Column(name = "owner_id")
     private int id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    private Set<Car> cars;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<Car> cars = new HashSet<>();
 
     @Column(name = "login")
     private String login;

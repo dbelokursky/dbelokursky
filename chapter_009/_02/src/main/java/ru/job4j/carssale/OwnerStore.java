@@ -21,16 +21,16 @@ public enum OwnerStore {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
-    public boolean isExist(Owner owner) {
+    public Owner isExist(String login, String password) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             Query<Owner> query = session.createQuery("from Owner where login = (?1) and password = (?2)");
-            query.setParameter(1, owner.getLogin());
-            query.setParameter(2, owner.getPassword());
+            query.setParameter(1, login);
+            query.setParameter(2, password);
             List<Owner> owners = query.getResultList();
             transaction.commit();
-            return owners.size() > 0;
+            return owners.size() > 0 ? owners.get(0) : null;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
