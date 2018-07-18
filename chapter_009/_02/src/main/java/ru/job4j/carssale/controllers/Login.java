@@ -24,8 +24,6 @@ public class Login extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         Owner owner = ownerStore.isExist(login, password);
-        System.out.println(owner);
-        System.out.println("Owner cars list size" + owner.getCars().size());
         if (owner != null) {
             HttpSession session = req.getSession();
             session.setAttribute("owner", owner);

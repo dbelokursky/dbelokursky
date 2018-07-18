@@ -22,6 +22,8 @@ public class CarCard extends HttpServlet {
             Owner owner = (Owner) req.getSession().getAttribute("owner");
             if (owner.getCars().contains(car)) {
                 req.getRequestDispatcher("/WEB-INF/views/CarCardOwner.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("/WEB-INF/views/CarCard.jsp").forward(req, resp);
             }
         } else {
             req.getRequestDispatcher("/WEB-INF/views/CarCard.jsp").forward(req, resp);

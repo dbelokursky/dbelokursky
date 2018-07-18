@@ -53,7 +53,14 @@ public enum CarsStore {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(car);
+            Car newCar = session.load(Car.class, car.getId());
+            newCar.setBrand(car.getBrand());
+            newCar.setModel(car.getModel());
+            newCar.setTransmission(car.getTransmission());
+            newCar.setSuspension(car.getSuspension());
+            newCar.setEngine(car.getEngine());
+            newCar.setSold(car.isSold());
+            session.update(newCar);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

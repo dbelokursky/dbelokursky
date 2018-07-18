@@ -35,6 +35,6 @@ public class CarEdit extends HttpServlet {
         car.setSold(status);
         car.setOwner(owner);
         carsStore.update(car);
-        resp.sendRedirect("/WEB-INF/views/CarsList.jsp");
+        resp.sendRedirect(String.format("%s/cars", req.getContextPath()));
     }
 }
