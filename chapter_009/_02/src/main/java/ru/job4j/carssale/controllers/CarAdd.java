@@ -72,6 +72,14 @@ public class CarAdd extends HttpServlet {
         String fileName = System.currentTimeMillis() + item.getName();
         String uploadDirPath = new File(getServletContext().getRealPath("/")) + "/../uploads/";
         String filePath = uploadDirPath + fileName;
+//        Properties properties = new Properties();
+//        properties.load(new FileInputStream("/src/main/resources/app.property"));
+//        System.out.println("-------------------------------------");
+//        System.out.println(properties.getProperty("upload.location"));
+        System.out.println("-------------------------------------");
+        System.out.println(fileName);
+        System.out.println(uploadDirPath);
+        System.out.println(filePath);
         Image img = new Image();
         img.setName(fileName);
         img.setPath(filePath);
