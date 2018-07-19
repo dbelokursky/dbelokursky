@@ -18,8 +18,6 @@ import java.util.*;
 
 public class CarAdd extends HttpServlet {
 
-    private final static String IMG_DIR = "/opt/tomcat/apache-tomcat-9.0.10/img/";
-
     private final CarsStore carsStore = CarsStore.INSTANCE;
 
     @Override
@@ -71,21 +69,21 @@ public class CarAdd extends HttpServlet {
     }
 
     private void processFileField(FileItem item, Set<Image> images) throws Exception {
-        String fileName = item.getName() + System.currentTimeMillis();
-        String filePath = IMG_DIR + fileName;
+        String fileName = System.currentTimeMillis() + item.getName();
+        String uploadDirPath = new File(getServletContext().getRealPath("/")) + "/../uploads/";
+        String filePath = uploadDirPath + fileName;
         Image img = new Image();
         img.setName(fileName);
         img.setPath(filePath);
         images.add(img);
-        File file = new File(filePath);
-        item.write(file);
-        makeThumbnail(filePath, file);
+        item.write(new File(filePath));
+        makeThumbnail(uploadDirPath, fileName);
     }
 
-    private void makeThumbnail(String filePath, File file) throws IOException {
+    private void makeThumbnail(String uploadDirPath, String fileName) throws IOException {
         BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-        thumbnail.createGraphics().drawImage(ImageIO.read(file).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
-        ImageIO.write(thumbnail, "jpg", new File(filePath + "_thumb"));
+        thumbnail.createGraphics().drawImage(ImageIO.read(new File(uploadDirPath + fileName)).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+        ImageIO.write(thumbnail, "jpg", new File(uploadDirPath + "thumb_" + fileName));
     }
 
     private void processFormField(FileItem item, Map<String, String> formFields) {
