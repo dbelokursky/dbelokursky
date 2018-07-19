@@ -6,10 +6,12 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.job4j.carssale.CarsStore;
 import ru.job4j.carssale.models.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -63,7 +65,6 @@ public class CarAdd extends HttpServlet {
             car.setSold(Boolean.parseBoolean(formFields.get("sold")));
             carsStore.add(car, images);
             resp.sendRedirect(String.format("%s/cars", req.getContextPath()));
-
         } catch (Exception e) {
             log(e.getMessage(), e);
         }
@@ -76,7 +77,15 @@ public class CarAdd extends HttpServlet {
         img.setName(fileName);
         img.setPath(filePath);
         images.add(img);
-        item.write(new File(filePath));
+        File file = new File(filePath);
+        item.write(file);
+        makeThumbnail(filePath, file);
+    }
+
+    private void makeThumbnail(String filePath, File file) throws IOException {
+        BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        thumbnail.createGraphics().drawImage(ImageIO.read(file).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+        ImageIO.write(thumbnail, "jpg", new File(filePath + "_thumb"));
     }
 
     private void processFormField(FileItem item, Map<String, String> formFields) {
