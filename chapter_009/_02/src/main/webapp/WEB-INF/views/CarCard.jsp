@@ -57,13 +57,9 @@
             </table>
 
             <c:forEach items="${car.images}" var="img">
-                <a data-fancybox="gallery" href="${img.path}"><img src="thumb_${img.path}"></a>
+                <a data-fancybox="gallery" href="http://localhost:8080/uploads/${img.name}"><img
+                        src="http://localhost:8080/uploads/thumb_${img.name}"></a>
             </c:forEach>
-
-            <%--<a data-fancybox="gallery" href="/opt/tomcat/apache-tomcat-9.0.10/img/Выделение_007.png1532018297288"><img--%>
-            <%--src="img/car1smal.jpg"></a>--%>
-            <%--<a data-fancybox="gallery" href="/opt/tomcat/apache-tomcat-9.0.10/img/Выделение_006.png1532018297272"><img--%>
-            <%--src="img/car2smal.jpg"></a>--%>
         </div>
     </div>
 </div>
