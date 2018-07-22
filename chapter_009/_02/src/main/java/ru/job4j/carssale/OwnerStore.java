@@ -4,22 +4,15 @@ import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import ru.job4j.carssale.models.Owner;
 
 import java.util.List;
 
 @Log4j
-public enum OwnerStore {
+public class OwnerStore {
 
-    INSTANCE;
-
-    private static SessionFactory sessionFactory;
-
-    static {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-    }
+    private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
     public Owner isExist(String login, String password) {
         Transaction transaction = null;

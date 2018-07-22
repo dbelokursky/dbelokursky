@@ -4,7 +4,6 @@ import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
 
@@ -18,15 +17,9 @@ import java.util.Set;
  * @since 27.06.18.
  */
 @Log4j
-public enum CarsStore {
+public class CarsStore {
 
-    INSTANCE;
-
-    private static SessionFactory sessionFactory;
-
-    static {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-    }
+    private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
     public void add(Car car, Set<Image> images) {
         Transaction transaction = null;

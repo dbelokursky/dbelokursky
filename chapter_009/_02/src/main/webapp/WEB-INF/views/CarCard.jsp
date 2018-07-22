@@ -14,7 +14,7 @@
           id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
 
     <%--fancyBox--%>
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -55,7 +55,6 @@
                 </tr>
                 </tbody>
             </table>
-
             <c:forEach items="${car.images}" var="img">
                 <a data-fancybox="gallery" href="http://localhost:8080/uploads/${img.name}"><img
                         src="http://localhost:8080/uploads/thumb_${img.name}"></a>
@@ -63,7 +62,6 @@
         </div>
     </div>
 </div>
-
 </div>
 </body>
 </html>

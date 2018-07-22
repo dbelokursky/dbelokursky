@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class CarEdit extends HttpServlet {
 
-    private final CarsStore carsStore = CarsStore.INSTANCE;
+    private final CarsStore carsStore = new CarsStore();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

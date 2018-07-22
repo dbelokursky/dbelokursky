@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class CarsList extends HttpServlet {
 
-    private final CarsStore carsStore = CarsStore.INSTANCE;
+    private final CarsStore carsStore = new CarsStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

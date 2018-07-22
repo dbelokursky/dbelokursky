@@ -1,9 +1,6 @@
 package ru.job4j.carssale.models;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,6 +12,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@ToString(exclude = "images")
 @EqualsAndHashCode(exclude = "images")
 @NoArgsConstructor
 @Entity

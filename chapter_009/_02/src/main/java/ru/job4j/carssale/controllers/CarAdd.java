@@ -1,8 +1,10 @@
 package ru.job4j.carssale.controllers;
 
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
 import ru.job4j.carssale.CarsStore;
 import ru.job4j.carssale.models.*;
 
@@ -14,11 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
+@Log4j
 public class CarAdd extends HttpServlet {
 
-    private final CarsStore carsStore = CarsStore.INSTANCE;
+    private final CarsStore carsStore = new CarsStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,6 +39,7 @@ public class CarAdd extends HttpServlet {
         diskFileItemFactory.setRepository(tempDir);
         ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
         servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
+        servletFileUpload.setHeaderEncoding("UTF-8");
         try {
             List<FileItem> items = servletFileUpload.parseRequest(req);
             for (FileItem item : items) {
@@ -61,6 +66,7 @@ public class CarAdd extends HttpServlet {
             car.setTransmission(transmission);
             car.setEngine(engine);
             car.setSold(Boolean.parseBoolean(formFields.get("sold")));
+            car.setOwner((Owner) req.getSession(false).getAttribute("owner"));
             carsStore.add(car, images);
             resp.sendRedirect(String.format("%s/cars", req.getContextPath()));
         } catch (Exception e) {
@@ -72,14 +78,6 @@ public class CarAdd extends HttpServlet {
         String fileName = System.currentTimeMillis() + item.getName();
         String uploadDirPath = new File(getServletContext().getRealPath("/")) + "/../uploads/";
         String filePath = uploadDirPath + fileName;
-//        Properties properties = new Properties();
-//        properties.load(new FileInputStream("/src/main/resources/app.property"));
-//        System.out.println("-------------------------------------");
-//        System.out.println(properties.getProperty("upload.location"));
-        System.out.println("-------------------------------------");
-        System.out.println(fileName);
-        System.out.println(uploadDirPath);
-        System.out.println(filePath);
         Image img = new Image();
         img.setName(fileName);
         img.setPath(filePath);
@@ -95,6 +93,11 @@ public class CarAdd extends HttpServlet {
     }
 
     private void processFormField(FileItem item, Map<String, String> formFields) {
-        formFields.put(item.getFieldName(), item.getString());
+        try {
+            InputStream stream = item.getInputStream();
+            formFields.put(item.getFieldName(), Streams.asString(stream, "UTF-8"));
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }

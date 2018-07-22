@@ -8,16 +8,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CarCard extends HttpServlet {
 
-    private final CarsStore carsStore = CarsStore.INSTANCE;
+    private final CarsStore carsStore = new CarsStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Car car = carsStore.getCar(Integer.parseInt(req.getParameter("carId")));
         req.setAttribute("car", car);
+        HttpSession session = req.getSession(false);
         if (req.getSession(false) != null && req.getSession().getAttribute("owner") != null) {
             Owner owner = (Owner) req.getSession().getAttribute("owner");
             if (owner.getCars().contains(car)) {

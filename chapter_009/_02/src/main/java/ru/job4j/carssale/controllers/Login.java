@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Login extends HttpServlet {
 
-    private final OwnerStore ownerStore = OwnerStore.INSTANCE;
+    private final OwnerStore ownerStore = new OwnerStore();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
