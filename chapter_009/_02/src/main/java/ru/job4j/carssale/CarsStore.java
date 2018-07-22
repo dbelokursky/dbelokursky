@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
 
-import javax.persistence.Query;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,11 +82,9 @@ public class CarsStore {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Query query = session.createQuery("from Car where id = (?1)");
-            query.setParameter(1, id);
-            List<Car> cars = query.getResultList();
+            Car car = session.get(Car.class, id);
             transaction.commit();
-            return cars.get(0);
+            return car;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
