@@ -12,7 +12,7 @@ import java.util.List;
 @Log4j
 public class OwnerStore {
 
-    private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
+    private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
     public Owner isExist(String login, String password) {
         Transaction transaction = null;

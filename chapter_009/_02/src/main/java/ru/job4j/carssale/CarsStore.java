@@ -19,7 +19,7 @@ import java.util.Set;
 @Log4j
 public class CarsStore {
 
-    private static final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
+    private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
     public void add(Car car, Set<Image> images) {
         Transaction transaction = null;

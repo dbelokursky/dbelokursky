@@ -7,7 +7,7 @@ public enum HibernateUtil {
 
     INSTANCE;
 
-    private static final SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     static {
         sessionFactory = new Configuration().configure().buildSessionFactory();
