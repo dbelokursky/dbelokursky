@@ -12,9 +12,8 @@ public class Cars extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        CarsStore carsStore = new CarsStore();
         resp.setContentType("application/json");
         resp.setContentType("UTF-8");
-        resp.getWriter().write(new Gson().toJson(carsStore.getAll()));
+        resp.getWriter().write(new Gson().toJson(new CarsStore().getAll()));
     }
 }
