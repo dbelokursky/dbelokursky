@@ -72,7 +72,6 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Cars sale</h3>
                 <div class="pull-right">
-
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
                         Filter
                     </button>

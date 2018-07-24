@@ -2,6 +2,7 @@ package ru.job4j.carssale.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "suspension")
+@DynamicUpdate
 public class Suspension {
 
     @Id

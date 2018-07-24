@@ -48,4 +48,22 @@
         <url-pattern>/edit</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CarsFilters</servlet-name>
+        <servlet-class>ru.job4j.carssale.controllers.CarsFilters</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarsFilters</servlet-name>
+        <url-pattern>/filters</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CarsJson</servlet-name>
+        <servlet-class>ru.job4j.carssale.controllers.Cars</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CarsJson</servlet-name>
+        <url-pattern>/carsjson</url-pattern>
+    </servlet-mapping>
+
 </web-app>

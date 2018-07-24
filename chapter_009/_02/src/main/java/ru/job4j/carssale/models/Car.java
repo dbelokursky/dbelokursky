@@ -1,6 +1,7 @@
 package ru.job4j.carssale.models;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "car")
+@DynamicUpdate
 public class Car {
 
     @Id
@@ -46,7 +48,7 @@ public class Car {
     private boolean sold;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "car")
-    private Set<Image> images = new HashSet<>();
+    transient private Set<Image> images = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
