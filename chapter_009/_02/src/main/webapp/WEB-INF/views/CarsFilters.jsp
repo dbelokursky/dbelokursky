@@ -29,9 +29,10 @@
 
 
     function loadAllItems() {
-        $.ajax('./carsjson', {
+        $.ajax('./carstojson', {
             method: 'get',
             complete: function (data) {
+                var brands;
                 var result =
                     "<tr class= 'filters'>" +
                     "<th></th>" +
@@ -54,7 +55,10 @@
                         "<td>" + items[i].engine.name + "</td>" +
                         "<td>" + items[i].sold + "</td>" +
                         "</tr>";
+                    brands += "<option>" + items[i].brand + "</option>";
                 }
+                var list = document.getElementById("brand");
+                list.innerHTML = brands;
                 var table = document.getElementById("items");
                 table.innerHTML = result;
             }
@@ -68,6 +72,20 @@
     <div class="row">
         <form>
             <button class="btn btn-primary" formaction=${pageContext.servletContext.contextPath}/add>Add</button>
+        </form>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="withPhoto">With photo</label>
+                <input name="withPhoto" type="checkbox" id="withPhoto">
+            </div>
+            <div class="form-group">
+                <label for="forToday">For today</label>
+                <input name="forToday" type="checkbox" id="forToday">
+            </div>
+            <div class="form-group">
+                <label for="brand">Brand</label>
+                <select name="brand" id="brand"></select>
+            </div>
         </form>
         <div class="panel panel-primary filterable">
             <div class="panel-heading">

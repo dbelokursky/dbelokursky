@@ -58,12 +58,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>CarsJson</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.Cars</servlet-class>
+        <servlet-name>CarsToJson</servlet-name>
+        <servlet-class>ru.job4j.carssale.controllers.CarsToJsonHelper</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CarsJson</servlet-name>
-        <url-pattern>/carsjson</url-pattern>
+        <servlet-name>CarsToJson</servlet-name>
+        <url-pattern>/carstojson</url-pattern>
     </servlet-mapping>
 
 </web-app>
