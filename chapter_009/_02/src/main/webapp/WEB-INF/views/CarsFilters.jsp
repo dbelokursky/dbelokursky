@@ -112,6 +112,45 @@
         })
     }
 
+    function loadWithImg() {
+        $.ajax('./carstojson', {
+            method: 'get',
+            complete: function (data) {
+                var brands;
+                var result =
+                    "<tr class= 'filters'>" +
+                    "<th></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Brand' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Model' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Transmission' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Suspension' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Engine' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Sold' disabled></th>" +
+                    "</tr>";
+                var items = JSON.parse(data.responseText);
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].images === null) {
+                        result +=
+                            "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                            "<td><img src='img/vw-beetle.png'></td>" +
+                            "<td>" + items[i].brand + "</td>" +
+                            "<td>" + items[i].model + "</td>" +
+                            "<td>" + items[i].transmission.name + "</td>" +
+                            "<td>" + items[i].suspension.name + "</td>" +
+                            "<td>" + items[i].engine.name + "</td>" +
+                            "<td>" + items[i].sold + "</td>" +
+                            "</tr>";
+                        brands += "<option>" + items[i].brand + "</option>";
+                    }
+                }
+                var list = document.getElementById("brand");
+                list.innerHTML = brands;
+                var table = document.getElementById("items");
+                table.innerHTML = result;
+            }
+        })
+    }
+
     loadItems();
 </script>
 
@@ -123,7 +162,7 @@
         <form class="form-inline">
             <div class="form-group">
                 <label for="withPhoto">With photo</label>
-                <input name="withPhoto" type="checkbox" id="withPhoto">
+                <input name="withPhoto" type="checkbox" id="withPhoto" onclick="loadWithImg()">
             </div>
             <div class="form-group">
                 <label for="sold">Show sold</label>

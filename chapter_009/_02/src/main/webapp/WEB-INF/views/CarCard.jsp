@@ -55,6 +55,7 @@
                 </tr>
                 </tbody>
             </table>
+            <%System.out.println((request.getAttribute("car"))); %>
             <c:forEach items="${car.images}" var="img">
                 <a data-fancybox="gallery" href="http://localhost:8080/uploads/${img.name}"><img
                         src="http://localhost:8080/uploads/thumb_${img.name}"></a>

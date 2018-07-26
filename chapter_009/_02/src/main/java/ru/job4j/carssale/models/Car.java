@@ -48,7 +48,7 @@ public class Car {
     private boolean sold;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "car")
-    transient private Set<Image> images = new HashSet<>();
+    private Set<Image> images = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")

@@ -1,8 +1,11 @@
 package ru.job4j.carssale.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ru.job4j.carssale.CarsStore;
+import ru.job4j.carssale.GraphAdapterBuilder;
 import ru.job4j.carssale.models.Car;
+import ru.job4j.carssale.models.Image;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +19,13 @@ public class CarsToJsonHelper extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        List<Car> cars = new CarsStore().getAll();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        new GraphAdapterBuilder().addType(Image.class).registerOn(gsonBuilder);
+        Gson gson = gsonBuilder.create();
 
         resp.setContentType("application/json");
         resp.setContentType("UTF-8");
-        resp.getWriter().write(new Gson().toJson(cars));
+        resp.getWriter().write(gson.toJson(new CarsStore().getAll()));
     }
 
     private Set<String> getBrands(List<Car> cars) {
