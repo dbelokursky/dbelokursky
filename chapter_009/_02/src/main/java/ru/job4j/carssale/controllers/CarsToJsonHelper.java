@@ -6,6 +6,7 @@ import ru.job4j.carssale.CarsStore;
 import ru.job4j.carssale.GraphAdapterBuilder;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
+import ru.job4j.carssale.models.Owner;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public class CarsToJsonHelper extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        new GraphAdapterBuilder().addType(Image.class).registerOn(gsonBuilder);
+        new GraphAdapterBuilder().addType(Image.class).addType(Owner.class).registerOn(gsonBuilder);
         Gson gson = gsonBuilder.create();
 
         resp.setContentType("application/json");

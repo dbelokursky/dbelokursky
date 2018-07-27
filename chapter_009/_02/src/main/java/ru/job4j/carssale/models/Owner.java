@@ -26,7 +26,7 @@ public class Owner {
     private int id;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
-    transient private Set<Car> cars = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
 
     @Column(name = "login")
     private String login;
