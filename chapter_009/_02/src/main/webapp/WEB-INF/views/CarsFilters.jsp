@@ -18,25 +18,8 @@
 </head>
 
 <body>
-
-
 <script>
-    function getCarCard(id) {
-        window.location.href = "./carcard?carId=" + id;
-        return false;
-
-    }
-
     function loadItems() {
-        if ($("#sold").is(':checked') && $("#withPhoto").is(':not(:checked)')) {
-            loadAllItems();
-        } else {
-            loadUnsold();
-        }
-    }
-
-
-    function loadAllItems() {
         $.ajax('./carstojson', {
             method: 'get',
             complete: function (data) {
@@ -53,16 +36,105 @@
                     "</tr>";
                 var items = JSON.parse(data.responseText);
                 for (var i = 0; i < items.length; i++) {
-                    result +=
-                        "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
-                        "<td><img src='img/vw-beetle.png'></td>" +
-                        "<td>" + items[i].brand + "</td>" +
-                        "<td>" + items[i].model + "</td>" +
-                        "<td>" + items[i].transmission.name + "</td>" +
-                        "<td>" + items[i].suspension.name + "</td>" +
-                        "<td>" + items[i].engine.name + "</td>" +
-                        "<td>" + items[i].sold + "</td>" +
-                        "</tr>";
+                    if ($("#sold").is(':checked') && $("#withPhoto").is(':not(:checked)')) {
+                        result +=
+                            "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                            "<td><img src='img/vw-beetle.png'></td>" +
+                            "<td>" + items[i].brand + "</td>" +
+                            "<td>" + items[i].model + "</td>" +
+                            "<td>" + items[i].transmission.name + "</td>" +
+                            "<td>" + items[i].suspension.name + "</td>" +
+                            "<td>" + items[i].engine.name + "</td>" +
+                            "<td>" + items[i].sold + "</td>" +
+                            "</tr>";
+                        brands += "<option value='" + items[i].brand + "'>" + items[i].brand + "</option>";
+                    } else if ($("#sold").is(':not(:checked)') && $("#withPhoto").is(':checked')) {
+                        if (!$.isEmptyObject(items[i].images) && items[i].sold === false) {
+                            result +=
+                                "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                                "<td><img src='img/vw-beetle.png'></td>" +
+                                "<td>" + items[i].brand + "</td>" +
+                                "<td>" + items[i].model + "</td>" +
+                                "<td>" + items[i].transmission.name + "</td>" +
+                                "<td>" + items[i].suspension.name + "</td>" +
+                                "<td>" + items[i].engine.name + "</td>" +
+                                "<td>" + items[i].sold + "</td>" +
+                                "</tr>";
+                            brands += "<option>" + items[i].brand + "</option>";
+                        }
+                    } else if ($("#sold").is(':checked') && $("#withPhoto").is(':checked')) {
+                        if (!$.isEmptyObject(items[i].images)) {
+                            result +=
+                                "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                                "<td><img src='img/vw-beetle.png'></td>" +
+                                "<td>" + items[i].brand + "</td>" +
+                                "<td>" + items[i].model + "</td>" +
+                                "<td>" + items[i].transmission.name + "</td>" +
+                                "<td>" + items[i].suspension.name + "</td>" +
+                                "<td>" + items[i].engine.name + "</td>" +
+                                "<td>" + items[i].sold + "</td>" +
+                                "</tr>";
+                            brands += "<option>" + items[i].brand + "</option>";
+                        }
+                    } else {
+                        if (items[i].sold === false) {
+                            result +=
+                                "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                                "<td><img src='img/vw-beetle.png'></td>" +
+                                "<td>" + items[i].brand + "</td>" +
+                                "<td>" + items[i].model + "</td>" +
+                                "<td>" + items[i].transmission.name + "</td>" +
+                                "<td>" + items[i].suspension.name + "</td>" +
+                                "<td>" + items[i].engine.name + "</td>" +
+                                "<td>" + items[i].sold + "</td>" +
+                                "</tr>";
+                            brands += "<option value='" + items[i].brand + "'>" + items[i].brand + "</option>";
+                        }
+                    }
+                }
+                var list = document.getElementById("brand");
+                list.innerHTML = brands;
+                var table = document.getElementById("items");
+                table.innerHTML = result;
+            }
+        })
+    }
+
+
+    function getCarCard(id) {
+        window.location.href = "./carcard?carId=" + id;
+        return false;
+    }
+
+    $(document.body).on('change', "#brand", function () {
+        $.ajax('./carstojson', {
+            method: 'get',
+            complete: function (data) {
+                var brands;
+                var result =
+                    "<tr class= 'filters'>" +
+                    "<th></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Brand' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Model' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Transmission' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Suspension' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Engine' disabled></th>" +
+                    "<th><input type='text' class='form-control' placeholder='Sold' disabled></th>" +
+                    "</tr>";
+                var items = JSON.parse(data.responseText);
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].brand == $("#brand option:selected").val()) {
+                        result +=
+                            "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
+                            "<td><img src='img/vw-beetle.png'></td>" +
+                            "<td>" + items[i].brand + "</td>" +
+                            "<td>" + items[i].model + "</td>" +
+                            "<td>" + items[i].transmission.name + "</td>" +
+                            "<td>" + items[i].suspension.name + "</td>" +
+                            "<td>" + items[i].engine.name + "</td>" +
+                            "<td>" + items[i].sold + "</td>" +
+                            "</tr>";
+                    }
                     brands += "<option>" + items[i].brand + "</option>";
                 }
                 var list = document.getElementById("brand");
@@ -71,89 +143,11 @@
                 table.innerHTML = result;
             }
         })
-    }
-
-    function loadUnsold() {
-        $.ajax('./carstojson', {
-            method: 'get',
-            complete: function (data) {
-                var brands;
-                var result =
-                    "<tr class= 'filters'>" +
-                    "<th></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Brand' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Model' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Transmission' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Suspension' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Engine' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Sold' disabled></th>" +
-                    "</tr>";
-                var items = JSON.parse(data.responseText);
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].sold === false) {
-                        result +=
-                            "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
-                            "<td><img src='img/vw-beetle.png'></td>" +
-                            "<td>" + items[i].brand + "</td>" +
-                            "<td>" + items[i].model + "</td>" +
-                            "<td>" + items[i].transmission.name + "</td>" +
-                            "<td>" + items[i].suspension.name + "</td>" +
-                            "<td>" + items[i].engine.name + "</td>" +
-                            "<td>" + items[i].sold + "</td>" +
-                            "</tr>";
-                        brands += "<option>" + items[i].brand + "</option>";
-                    }
-                }
-                var list = document.getElementById("brand");
-                list.innerHTML = brands;
-                var table = document.getElementById("items");
-                table.innerHTML = result;
-            }
-        })
-    }
-
-    function loadWithImg() {
-        $.ajax('./carstojson', {
-            method: 'get',
-            complete: function (data) {
-                var brands;
-                var result =
-                    "<tr class= 'filters'>" +
-                    "<th></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Brand' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Model' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Transmission' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Suspension' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Engine' disabled></th>" +
-                    "<th><input type='text' class='form-control' placeholder='Sold' disabled></th>" +
-                    "</tr>";
-                var items = JSON.parse(data.responseText);
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].images === null) {
-                        result +=
-                            "<tr role='button' onclick='getCarCard(" + items[i].id + ")'>" +
-                            "<td><img src='img/vw-beetle.png'></td>" +
-                            "<td>" + items[i].brand + "</td>" +
-                            "<td>" + items[i].model + "</td>" +
-                            "<td>" + items[i].transmission.name + "</td>" +
-                            "<td>" + items[i].suspension.name + "</td>" +
-                            "<td>" + items[i].engine.name + "</td>" +
-                            "<td>" + items[i].sold + "</td>" +
-                            "</tr>";
-                        brands += "<option>" + items[i].brand + "</option>";
-                    }
-                }
-                var list = document.getElementById("brand");
-                list.innerHTML = brands;
-                var table = document.getElementById("items");
-                table.innerHTML = result;
-            }
-        })
-    }
+    });
 
     loadItems();
-</script>
 
+</script>
 <div class="container">
     <div class="row">
         <form>
@@ -162,7 +156,7 @@
         <form class="form-inline">
             <div class="form-group">
                 <label for="withPhoto">With photo</label>
-                <input name="withPhoto" type="checkbox" id="withPhoto" onclick="loadWithImg()">
+                <input name="withPhoto" type="checkbox" id="withPhoto" onclick="loadItems()">
             </div>
             <div class="form-group">
                 <label for="sold">Show sold</label>
@@ -178,7 +172,6 @@
                 <h3 class="panel-title">Cars Filters</h3>
             </div>
             <table class="table" id="items">
-
             </table>
         </div>
     </div>
