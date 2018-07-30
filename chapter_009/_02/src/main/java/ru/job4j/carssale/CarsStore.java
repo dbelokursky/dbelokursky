@@ -10,6 +10,7 @@ import ru.job4j.carssale.models.Image;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author Dmitry Belokursky
@@ -63,29 +64,19 @@ public class CarsStore {
     }
 
     public List<Car> getAll() {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            List<Car> cars = session.createQuery("from Car").list();
-            transaction.commit();
-            return cars;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            log.error(e.getMessage(), e);
-            throw e;
-        }
+        return tx(session -> session.createQuery("from Car")).list();
     }
 
     public Car getCar(int id) {
+        return tx(session -> session.get(Car.class, id));
+    }
+
+    private <R> R tx(final Function<Session, R> command) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Car car = session.get(Car.class, id);
-            transaction.commit();
-            return car;
-        } catch (Exception e) {
+            return command.apply(session);
+        } catch (final Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
