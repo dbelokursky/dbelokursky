@@ -64,7 +64,7 @@ public class CarsStore {
     }
 
     public List<Car> getAll() {
-        return tx(session -> session.createQuery("from Car")).list();
+        return tx(session -> session.createQuery("from Car").list());
     }
 
     public Car getCar(int id) {

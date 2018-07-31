@@ -1,4 +1,4 @@
-CREATE DATABASE cars_sale SET utf8;
+CREATE DATABASE cars_sale;
 
 CREATE TABLE transmission (
   transmission_id SERIAL PRIMARY KEY,
