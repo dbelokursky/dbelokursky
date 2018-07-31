@@ -35,9 +35,8 @@ public class CarsStoreTest {
         car.setModel("testModel");
         car.setBrand("testBrand");
         car.setImages(images);
-
-        carsStore.add(car, images);
         car.setSold(true);
+        carsStore.add(car, images);
         carsStore.update(car);
 
         boolean expected = true;

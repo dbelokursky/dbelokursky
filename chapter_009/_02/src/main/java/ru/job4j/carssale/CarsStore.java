@@ -21,46 +21,31 @@ public class CarsStore {
 
     private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
-    public void add(Car car, Set<Image> images) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(car);
-            Set<Image> tmpImages = new HashSet<>();
+    public Car add(Car car, Set<Image> images) {
+        return tx(session -> {
+            Set<Image> carImages = new HashSet<>();
             for (Image img : images) {
                 img.setCar(car);
-                tmpImages.add(img);
+                carImages.add(img);
             }
-            car.setImages(tmpImages);
+            car.setImages(carImages);
             session.save(car);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            log.error(e.getMessage(), e);
-        }
+            return car;
+        });
     }
 
-    public void update(Car car) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Car newCar = session.load(Car.class, car.getId());
-            newCar.setBrand(car.getBrand());
-            newCar.setModel(car.getModel());
-            newCar.setTransmission(car.getTransmission());
-            newCar.setSuspension(car.getSuspension());
-            newCar.setEngine(car.getEngine());
-            newCar.setSold(car.isSold());
-            session.update(newCar);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-                log.error(e.getMessage(), e);
-            }
-        }
+    public Car update(Car car) {
+        return tx(session -> {
+            Car updatedCar = session.load(Car.class, car.getId());
+            updatedCar.setBrand(car.getBrand());
+            updatedCar.setModel(car.getModel());
+            updatedCar.setTransmission(car.getTransmission());
+            updatedCar.setSuspension(car.getSuspension());
+            updatedCar.setEngine(car.getEngine());
+            updatedCar.setSold(car.isSold());
+            session.update(updatedCar);
+            return updatedCar;
+        });
     }
 
     public List<Car> getAll() {
