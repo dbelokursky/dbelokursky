@@ -36,7 +36,7 @@ public class CarsStore {
 
     public Car update(Car car) {
         return tx(session -> {
-            Car updatedCar = session.load(Car.class, car.getId());
+            Car updatedCar = session.get(Car.class, car.getId());
             updatedCar.setBrand(car.getBrand());
             updatedCar.setModel(car.getModel());
             updatedCar.setTransmission(car.getTransmission());
