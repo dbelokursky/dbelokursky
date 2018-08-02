@@ -1,9 +1,21 @@
 package ru.job4j.carssale;
 
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.junit.Test;
-import ru.job4j.carssale.models.Car;
-import ru.job4j.carssale.models.Image;
+import ru.job4j.carssale.models.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,8 +24,55 @@ import static org.junit.Assert.assertThat;
 
 public class CarsStoreTest {
 
+
     @Test
-    public void add() {
+    public void init() throws SQLException, LiquibaseException {
+        // Prepare the Hibernate configuration
+        StandardServiceRegistry reg = new StandardServiceRegistryBuilder().configure().build();
+        MetadataSources metaDataSrc = new MetadataSources(reg);
+
+        // Get database connection
+        Connection con = metaDataSrc.getServiceRegistry().getService(ConnectionProvider.class).getConnection();
+        JdbcConnection jdbcCon = new JdbcConnection(con);
+
+        // Initialize Liquibase and run the update
+        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(jdbcCon);
+        Liquibase liquibase = new Liquibase("db.changelog-master.xml", new ClassLoaderResourceAccessor(), database);
+        liquibase.update("test");
+
+        // Create Hibernate SessionFactory
+        SessionFactory sf = metaDataSrc.addAnnotatedClass(Car.class)
+                .addAnnotatedClass(Engine.class)
+                .addAnnotatedClass(Image.class)
+                .addAnnotatedClass(Owner.class)
+                .addAnnotatedClass(Suspension.class)
+                .addAnnotatedClass(Transmission.class)
+                .buildMetadata().buildSessionFactory();
+    }
+
+    @Test
+    public void add() throws LiquibaseException, SQLException {
+        // Prepare the Hibernate configuration
+        StandardServiceRegistry reg = new StandardServiceRegistryBuilder().configure().build();
+        MetadataSources metaDataSrc = new MetadataSources(reg);
+
+        // Get database connection
+        Connection con = metaDataSrc.getServiceRegistry().getService(ConnectionProvider.class).getConnection();
+        JdbcConnection jdbcCon = new JdbcConnection(con);
+
+        // Initialize Liquibase and run the update
+        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(jdbcCon);
+        Liquibase liquibase = new Liquibase("db.changelog-master.xml", new ClassLoaderResourceAccessor(), database);
+        liquibase.update("test");
+
+        // Create Hibernate SessionFactory
+        SessionFactory sf = metaDataSrc.addAnnotatedClass(Car.class)
+                .addAnnotatedClass(Engine.class)
+                .addAnnotatedClass(Image.class)
+                .addAnnotatedClass(Owner.class)
+                .addAnnotatedClass(Suspension.class)
+                .addAnnotatedClass(Transmission.class)
+                .buildMetadata().buildSessionFactory();
         CarsStore carsStore = new CarsStore();
         Car car = new Car();
         Set<Image> images = new HashSet<>();

@@ -1,0 +1,6 @@
+car_id;brand;model;transmission_id;engine_id;suspension_id;sold;owner_id
+1;brand1;model1;1;1;1;false;1
+2;brand2;model2;2;2;2;false;2
+3;brand3;model3;3;3;3;false;3
+4;brand4;model4;4;4;4;true;4
+5;brand5;model5;5;5;5;false;5
