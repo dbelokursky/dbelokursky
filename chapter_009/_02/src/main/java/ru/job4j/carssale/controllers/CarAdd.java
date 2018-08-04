@@ -45,7 +45,7 @@ public class CarAdd extends HttpServlet {
             for (FileItem item : items) {
                 if (item.isFormField()) {
                     processFormField(item, formFields);
-                } else {
+                } else if (item.getName() != "") {
                     processFileField(item, images);
                 }
             }

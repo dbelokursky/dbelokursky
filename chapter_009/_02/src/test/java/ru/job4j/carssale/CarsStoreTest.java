@@ -4,6 +4,7 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.hibernate.boot.MetadataSources;
@@ -18,28 +19,28 @@ import ru.job4j.carssale.models.Image;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class CarsStoreTest {
+    // Prepare the Hibernate configuration
+    StandardServiceRegistry reg = new StandardServiceRegistryBuilder().configure().build();
+    MetadataSources metaDataSrc = new MetadataSources(reg);
 
+    // Get database connection
+    Connection con = metaDataSrc.getServiceRegistry().getService(ConnectionProvider.class).getConnection();
+    JdbcConnection jdbcCon = new JdbcConnection(con);
+    // Initialize Liquibase and run the update
+    Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(jdbcCon);
+    Liquibase liquibase = new Liquibase("db.changelog-master.xml", new ClassLoaderResourceAccessor(), database);
+
+    public CarsStoreTest() throws SQLException, DatabaseException {
+    }
 
     @Before
-    public void init() throws SQLException, LiquibaseException {
-        // Prepare the Hibernate configuration
-        StandardServiceRegistry reg = new StandardServiceRegistryBuilder().configure().build();
-        MetadataSources metaDataSrc = new MetadataSources(reg);
-
-        // Get database connection
-        Connection con = metaDataSrc.getServiceRegistry().getService(ConnectionProvider.class).getConnection();
-        JdbcConnection jdbcCon = new JdbcConnection(con);
-
-        // Initialize Liquibase and run the update
-        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(jdbcCon);
-        Liquibase liquibase = new Liquibase("db.changelog-master.xml", new ClassLoaderResourceAccessor(), database);
+    public void init() throws LiquibaseException {
         liquibase.update("test");
     }
 
@@ -66,7 +67,6 @@ public class CarsStoreTest {
 
         String expected = "modelUpdated";
         String result = carsStore.getCar(1).getModel();
-        List<Car> cars = carsStore.getAll();
         assertThat(result, is(expected));
     }
 

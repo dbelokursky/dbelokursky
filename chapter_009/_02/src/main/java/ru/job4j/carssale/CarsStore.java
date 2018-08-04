@@ -42,6 +42,8 @@ public class CarsStore {
             updatedCar.setTransmission(car.getTransmission());
             updatedCar.setSuspension(car.getSuspension());
             updatedCar.setEngine(car.getEngine());
+            updatedCar.setImages(car.getImages());
+            updatedCar.setOwner(car.getOwner());
             updatedCar.setSold(car.isSold());
             session.update(updatedCar);
             return updatedCar;
