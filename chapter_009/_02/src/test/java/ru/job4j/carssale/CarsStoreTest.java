@@ -28,7 +28,6 @@ public class CarsStoreTest {
     // Prepare the Hibernate configuration
     StandardServiceRegistry reg = new StandardServiceRegistryBuilder().configure().build();
     MetadataSources metaDataSrc = new MetadataSources(reg);
-
     // Get database connection
     Connection con = metaDataSrc.getServiceRegistry().getService(ConnectionProvider.class).getConnection();
     JdbcConnection jdbcCon = new JdbcConnection(con);
@@ -65,7 +64,6 @@ public class CarsStoreTest {
         car.setBrand("brandUpdated");
         car.setSold(true);
         carsStore.update(car);
-
         String expected = "modelUpdated";
         String result = carsStore.getCar(1).getModel();
         assertThat(result, is(expected));
