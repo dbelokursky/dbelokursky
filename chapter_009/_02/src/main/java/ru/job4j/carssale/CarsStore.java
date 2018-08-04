@@ -36,7 +36,8 @@ public class CarsStore {
 
     public Car update(Car car) {
         return tx(session -> {
-            Car updatedCar = session.get(Car.class, car.getId());
+            Car updatedCar = new Car();
+            updatedCar.setId(car.getId());
             updatedCar.setBrand(car.getBrand());
             updatedCar.setModel(car.getModel());
             updatedCar.setTransmission(car.getTransmission());
@@ -45,7 +46,7 @@ public class CarsStore {
             updatedCar.setImages(car.getImages());
             updatedCar.setOwner(car.getOwner());
             updatedCar.setSold(car.isSold());
-            session.update(updatedCar);
+            session.saveOrUpdate(updatedCar);
             return updatedCar;
         });
     }
@@ -59,16 +60,17 @@ public class CarsStore {
     }
 
     private <R> R tx(final Function<Session, R> command) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        final Session session = sessionFactory.openSession();
+        final Transaction transaction = session.beginTransaction();
+        try {
             return command.apply(session);
         } catch (final Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            transaction.rollback();
             log.error(e.getMessage(), e);
             throw e;
+        } finally {
+            transaction.commit();
+            session.close();
         }
     }
 }

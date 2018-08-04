@@ -59,7 +59,8 @@ public class CarsStoreTest {
     @Test
     public void update() {
         CarsStore carsStore = new CarsStore();
-        Car car = carsStore.getCar(1);
+        Car car = new Car();
+        car.setId(1);
         car.setModel("modelUpdated");
         car.setBrand("brandUpdated");
         car.setSold(true);
