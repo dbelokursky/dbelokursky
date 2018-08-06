@@ -64,6 +64,7 @@ public class CarsStoreTest {
         car.setBrand("brandUpdated");
         car.setSold(true);
         carsStore.update(car);
+
         String expected = "modelUpdated";
         String result = carsStore.getCar(1).getModel();
         assertThat(result, is(expected));

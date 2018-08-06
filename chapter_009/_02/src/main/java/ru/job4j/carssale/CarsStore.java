@@ -46,7 +46,7 @@ public class CarsStore {
             updatedCar.setImages(car.getImages());
             updatedCar.setOwner(car.getOwner());
             updatedCar.setSold(car.isSold());
-            session.saveOrUpdate(updatedCar);
+            session.update(updatedCar);
             return updatedCar;
         });
     }
