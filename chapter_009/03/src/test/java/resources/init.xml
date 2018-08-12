@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Create tables" author="dbelokursky" runOnChange="true" context="test">
+
+        <!-- Drop tables if exists -->
+        <sql splitStatements="true">
+            DROP TABLE IF EXISTS "storage_user" CASCADE;
+        </sql>
+
+        <!-- Create tables -->
+        <sql>
+            CREATE TABLE storage_user (
+            user_id INTEGER IDENTITY PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            password VARCHAR(100) NOT NULL);
+        </sql>
+
+        <!-- Loading of Data -->
+        <loadData file="data/storage_user.csv" tableName="storage_user" separator=";">
+            <column name="user_id" type="NUMERIC"/>
+            <column name="name" type="STRING"/>
+            <column name="password" type="STRING"/>
+        </loadData>
+
+    </changeSet>
+</databaseChangeLog>
