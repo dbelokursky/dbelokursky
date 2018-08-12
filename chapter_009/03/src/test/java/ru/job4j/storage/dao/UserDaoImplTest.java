@@ -25,7 +25,7 @@ public class UserDaoImplTest {
 
     @Before
     public void before() throws LiquibaseException, SQLException {
-        context = new ClassPathXmlApplicationContext("spring-conf-tests.xml");
+        context = new ClassPathXmlApplicationContext("file:src/test/resources/spring-conf-tests.xml");
         userDao = context.getBean("userDAO", UserDao.class);
         DataSource dataSource = (DataSource) context.getBean("dataSource");
         // Get database connection
