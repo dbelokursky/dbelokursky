@@ -73,7 +73,7 @@ public class CarsStoreTest {
     @Test
     public void getAll() {
         CarsStore carsStore = new CarsStore();
-        int expected = 5;
+        int expected = 7;
         int result = carsStore.getAll().size();
         assertThat(result, is(expected));
     }
@@ -83,6 +83,38 @@ public class CarsStoreTest {
         CarsStore carsStore = new CarsStore();
         String expected = "model1";
         String result = carsStore.getCar(1).getModel();
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void getByBrand() {
+        CarsStore carsStore = new CarsStore();
+        int expected = 3;
+        int result = carsStore.getByBrand("brand5").size();
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void getByModel() {
+        CarsStore carsStore = new CarsStore();
+        int expected = 2;
+        int result = carsStore.getByModel("model55").size();
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void getUnsold() {
+        CarsStore carsStore = new CarsStore();
+        int expected = 6;
+        int result = carsStore.getUnsold().size();
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void getWithImages() {
+        CarsStore carsStore = new CarsStore();
+        int expected = 4;
+        int result = carsStore.getWithImages().size();
         assertThat(result, is(expected));
     }
 }

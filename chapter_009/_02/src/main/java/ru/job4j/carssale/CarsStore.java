@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
 
@@ -49,6 +50,31 @@ public class CarsStore {
             session.update(updatedCar);
             return updatedCar;
         });
+    }
+
+    public List<Car> getByBrand(String brand) {
+        return tx(session -> {
+            Query query = session.createQuery("from Car where brand=(?1)");
+            return query.setParameter(1, brand).list();
+        });
+    }
+
+    public List<Car> getByModel(String model) {
+        return tx(session -> {
+            Query query = session.createQuery("from Car where model=(?1)");
+            return query.setParameter(1, model).list();
+        });
+    }
+
+    public List<Car> getUnsold() {
+        return tx(session -> {
+            Query query = session.createQuery("from Car where sold=(?1)");
+            return query.setParameter(1, false).list();
+        });
+    }
+
+    public List<Car> getWithImages() {
+        return tx(session -> session.createQuery("from Car where images.size > 0").list());
     }
 
     public List<Car> getAll() {
