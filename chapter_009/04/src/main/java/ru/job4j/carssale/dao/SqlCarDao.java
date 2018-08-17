@@ -1,10 +1,11 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.dao;
 
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import ru.job4j.carssale.HibernateUtil;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
 
@@ -18,7 +19,7 @@ import java.util.function.Function;
  * @since 27.06.18.
  */
 @Log4j
-public class CarsStore {
+public class SqlCarDao implements CarDao {
 
     private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 

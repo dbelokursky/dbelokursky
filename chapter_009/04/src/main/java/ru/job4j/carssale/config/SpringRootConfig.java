@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("ru.job4j.carssale")
-public class StringRootConfig {
+public class SpringRootConfig {
 }

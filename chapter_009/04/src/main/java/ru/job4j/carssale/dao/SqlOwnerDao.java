@@ -1,16 +1,17 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.dao;
 
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import ru.job4j.carssale.HibernateUtil;
 import ru.job4j.carssale.models.Owner;
 
 import java.util.List;
 
 @Log4j
-public class OwnerStore {
+public class SqlOwnerDao {
 
     private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
