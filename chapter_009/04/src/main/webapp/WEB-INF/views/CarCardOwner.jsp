@@ -43,7 +43,7 @@
             </td>
             <td>
                 <label class="btn btn-primary">
-                    Save<input type="submit" formaction=${pageContext.servletContext.contextPath}/edit value="Save"
+                    Save<input type="submit" formaction=${pageContext.servletContext.contextPath}/carcard value="Save"
                                style="display: none;">
                 </label>
             </td>

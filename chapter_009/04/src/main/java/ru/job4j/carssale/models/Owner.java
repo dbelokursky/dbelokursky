@@ -1,16 +1,14 @@
 package ru.job4j.carssale.models;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString(exclude = "cars")
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "cars")

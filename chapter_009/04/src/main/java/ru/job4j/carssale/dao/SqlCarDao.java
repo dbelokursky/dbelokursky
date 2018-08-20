@@ -1,12 +1,14 @@
-package ru.job4j.carssale;
+package ru.job4j.carssale.dao;
 
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import ru.job4j.carssale.HibernateUtil;
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
+import ru.job4j.carssale.models.Owner;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.function.Function;
  * @since 27.06.18.
  */
 @Log4j
-public class CarsStore {
+public class SqlCarDao implements CarDao {
 
     private final SessionFactory sessionFactory = HibernateUtil.INSTANCE.getSessionFactory();
 
@@ -37,7 +39,8 @@ public class CarsStore {
 
     public Car update(Car car) {
         return tx(session -> {
-            Car updatedCar = new Car();
+            Car updatedCar = session.load(Car.class, car.getId());
+            Owner owner = session.load(Owner.class, car.getOwner().getId());
             updatedCar.setId(car.getId());
             updatedCar.setBrand(car.getBrand());
             updatedCar.setModel(car.getModel());
@@ -45,7 +48,7 @@ public class CarsStore {
             updatedCar.setSuspension(car.getSuspension());
             updatedCar.setEngine(car.getEngine());
             updatedCar.setImages(car.getImages());
-            updatedCar.setOwner(car.getOwner());
+            updatedCar.setOwner(owner);
             updatedCar.setSold(car.isSold());
             session.update(updatedCar);
             return updatedCar;

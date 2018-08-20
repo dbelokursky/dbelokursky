@@ -11,13 +11,15 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan("ru.job4j.carssale")
+@ComponentScan("ru.job4j.carssale.controllers")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**", "/img/")
+        registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("/img/");
     }
 
     @Bean
@@ -28,5 +30,4 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         resolver.setSuffix(".jsp");
         return resolver;
     }
-
 }

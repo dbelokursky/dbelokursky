@@ -6,7 +6,7 @@ public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitialize
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{StringRootConfig.class};
+        return new Class[]{SpringRootConfig.class};
     }
 
     @Override
