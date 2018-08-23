@@ -23,7 +23,8 @@ CREATE TABLE car (
   engine_id       INTEGER REFERENCES engine (engine_id),
   suspension_id   INTEGER REFERENCES suspension (suspension_id),
   sold          BOOLEAN,
-  owner_id INTEGER REFERENCES owner(owner_id)
+  owner_id INTEGER REFERENCES owner(owner_id),
+  publication_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE image(

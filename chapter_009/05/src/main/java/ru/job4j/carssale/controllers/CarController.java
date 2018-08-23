@@ -111,6 +111,7 @@ public class CarController {
         ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
         servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
         servletFileUpload.setHeaderEncoding("UTF-8");
+        Car car = new Car();
         try {
             List<FileItem> items = servletFileUpload.parseRequest(req);
             for (FileItem item : items) {
@@ -121,6 +122,8 @@ public class CarController {
                 }
             }
 
+            Owner owner = (Owner) req.getSession(false).getAttribute("owner");
+
             Transmission transmission = new Transmission();
             transmission.setName(formFields.get("transmission"));
 
@@ -130,14 +133,14 @@ public class CarController {
             Engine engine = new Engine();
             engine.setName(formFields.get("engine"));
 
-            Car car = new Car();
+
             car.setBrand(formFields.get("brand"));
             car.setModel(formFields.get("model"));
             car.setSuspension(suspension);
             car.setTransmission(transmission);
             car.setEngine(engine);
             car.setSold(Boolean.parseBoolean(formFields.get("sold")));
-            car.setOwner((Owner) req.getSession(false).getAttribute("owner"));
+            car.setOwner(owner);
             setCar(images, car);
             carRepository.save(car);
         } catch (Exception e) {
