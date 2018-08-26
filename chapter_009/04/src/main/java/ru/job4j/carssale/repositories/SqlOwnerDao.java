@@ -1,4 +1,4 @@
-package ru.job4j.carssale.dao;
+package ru.job4j.carssale.repositories;
 
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;

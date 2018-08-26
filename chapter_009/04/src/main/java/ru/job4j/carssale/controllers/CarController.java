@@ -11,11 +11,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.job4j.carssale.dao.CarDao;
-import ru.job4j.carssale.dao.OwnerDao;
-import ru.job4j.carssale.dao.SqlCarDao;
-import ru.job4j.carssale.dao.SqlOwnerDao;
 import ru.job4j.carssale.models.*;
+import ru.job4j.carssale.repositories.CarDao;
+import ru.job4j.carssale.repositories.OwnerDao;
+import ru.job4j.carssale.repositories.SqlCarDao;
+import ru.job4j.carssale.repositories.SqlOwnerDao;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;

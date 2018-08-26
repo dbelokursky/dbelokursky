@@ -1,4 +1,4 @@
-package ru.job4j.carssale.dao;
+package ru.job4j.carssale.repositories;
 
 import ru.job4j.carssale.models.Car;
 import ru.job4j.carssale.models.Image;
