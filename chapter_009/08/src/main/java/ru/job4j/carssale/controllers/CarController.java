@@ -2,19 +2,21 @@ package ru.job4j.carssale.controllers;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.carssale.domain.*;
 import ru.job4j.carssale.service.CarService;
 import ru.job4j.carssale.service.OwnerService;
@@ -26,8 +28,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +43,9 @@ public class CarController {
     private final OwnerService ownerService;
 
     private ServletContext context;
+
+    @Value("${upload.path}")
+    private String uploadDirPath;
 
     @Autowired
     public CarController(CarService carService, OwnerService ownerService) {
@@ -55,12 +61,12 @@ public class CarController {
     @GetMapping("/cars")
     public String showCars(ModelMap model) {
         model.addAttribute("cars", carService.findAll());
-        return "CarsList";
+        return "carsList";
     }
 
     @GetMapping("/carcard")
     public String showCarCardById(@ModelAttribute("carId") Long id, ModelMap model, HttpServletRequest req) {
-        String resultPage = "CarCard";
+        String resultPage = "carCard";
         Car car = carService.findById(id);
         req.setAttribute("car", car);
 
@@ -69,7 +75,7 @@ public class CarController {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Owner owner = ownerService.findByLogin(user.getUsername());
             if (car.getOwner() != null && owner.getId() == car.getOwner().getId()) {
-                resultPage = "CarCardOwner";
+                resultPage = "carCardOwner";
             }
         }
         model.addAttribute("car", car);
@@ -97,63 +103,83 @@ public class CarController {
         car.setSold(status);
         carService.save(car);
         modelMap.addAttribute("cars", carService.findAll());
-        return "CarsList";
+        return "carsList";
     }
 
     @GetMapping("/add")
-    public String getCarAddPage() {
-        return "CarAdd";
+    public String getCarAddPage(Model model) {
+        model.addAttribute("car", new Car());
+        return "carAdd";
     }
 
     @PostMapping("/add")
-    public String addCar(HttpServletRequest req, ModelMap modelMap) {
-        Map<String, String> formFields = new HashMap<>();
+    public String addCar(@ModelAttribute Car car, HttpServletRequest req, @RequestParam MultipartFile file, ModelMap modelMap) {
+        Owner owner = (Owner) req.getSession(false).getAttribute("owner");
+        System.out.println(owner);
         List<Image> images = new ArrayList<>();
-        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-        diskFileItemFactory.setSizeThreshold(1024 * 1024);
-        File tempDir = (File) context.getAttribute("javax.servlet.context.tempdir");
-        diskFileItemFactory.setRepository(tempDir);
-        ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
-        servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
-        servletFileUpload.setHeaderEncoding("UTF-8");
-        Car car = new Car();
-        try {
-            List<FileItem> items = servletFileUpload.parseRequest(req);
-            for (FileItem item : items) {
-                if (item.isFormField()) {
-                    processFormField(item, formFields);
-                } else if (item.getName() != "") {
-                    processFileField(item, images);
-                }
+        if (!file.isEmpty()) {
+            String fileName = String.format("%3.0f%s", Math.random() * 1000, file.getOriginalFilename());
+            try {
+                InputStream inputStream = file.getInputStream();
+                Files.copy(inputStream, Paths.get(uploadDirPath + fileName));
+                Image image = new Image();
+                image.setName(fileName);
+                image.setCar(car);
+                images.add(image);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
             }
-
-            Owner owner = (Owner) req.getSession(false).getAttribute("owner");
-
-            Transmission transmission = new Transmission();
-            transmission.setName(formFields.get("transmission"));
-
-            Suspension suspension = new Suspension();
-            suspension.setName(formFields.get("suspension"));
-
-            Engine engine = new Engine();
-            engine.setName(formFields.get("engine"));
-
-
-            car.setBrand(formFields.get("brand"));
-            car.setModel(formFields.get("model"));
-            car.setSuspension(suspension);
-            car.setTransmission(transmission);
-            car.setEngine(engine);
-            car.setSold(Boolean.parseBoolean(formFields.get("sold")));
-            car.setOwner(owner);
-            setCar(images, car);
-            car.setImages(images);
-            carService.save(car);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
         }
+        System.out.println(car);
+        car.setOwner(owner);
+        carService.save(car);
+//        Map<String, String> formFields = new HashMap<>();
+//        List<Image> images = new ArrayList<>();
+//        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
+//        diskFileItemFactory.setSizeThreshold(1024 * 1024);
+//        File tempDir = (File) context.getAttribute("javax.servlet.context.tempdir");
+//        diskFileItemFactory.setRepository(tempDir);
+//        ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
+//        servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
+//        servletFileUpload.setHeaderEncoding("UTF-8");
+//        Car car = new Car();
+//        try {
+//            List<FileItem> items = servletFileUpload.parseRequest(req);
+//            for (FileItem item : items) {
+//                if (item.isFormField()) {
+//                    processFormField(item, formFields);
+//                } else if (item.getName() != "") {
+//                    processFileField(item, images);
+//                }
+//            }
+//
+//            Owner owner = (Owner) req.getSession(false).getAttribute("owner");
+//
+//            Transmission transmission = new Transmission();
+//            transmission.setName(formFields.get("transmission"));
+//
+//            Suspension suspension = new Suspension();
+//            suspension.setName(formFields.get("suspension"));
+//
+//            Engine engine = new Engine();
+//            engine.setName(formFields.get("engine"));
+//
+//
+//            car.setBrand(formFields.get("brand"));
+//            car.setModel(formFields.get("model"));
+//            car.setSuspension(suspension);
+//            car.setTransmission(transmission);
+//            car.setEngine(engine);
+//            car.setSold(Boolean.parseBoolean(formFields.get("sold")));
+//            car.setOwner(owner);
+//            setCar(images, car);
+//            car.setImages(images);
+//            carService.save(car);
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//        }
         modelMap.addAttribute("cars", carService.findAll());
-        return "CarsList";
+        return "carsList";
     }
 
     private void setCar(List<Image> images, Car car) {
@@ -191,17 +217,17 @@ public class CarController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "Login";
+        return "login";
     }
 
     @PostMapping("/login")
     public String login(@ModelAttribute("owner") Owner owner, HttpServletRequest request, ModelMap model) {
-        String resultPage = "Login";
+        String resultPage = "login";
         Owner carOwner = ownerService.findAllByLoginAndPassword(owner.getLogin(), owner.getPassword());
         if (carOwner != null) {
             request.getSession().setAttribute("owner", carOwner);
             model.addAttribute("cars", carService.findAll());
-            resultPage = "CarsList";
+            resultPage = "carsList";
         }
         return resultPage;
     }

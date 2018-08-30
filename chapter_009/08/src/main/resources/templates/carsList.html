@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link href="resources/table.css" rel="stylesheet">
+    <link href="/css/table.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -61,7 +61,7 @@
 <div class="container">
     <div class="row">
         <form>
-            <button class="btn btn-primary" formaction=${pageContext.servletContext.contextPath}/add>Add</button>
+            <button class="btn btn-primary" th:formaction="@{/add}">Add</button>
         </form>
         <div class="panel panel-primary filterable">
             <div class="panel-heading">
@@ -85,17 +85,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr role="button"
-                    onclick="window.location.href='${pageContext.servletContext.contextPath}/carcard?carId=${car.id}' ; return false"
-                    th:each="car : ${cars}">
-                    <td><img src="img/car-logo.png"></td>
-                    <td>${car.brand}</td>
-                    <td>${car.model}</td>
-                    <td>${car.transmission.name}</td>
-                    <td>${car.suspension.name}</td>
-                    <td>${car.engine.name}</td>
-                    <td>${car.sold}</td>
-                </tr>
+                <div th:each="car : ${cars}">
+                    <tr role="button"
+                        th:onclick="'window.location.href = \'' + @{/carcard?carId={id}(id=${car.id})} + '\''">
+
+                        <td><img src="/img/car-logo.png"></td>
+                        <td th:text="${car.brand}"></td>
+                        <td th:text="${car.model}"></td>
+                        <td th:text="${car.transmission.name}"></td>
+                        <td th:text="${car.suspension.name}"></td>
+                        <td th:text="${car.engine.name}"></td>
+                        <td th:text="${car.sold}"></td>
+                    </tr>
+                </div>
                 </tbody>
             </table>
         </div>

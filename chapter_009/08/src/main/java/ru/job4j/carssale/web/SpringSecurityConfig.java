@@ -39,7 +39,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/resources/**", "/img/**").permitAll()
+                .antMatchers("/", "/static/**").permitAll()
                 .antMatchers("/ownerslist").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -54,8 +54,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic()
                 .and()
-                .csrf().disable()
-                .logout().logoutSuccessUrl("/login")
-                .permitAll();
+                .csrf().disable();
     }
 }

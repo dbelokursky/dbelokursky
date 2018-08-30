@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Log in</title>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="resources/login.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
@@ -11,7 +11,7 @@
 <body>
 <div id="fullscreen_bg" class="fullscreen_bg"/>
 <div class="container">
-    <form class="form-signin" method="post" formaction="@{/j_spring_security_check}">
+    <form class="form-signin" method="post" th:formaction="@{j_spring_security_check}">
         <h1 class="form-signin-heading text-muted">Sign In</h1>
         <input type="text" name="login" class="form-control" placeholder="Login" required="" autofocus="">
         <input type="password" name="password" class="form-control" placeholder="Password" required="">

@@ -20,11 +20,11 @@ public class OwnerController {
     @RequestMapping(value = "/ownerslist", method = RequestMethod.GET)
     public String getOwnersList(ModelMap modelMap) {
         modelMap.addAttribute("owners", ownerService.findAll());
-        return "OwnersList";
+        return "ownerList";
     }
 
     @RequestMapping(value = "/accessdenied", method = RequestMethod.GET)
     public String getAccessDeniedPage() {
-        return "AccessDenied";
+        return "accessDenied";
     }
 }
