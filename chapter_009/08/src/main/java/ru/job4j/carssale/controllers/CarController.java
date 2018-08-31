@@ -1,8 +1,6 @@
 package ru.job4j.carssale.controllers;
 
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.util.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -32,7 +30,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Log4j
 @Controller
@@ -113,9 +110,12 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public String addCar(@ModelAttribute Car car, HttpServletRequest req, @RequestParam MultipartFile file, ModelMap modelMap) {
-        Owner owner = (Owner) req.getSession(false).getAttribute("owner");
-        System.out.println(owner);
+    public String addCar(@ModelAttribute Car car, @RequestParam MultipartFile file, ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        Owner owner = ownerService.findByLogin(authentication.getName());
+        System.out.println(owner.getLogin());
+        System.out.println(owner.getPassword());
         List<Image> images = new ArrayList<>();
         if (!file.isEmpty()) {
             String fileName = String.format("%3.0f%s", Math.random() * 1000, file.getOriginalFilename());
@@ -130,7 +130,6 @@ public class CarController {
                 log.error(e.getMessage(), e);
             }
         }
-        System.out.println(car);
         car.setOwner(owner);
         carService.save(car);
 //        Map<String, String> formFields = new HashMap<>();
@@ -188,31 +187,10 @@ public class CarController {
         }
     }
 
-    private void processFileField(FileItem item, List<Image> images) throws Exception {
-        String fileName = System.currentTimeMillis() + item.getName();
-        String uploadDirPath = System.getProperty("catalina.home") + "/webapps/uploads/";
-        String filePath = uploadDirPath + fileName;
-        Image img = new Image();
-        img.setName(fileName);
-        img.setPath(filePath);
-        images.add(img);
-        item.write(new File(filePath));
-        makeThumbnail(uploadDirPath, fileName);
-    }
-
     private void makeThumbnail(String uploadDirPath, String fileName) throws IOException {
         BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         thumbnail.createGraphics().drawImage(ImageIO.read(new File(uploadDirPath + fileName)).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
         ImageIO.write(thumbnail, "jpg", new File(uploadDirPath + "thumb_" + fileName));
-    }
-
-    private void processFormField(FileItem item, Map<String, String> formFields) {
-        try {
-            InputStream stream = item.getInputStream();
-            formFields.put(item.getFieldName(), Streams.asString(stream, "UTF-8"));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
     }
 
     @GetMapping("/login")
@@ -221,11 +199,11 @@ public class CarController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("owner") Owner owner, HttpServletRequest request, ModelMap model) {
+    public String login(@ModelAttribute("owner") Owner owner, HttpServletRequest req, ModelMap model) {
         String resultPage = "login";
         Owner carOwner = ownerService.findAllByLoginAndPassword(owner.getLogin(), owner.getPassword());
         if (carOwner != null) {
-            request.getSession().setAttribute("owner", carOwner);
+            req.getSession().setAttribute("owner", carOwner);
             model.addAttribute("cars", carService.findAll());
             resultPage = "carsList";
         }
