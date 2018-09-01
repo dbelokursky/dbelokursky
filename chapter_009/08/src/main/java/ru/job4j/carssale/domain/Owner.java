@@ -23,8 +23,9 @@ public class Owner {
     @Column(name = "owner_id")
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Car> cars = new HashSet<>();
 
     @Column(name = "login")
@@ -36,7 +37,7 @@ public class Owner {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "owner_role",
             joinColumns = {@JoinColumn(name = "owner_id")},

@@ -13,8 +13,6 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ToString(exclude = "images")
-@EqualsAndHashCode(exclude = "images")
 @NoArgsConstructor
 @Entity
 @Table(name = "car")
@@ -48,9 +46,12 @@ public class Car {
     private boolean sold;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "car")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Image> images = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "owner_id")
+    @EqualsAndHashCode.Exclude
     private Owner owner;
 }
