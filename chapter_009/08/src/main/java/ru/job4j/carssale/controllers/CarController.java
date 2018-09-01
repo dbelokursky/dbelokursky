@@ -1,6 +1,7 @@
 package ru.job4j.carssale.controllers;
 
 import lombok.extern.log4j.Log4j;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -27,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -103,16 +103,26 @@ public class CarController {
         Owner owner = ownerService.findByLogin(authentication.getName());
         List<Image> images = new ArrayList<>();
         if (!file.isEmpty()) {
-            String fileName = String.format("%3.0f%s", Math.random() * 1000, file.getOriginalFilename());
+            String imageName = String.format("%3.0f%s", Math.random() * 1000, file.getOriginalFilename());
             try {
-                InputStream inputStream = file.getInputStream();
-                String imagePath = uploadDirPath + fileName;
-                Files.copy(inputStream, Paths.get(imagePath));
+                String imagePath = uploadDirPath + imageName;
+                String thumbnailPath = uploadDirPath + "thubm_" + imageName;
+                Files.copy(file.getInputStream(), Paths.get(imagePath));
+                BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+                BufferedImage thumbnail = Scalr.resize(bufferedImage,
+                        Scalr.Method.QUALITY,
+                        Scalr.Mode.AUTOMATIC,
+                        100,
+                        Scalr.OP_ANTIALIAS);
+
+                String fileExtension = imageName.toLowerCase().substring(imageName.lastIndexOf(".") + 1);
+                ImageIO.write(thumbnail, fileExtension, new File(thumbnailPath));
                 Image image = new Image();
-                image.setName(fileName);
+                image.setName(imageName);
                 image.setPath(imagePath);
                 image.setCar(car);
                 images.add(image);
+                car.setImages(images);
                 imageService.save(image);
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
@@ -122,12 +132,6 @@ public class CarController {
         carService.save(car);
         modelMap.addAttribute("cars", carService.findAll());
         return "carsList";
-    }
-
-    private void makeThumbnail(String uploadDirPath, String fileName) throws IOException {
-        BufferedImage thumbnail = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-        thumbnail.createGraphics().drawImage(ImageIO.read(new File(uploadDirPath + fileName)).getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
-        ImageIO.write(thumbnail, "jpg", new File(uploadDirPath + "thumb_" + fileName));
     }
 
     @GetMapping("/login")
