@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset='utf-8'>
-    <title>Car card</title>
+    <title>Car card owner</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -75,8 +75,8 @@
                 </tbody>
             </table>
             <div th:each="img : ${car.images}">
-                <a data-fancybox="gallery" th:src="@{${image.path}}">
-                    <img th:src="@{${image.path}}"/>
+                <a data-fancybox="gallery" th:href="'uploads/' + ${img.name}">
+                    <img th:src="'uploads/thumb_' + ${img.name}"/>
                 </a>
             </div>
         </div>

@@ -101,13 +101,11 @@ public class CarController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Owner owner = ownerService.findByLogin(authentication.getName());
         List<Image> images = new ArrayList<>();
-        StringBuilder imagesNames = new StringBuilder();
-
         try {
             for (MultipartFile multipartFile : files) {
                 String imageName = String.format("%3.0f%s", Math.random() * 1000, multipartFile.getOriginalFilename());
                 String imagePath = uploadDirPath + imageName;
-                String thumbnailPath = uploadDirPath + "thubm_" + imageName;
+                String thumbnailPath = uploadDirPath + "thumb_" + imageName;
                 Files.copy(multipartFile.getInputStream(), Paths.get(imagePath));
                 BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
                 BufferedImage thumbnail = Scalr.resize(bufferedImage,
