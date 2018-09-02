@@ -102,26 +102,28 @@ public class CarController {
         Owner owner = ownerService.findByLogin(authentication.getName());
         List<Image> images = new ArrayList<>();
         try {
-            for (MultipartFile multipartFile : files) {
-                String imageName = String.format("%3.0f%s", Math.random() * 1000, multipartFile.getOriginalFilename());
-                String imagePath = uploadDirPath + imageName;
-                String thumbnailPath = uploadDirPath + "thumb_" + imageName;
-                Files.copy(multipartFile.getInputStream(), Paths.get(imagePath));
-                BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
-                BufferedImage thumbnail = Scalr.resize(bufferedImage,
-                        Scalr.Method.QUALITY,
-                        Scalr.Mode.AUTOMATIC,
-                        100,
-                        Scalr.OP_ANTIALIAS);
+            if (files != null && files.length > 0) {
+                for (MultipartFile multipartFile : files) {
+                    String imageName = String.format("%3.0f%s", Math.random() * 1000, multipartFile.getOriginalFilename());
+                    String imagePath = uploadDirPath + imageName;
+                    String thumbnailPath = uploadDirPath + "thumb_" + imageName;
+                    Files.copy(multipartFile.getInputStream(), Paths.get(imagePath));
+                    BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
+                    BufferedImage thumbnail = Scalr.resize(bufferedImage,
+                            Scalr.Method.QUALITY,
+                            Scalr.Mode.AUTOMATIC,
+                            100,
+                            Scalr.OP_ANTIALIAS);
 
-                String fileExtension = imageName.toLowerCase().substring(imageName.lastIndexOf(".") + 1);
-                ImageIO.write(thumbnail, fileExtension, new File(thumbnailPath));
-                Image image = new Image();
-                image.setName(imageName);
-                image.setPath(imagePath);
-                image.setCar(car);
-                images.add(image);
-                imageService.save(image);
+                    String fileExtension = imageName.toLowerCase().substring(imageName.lastIndexOf(".") + 1);
+                    ImageIO.write(thumbnail, fileExtension, new File(thumbnailPath));
+                    Image image = new Image();
+                    image.setName(imageName);
+                    image.setPath(imagePath);
+                    image.setCar(car);
+                    images.add(image);
+                    imageService.save(image);
+                }
             }
             car.setImages(images);
             car.setOwner(owner);

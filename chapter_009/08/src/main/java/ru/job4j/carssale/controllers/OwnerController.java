@@ -3,6 +3,7 @@ package ru.job4j.carssale.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.job4j.carssale.service.OwnerService;
@@ -17,10 +18,10 @@ public class OwnerController {
         this.ownerService = ownerService;
     }
 
-    @RequestMapping(value = "/ownerslist", method = RequestMethod.GET)
+    @GetMapping("/owners")
     public String getOwnersList(ModelMap modelMap) {
         modelMap.addAttribute("owners", ownerService.findAll());
-        return "ownerList";
+        return "ownersList";
     }
 
     @RequestMapping(value = "/accessdenied", method = RequestMethod.GET)
