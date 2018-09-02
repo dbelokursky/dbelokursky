@@ -75,8 +75,8 @@
                 </tbody>
             </table>
             <div th:each="img : ${car.images}">
-                <a data-fancybox="gallery" th:href="@{/uploads/} + ${img.name}">
-                    <img th:src="@{/uploads/thumb_}+${img.name}"/>
+                <a data-fancybox="gallery" th:src="@{${image.path}}">
+                    <img th:src="@{${image.path}}"/>
                 </a>
             </div>
         </div>

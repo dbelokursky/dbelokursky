@@ -24,7 +24,6 @@ import ru.job4j.carssale.service.OwnerService;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -98,17 +97,19 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public String addCar(@ModelAttribute Car car, @RequestParam MultipartFile file, ModelMap modelMap) {
+    public String addCar(@ModelAttribute Car car, @RequestParam MultipartFile[] files) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Owner owner = ownerService.findByLogin(authentication.getName());
         List<Image> images = new ArrayList<>();
-        if (!file.isEmpty()) {
-            String imageName = String.format("%3.0f%s", Math.random() * 1000, file.getOriginalFilename());
-            try {
+        StringBuilder imagesNames = new StringBuilder();
+
+        try {
+            for (MultipartFile multipartFile : files) {
+                String imageName = String.format("%3.0f%s", Math.random() * 1000, multipartFile.getOriginalFilename());
                 String imagePath = uploadDirPath + imageName;
                 String thumbnailPath = uploadDirPath + "thubm_" + imageName;
-                Files.copy(file.getInputStream(), Paths.get(imagePath));
-                BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+                Files.copy(multipartFile.getInputStream(), Paths.get(imagePath));
+                BufferedImage bufferedImage = ImageIO.read(multipartFile.getInputStream());
                 BufferedImage thumbnail = Scalr.resize(bufferedImage,
                         Scalr.Method.QUALITY,
                         Scalr.Mode.AUTOMATIC,
@@ -122,32 +123,20 @@ public class CarController {
                 image.setPath(imagePath);
                 image.setCar(car);
                 images.add(image);
-                car.setImages(images);
                 imageService.save(image);
-            } catch (IOException e) {
-                log.error(e.getMessage(), e);
             }
+            car.setImages(images);
+            car.setOwner(owner);
+            carService.save(car);
+
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
         }
-        car.setOwner(owner);
-        carService.save(car);
-        modelMap.addAttribute("cars", carService.findAll());
-        return "carsList";
+        return "redirect:/cars";
     }
 
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute("owner") Owner owner, HttpServletRequest req, ModelMap model) {
-        String resultPage = "login";
-        Owner carOwner = ownerService.findAllByLoginAndPassword(owner.getLogin(), owner.getPassword());
-        if (carOwner != null) {
-            req.getSession().setAttribute("owner", carOwner);
-            model.addAttribute("cars", carService.findAll());
-            resultPage = "carsList";
-        }
-        return resultPage;
     }
 }
