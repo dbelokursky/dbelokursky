@@ -1,4 +1,4 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import lombok.extern.log4j.Log4j;
 import org.imgscalr.Scalr;
@@ -83,8 +83,7 @@ public class CarController {
 
     @PostMapping("/carcard")
     public String updateCarCard(@ModelAttribute Car car) {
-        Owner owner = ownerService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-        car.setOwner(owner);
+        car.setOwner(ownerService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()));
         carService.save(car);
         return "redirect:/cars";
     }
@@ -97,8 +96,6 @@ public class CarController {
 
     @PostMapping("/add")
     public String addCar(@ModelAttribute Car car, @RequestParam MultipartFile[] files) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Owner owner = ownerService.findByLogin(authentication.getName());
         List<Image> images = new ArrayList<>();
         try {
             if (files != null && files.length > 0) {
@@ -114,7 +111,7 @@ public class CarController {
                             100,
                             Scalr.OP_ANTIALIAS);
 
-                    String fileExtension = imageName.toLowerCase().substring(imageName.lastIndexOf(".") + 1);
+                    String fileExtension = imageName.trim().toLowerCase().substring(imageName.lastIndexOf(".") + 1);
                     ImageIO.write(thumbnail, fileExtension, new File(thumbnailPath));
                     Image image = new Image();
                     image.setName(imageName);
@@ -125,9 +122,8 @@ public class CarController {
                 }
             }
             car.setImages(images);
-            car.setOwner(owner);
+            car.setOwner(ownerService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()));
             carService.save(car);
-
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }

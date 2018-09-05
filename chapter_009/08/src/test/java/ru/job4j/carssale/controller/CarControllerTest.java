@@ -1,4 +1,4 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +17,9 @@ import ru.job4j.carssale.service.OwnerService;
 import java.util.ArrayList;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -86,17 +87,27 @@ public class CarControllerTest {
     @WithMockUser(username = "owner1")
     public void updateCarCard() throws Exception {
         this.mockMvc.perform(
-                post("/carcard").param("car", "dd")
-//                        .param("car", "1")
-//                        .param("brand", "BMW")
-//                        .param("model", "X1")
-//                        .param("transmission", "manual")
-//                        .param("suspension", "depended")
-//                        .param("engine", "diesel")
-//                        .param("sold", "false")
-        ).andExpect(status().is3xxRedirection());
-//        verify(this.carService, times(1)).save(new Car());
+                post("/carcard")
+                        .with(csrf())
+                        .param("id", "1")
+                        .param("brand", "BMW")
+                        .param("model", "X1")
+                        .param("transmission.name", "manual")
+                        .param("suspension.name", "depended")
+                        .param("engine.name", "diesel")
+                        .param("sold", "false")
 
+        ).andExpect(status().is3xxRedirection());
+        verify(this.carService, times(1)).save
+                (Car.builder()
+                        .id(1L)
+                        .brand("BMW")
+                        .model("X1")
+                        .transmission(Transmission.builder().name("manual").build())
+                        .suspension(Suspension.builder().name("depended").build())
+                        .engine(Engine.builder().name("diesel").build())
+                        .sold(false)
+                        .build());
     }
 
     @Test

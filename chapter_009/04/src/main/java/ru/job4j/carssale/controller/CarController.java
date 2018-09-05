@@ -1,4 +1,4 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.job4j.carssale.models.*;
-import ru.job4j.carssale.repositories.CarRepository;
-import ru.job4j.carssale.repositories.OwnerRepository;
+import ru.job4j.carssale.repositories.CarDao;
+import ru.job4j.carssale.repositories.OwnerDao;
+import ru.job4j.carssale.repositories.SqlCarDao;
+import ru.job4j.carssale.repositories.SqlOwnerDao;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -23,42 +25,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Log4j
 @Controller
 public class CarController {
 
-    private CarRepository carRepository;
-
-    private OwnerRepository ownerRepository;
-
     @Autowired
-    private ServletContext context;
-
-    @Autowired
-    public void setCarRepository(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
-
-    @Autowired
-    public void setOwnerRepository(OwnerRepository ownerRepository) {
-        this.ownerRepository = ownerRepository;
-    }
+    ServletContext context;
 
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String showCars(ModelMap model) {
-        model.addAttribute("cars", carRepository.findAll());
+        CarDao carDao = new SqlCarDao();
+        model.addAttribute("cars", carDao.getAll());
         return "CarsList";
     }
 
     @RequestMapping(value = "/carcard", method = RequestMethod.GET, params = "carId")
     public String showCarCardById(@ModelAttribute("carId") Integer id, ModelMap model, HttpServletRequest req) {
         String resultPage = "CarCard";
-        Car car = carRepository.findById(id).get();
+        CarDao carDao = new SqlCarDao();
+        Car car = carDao.getCar(id);
         req.setAttribute("car", car);
         HttpSession session = req.getSession(false);
         if (session != null && session.getAttribute("owner") != null) {
@@ -67,14 +54,13 @@ public class CarController {
                 resultPage = "CarCardOwner";
             }
         }
-        model.addAttribute("car", car);
+        model.addAttribute("car", carDao.getCar(id));
         return resultPage;
     }
 
     @RequestMapping(value = "/carcard", method = RequestMethod.POST)
     public String updateCarCard(HttpServletRequest req, ModelMap modelMap) {
         int id = Integer.parseInt(req.getParameter("id"));
-        Car car = carRepository.findById(id).get();
         String brand = req.getParameter("brand");
         String model = req.getParameter("model");
         Transmission transmission = new Transmission();
@@ -84,14 +70,19 @@ public class CarController {
         Engine engine = new Engine();
         engine.setName(req.getParameter("engine"));
         boolean status = Boolean.parseBoolean(req.getParameter("sold"));
+        Owner owner = (Owner) req.getSession().getAttribute("owner");
+        Car car = new Car();
+        car.setId(id);
         car.setBrand(brand);
         car.setModel(model);
         car.setTransmission(transmission);
         car.setSuspension(suspension);
         car.setEngine(engine);
         car.setSold(status);
-        carRepository.save(car);
-        modelMap.addAttribute("cars", carRepository.findAll());
+        car.setOwner(owner);
+        CarDao carDao = new SqlCarDao();
+        carDao.update(car);
+        modelMap.addAttribute("cars", carDao.getAll());
         return "CarsList";
     }
 
@@ -103,7 +94,7 @@ public class CarController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addCar(HttpServletRequest req, ModelMap modelMap) {
         Map<String, String> formFields = new HashMap<>();
-        List<Image> images = new ArrayList<>();
+        Set<Image> images = new HashSet<>();
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         diskFileItemFactory.setSizeThreshold(1024 * 1024);
         File tempDir = (File) context.getAttribute("javax.servlet.context.tempdir");
@@ -111,7 +102,7 @@ public class CarController {
         ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
         servletFileUpload.setFileSizeMax(1024 * 1024 * 10);
         servletFileUpload.setHeaderEncoding("UTF-8");
-        Car car = new Car();
+        CarDao carDao = new SqlCarDao();
         try {
             List<FileItem> items = servletFileUpload.parseRequest(req);
             for (FileItem item : items) {
@@ -122,8 +113,6 @@ public class CarController {
                 }
             }
 
-            Owner owner = (Owner) req.getSession(false).getAttribute("owner");
-
             Transmission transmission = new Transmission();
             transmission.setName(formFields.get("transmission"));
 
@@ -133,30 +122,23 @@ public class CarController {
             Engine engine = new Engine();
             engine.setName(formFields.get("engine"));
 
-
+            Car car = new Car();
             car.setBrand(formFields.get("brand"));
             car.setModel(formFields.get("model"));
             car.setSuspension(suspension);
             car.setTransmission(transmission);
             car.setEngine(engine);
             car.setSold(Boolean.parseBoolean(formFields.get("sold")));
-            car.setOwner(owner);
-            setCar(images, car);
-            carRepository.save(car);
+            car.setOwner((Owner) req.getSession(false).getAttribute("owner"));
+            carDao.add(car, images);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
-        modelMap.addAttribute("cars", carRepository.findAll());
+        modelMap.addAttribute("cars", carDao.getAll());
         return "CarsList";
     }
 
-    private void setCar(List<Image> images, Car car) {
-        for (int i = 0; i < images.size(); i++) {
-            images.get(i).setCar(car);
-        }
-    }
-
-    private void processFileField(FileItem item, List<Image> images) throws Exception {
+    private void processFileField(FileItem item, Set<Image> images) throws Exception {
         String fileName = System.currentTimeMillis() + item.getName();
         String uploadDirPath = System.getProperty("catalina.home") + "/webapps/uploads/";
         String filePath = uploadDirPath + fileName;
@@ -191,10 +173,12 @@ public class CarController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute("owner") Owner owner, HttpServletRequest request, ModelMap model) {
         String resultPage = "Login";
-        Owner carOwner = ownerRepository.findAllByLoginAndPassword(owner.getLogin(), owner.getPassword());
+        OwnerDao ownerDao = new SqlOwnerDao();
+        Owner carOwner = ownerDao.isExist(owner.getLogin(), owner.getPassword());
         if (carOwner != null) {
             request.getSession().setAttribute("owner", carOwner);
-            model.addAttribute("cars", carRepository.findAll());
+            CarDao carDao = new SqlCarDao();
+            model.addAttribute("cars", carDao.getAll());
             resultPage = "CarsList";
         }
         return resultPage;

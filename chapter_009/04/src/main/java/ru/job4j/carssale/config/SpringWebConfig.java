@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan("ru.job4j.carssale.controllers")
+@ComponentScan("ru.job4j.carssale.controller")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
     @Override

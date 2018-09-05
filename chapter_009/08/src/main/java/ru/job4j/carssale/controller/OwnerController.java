@@ -1,30 +1,31 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.job4j.carssale.repositories.OwnerRepository;
+import ru.job4j.carssale.service.OwnerService;
 
 @Controller
 public class OwnerController {
 
-    OwnerRepository ownerRepository;
+    private final OwnerService ownerService;
 
     @Autowired
-    public void setOwnerRepository(OwnerRepository ownerRepository) {
-        this.ownerRepository = ownerRepository;
+    public OwnerController(OwnerService ownerService) {
+        this.ownerService = ownerService;
     }
 
-    @RequestMapping(value = "/ownerslist", method = RequestMethod.GET)
+    @GetMapping("/owners")
     public String getOwnersList(ModelMap modelMap) {
-        modelMap.addAttribute("owners", ownerRepository.findAll());
-        return "OwnersList";
+        modelMap.addAttribute("owners", ownerService.findAll());
+        return "ownersList";
     }
 
     @RequestMapping(value = "/accessdenied", method = RequestMethod.GET)
     public String getAccessDeniedPage() {
-        return "AccessDenied";
+        return "accessDenied";
     }
 }

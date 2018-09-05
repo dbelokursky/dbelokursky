@@ -1,4 +1,4 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;

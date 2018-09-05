@@ -10,6 +10,7 @@ import javax.persistence.*;
  * @since 27.06.18.
  */
 
+@Builder
 @EqualsAndHashCode
 @Getter
 @Setter

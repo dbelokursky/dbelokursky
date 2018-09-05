@@ -5,7 +5,7 @@
          version="3.0">
     <servlet>
         <servlet-name>CarsList</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarsList</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarsList</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarsList</servlet-name>
@@ -14,7 +14,7 @@
 
     <servlet>
         <servlet-name>CarAdd</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarAdd</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarAdd</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarAdd</servlet-name>
@@ -23,7 +23,7 @@
 
     <servlet>
         <servlet-name>CarCard</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarCard</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarCard</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarCard</servlet-name>
@@ -32,7 +32,7 @@
 
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.Login</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.Login</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -41,7 +41,7 @@
 
     <servlet>
         <servlet-name>Edit</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarEdit</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarEdit</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Edit</servlet-name>
@@ -50,7 +50,7 @@
 
     <servlet>
         <servlet-name>CarsFilters</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarsFilters</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarsFilters</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarsFilters</servlet-name>
@@ -59,7 +59,7 @@
 
     <servlet>
         <servlet-name>CarsToJson</servlet-name>
-        <servlet-class>ru.job4j.carssale.controllers.CarsToJsonHelper</servlet-class>
+        <servlet-class>ru.job4j.carssale.controller.CarsToJsonHelper</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CarsToJson</servlet-name>

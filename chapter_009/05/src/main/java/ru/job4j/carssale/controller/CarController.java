@@ -1,4 +1,4 @@
-package ru.job4j.carssale.controllers;
+package ru.job4j.carssale.controller;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.fileupload.FileItem;
@@ -6,10 +6,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +18,7 @@ import ru.job4j.carssale.repositories.OwnerRepository;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,12 +36,8 @@ public class CarController {
 
     private OwnerRepository ownerRepository;
 
-    private ServletContext context;
-
     @Autowired
-    public void setContext(ServletContext context) {
-        this.context = context;
-    }
+    private ServletContext context;
 
     @Autowired
     public void setCarRepository(CarRepository carRepository) {
@@ -63,15 +56,13 @@ public class CarController {
     }
 
     @RequestMapping(value = "/carcard", method = RequestMethod.GET, params = "carId")
-    public String showCarCardById(@ModelAttribute("carId") Long id, ModelMap model, HttpServletRequest req) {
+    public String showCarCardById(@ModelAttribute("carId") Integer id, ModelMap model, HttpServletRequest req) {
         String resultPage = "CarCard";
         Car car = carRepository.findById(id).get();
         req.setAttribute("car", car);
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Owner owner = ownerRepository.findByLogin(user.getUsername());
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("owner") != null) {
+            Owner owner = (Owner) session.getAttribute("owner");
             if (car.getOwner() != null && owner.getId() == car.getOwner().getId()) {
                 resultPage = "CarCardOwner";
             }
@@ -82,7 +73,7 @@ public class CarController {
 
     @RequestMapping(value = "/carcard", method = RequestMethod.POST)
     public String updateCarCard(HttpServletRequest req, ModelMap modelMap) {
-        Long id = java.lang.Long.parseLong(req.getParameter("id"));
+        int id = Integer.parseInt(req.getParameter("id"));
         Car car = carRepository.findById(id).get();
         String brand = req.getParameter("brand");
         String model = req.getParameter("model");
@@ -151,7 +142,6 @@ public class CarController {
             car.setSold(Boolean.parseBoolean(formFields.get("sold")));
             car.setOwner(owner);
             setCar(images, car);
-            car.setImages(images);
             carRepository.save(car);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

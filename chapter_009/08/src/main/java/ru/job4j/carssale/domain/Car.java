@@ -11,9 +11,11 @@ import java.util.List;
  * @author Dmitry Belokursky
  * @since 27.06.18.
  */
+@EqualsAndHashCode
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

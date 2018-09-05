@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @author Dmitry Belokursky
  * @since 27.06.18.
  */
-
+@Builder
 @EqualsAndHashCode
 @Getter
 @Setter
