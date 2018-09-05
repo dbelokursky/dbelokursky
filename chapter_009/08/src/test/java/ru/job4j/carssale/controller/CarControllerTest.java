@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.job4j.carssale.domain.*;
 import ru.job4j.carssale.service.CarService;
 import ru.job4j.carssale.service.ImageService;
@@ -44,13 +45,11 @@ public class CarControllerTest {
     @Test
     @WithMockUser(username = "owner1")
     public void showCars() throws Exception {
-
-        given(this.carService.findAll()).willReturn(
-                new ArrayList<>()
-        );
-        this.mockMvc.perform(get("/cars").accept(MediaType.TEXT_HTML)
-        ).andExpect(status().isOk()
-        ).andExpect(view().name("carsList"));
+        given(this.carService.findAll()).willReturn(new ArrayList<>());
+        this.mockMvc.perform(get("/cars")
+                .accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(view().name("carsList"));
     }
 
     @Test
@@ -95,11 +94,10 @@ public class CarControllerTest {
                         .param("transmission.name", "manual")
                         .param("suspension.name", "depended")
                         .param("engine.name", "diesel")
-                        .param("sold", "false")
-
-        ).andExpect(status().is3xxRedirection());
-        verify(this.carService, times(1)).save
-                (Car.builder()
+                        .param("sold", "false"))
+                .andExpect(status().is3xxRedirection());
+        verify(this.carService, times(1)).save(
+                Car.builder()
                         .id(1L)
                         .brand("BMW")
                         .model("X1")
@@ -111,14 +109,45 @@ public class CarControllerTest {
     }
 
     @Test
-    public void getCarAddPage() {
+    @WithMockUser(username = "owner1")
+    public void getCarAddPage() throws Exception {
+        this.mockMvc.perform(get("/add")
+                .accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk())
+                .andExpect(view().name("carAdd"));
     }
 
     @Test
-    public void addCar() {
+    @WithMockUser(username = "owner1")
+    public void addCar() throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.multipart("/add")
+                        .with(csrf())
+                        .param("id", "1")
+                        .param("brand", "BMW")
+                        .param("model", "X1")
+                        .param("transmission.name", "manual")
+                        .param("suspension.name", "depended")
+                        .param("engine.name", "diesel")
+                        .param("sold", "false"))
+                .andExpect(status().is3xxRedirection());
+        verify(this.carService, times(1)).save(
+                Car.builder()
+                        .id(1L)
+                        .brand("BMW")
+                        .model("X1")
+                        .transmission(Transmission.builder().name("manual").build())
+                        .suspension(Suspension.builder().name("depended").build())
+                        .engine(Engine.builder().name("diesel").build())
+                        .sold(false)
+                        .build());
     }
 
-    @Test
-    public void getLoginPage() {
-    }
+//    @Test
+//    public void getLoginPage() throws Exception {
+//        RequestBuilder requestBuilder = formLogin().user("owner1").password("password1");
+//        this.mockMvc.perform(requestBuilder).andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(cookie().exists("JSESSIONID"));
+//    }
 }
