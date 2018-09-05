@@ -1,0 +1,113 @@
+package ru.job4j.carssale.controllers;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.job4j.carssale.domain.*;
+import ru.job4j.carssale.service.CarService;
+import ru.job4j.carssale.service.ImageService;
+import ru.job4j.carssale.service.OwnerService;
+
+import java.util.ArrayList;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(CarController.class)
+public class CarControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ImageService imageService;
+
+    @MockBean
+    private OwnerService ownerService;
+
+    @MockBean
+    private CarService carService;
+
+    @Test
+    @WithMockUser(username = "owner1")
+    public void showCars() throws Exception {
+
+        given(this.carService.findAll()).willReturn(
+                new ArrayList<>()
+        );
+        this.mockMvc.perform(get("/cars").accept(MediaType.TEXT_HTML)
+        ).andExpect(status().isOk()
+        ).andExpect(view().name("carsList"));
+    }
+
+    @Test
+    @WithMockUser(username = "owner1")
+    public void showCarCardById() throws Exception {
+        Transmission transmission = mock(Transmission.class);
+        when(transmission.getName()).thenReturn("transmission");
+
+        Suspension suspension = mock(Suspension.class);
+        when(suspension.getName()).thenReturn("suspension");
+
+        Engine engine = mock(Engine.class);
+        when(engine.getName()).thenReturn("engine");
+
+        Owner owner = mock(Owner.class);
+        when(owner.getId()).thenReturn(1L);
+
+        Car car = mock(Car.class);
+        when(car.getOwner()).thenReturn(owner);
+        when(car.getId()).thenReturn(1L);
+        when(car.getTransmission()).thenReturn(transmission);
+        when(car.getSuspension()).thenReturn(suspension);
+        when(car.getEngine()).thenReturn(engine);
+
+        given(this.carService.findById(1L)).willReturn(car);
+        given(this.ownerService.findByLogin("owner1")).willReturn(owner);
+
+        this.mockMvc.perform(get("/carcard?carId=1").accept(MediaType.TEXT_HTML)
+        ).andExpect(status().isOk()
+        ).andExpect((view().name("carCardOwner")));
+    }
+
+    @Test
+    @WithMockUser(username = "owner1")
+    public void updateCarCard() throws Exception {
+        this.mockMvc.perform(
+                post("/carcard").param("car", "dd")
+//                        .param("car", "1")
+//                        .param("brand", "BMW")
+//                        .param("model", "X1")
+//                        .param("transmission", "manual")
+//                        .param("suspension", "depended")
+//                        .param("engine", "diesel")
+//                        .param("sold", "false")
+        ).andExpect(status().is3xxRedirection());
+//        verify(this.carService, times(1)).save(new Car());
+
+    }
+
+    @Test
+    public void getCarAddPage() {
+    }
+
+    @Test
+    public void addCar() {
+    }
+
+    @Test
+    public void getLoginPage() {
+    }
+}

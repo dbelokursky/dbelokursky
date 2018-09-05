@@ -7,13 +7,13 @@ public enum HibernateUtil {
 
     INSTANCE;
 
-    private final static SessionFactory sessionFactory;
+    private final static SessionFactory SESSION_FACTORY;
 
     static {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        SESSION_FACTORY = new Configuration().configure().buildSessionFactory();
     }
 
     public SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return SESSION_FACTORY;
     }
 }

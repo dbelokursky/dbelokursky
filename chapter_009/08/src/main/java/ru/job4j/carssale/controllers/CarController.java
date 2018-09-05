@@ -82,9 +82,8 @@ public class CarController {
     }
 
     @PostMapping("/carcard")
-    public String updateCarCard(@ModelAttribute Car car, ModelMap modelMap) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Owner owner = ownerService.findByLogin(authentication.getName());
+    public String updateCarCard(@ModelAttribute Car car) {
+        Owner owner = ownerService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
         car.setOwner(owner);
         carService.save(car);
         return "redirect:/cars";
