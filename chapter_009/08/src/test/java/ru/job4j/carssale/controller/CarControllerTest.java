@@ -3,6 +3,7 @@ package ru.job4j.carssale.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -10,6 +11,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import ru.job4j.carssale.domain.*;
 import ru.job4j.carssale.service.CarService;
 import ru.job4j.carssale.service.ImageService;
@@ -20,15 +23,23 @@ import java.util.ArrayList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(CarController.class)
+@AutoConfigureMockMvc
 public class CarControllerTest {
+
+    @Autowired
+    private WebApplicationContext context;
 
     @Autowired
     private MockMvc mockMvc;
@@ -143,11 +154,21 @@ public class CarControllerTest {
                         .build());
     }
 
-//    @Test
-//    public void getLoginPage() throws Exception {
-//        RequestBuilder requestBuilder = formLogin().user("owner1").password("password1");
-//        this.mockMvc.perform(requestBuilder).andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(cookie().exists("JSESSIONID"));
-//    }
+    @Test
+    @WithMockUser(username = "owner1")
+    public void getLoginPage() throws Exception {
+        this.mockMvc.perform(get("/login")
+                .accept(MediaType.TEXT_HTML))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void singIn() throws Exception {
+        this.mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+        this.mockMvc.perform(formLogin().user("owner1").password("password1"))
+                .andExpect(authenticated());
+    }
 }

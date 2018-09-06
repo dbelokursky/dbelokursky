@@ -43,7 +43,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/owners").hasRole("ADMIN")
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
                 .loginPage("/login")
                 .defaultSuccessUrl("/cars")
                 .failureUrl("/login")
