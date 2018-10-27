@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class InputStreamChecker {
 
-    static boolean isEven(InputStream inputStream) {
+    boolean isEven(InputStream inputStream) {
         boolean result = false;
         try (Scanner scanner = new Scanner(inputStream)) {
             if (scanner.hasNextInt()) {
@@ -17,4 +17,5 @@ public class InputStreamChecker {
         }
         return result;
     }
+
 }
