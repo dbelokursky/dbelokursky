@@ -1,4 +1,4 @@
-# Учебный репозиторий проекта [job4j](http://job4j.ru/)
+# Учебный репозиторий
 
 [![Build Status](https://travis-ci.org/dbelokursky/dbelokursky.svg?branch=master)](https://travis-ci.org/dbelokursky/dbelokursky)
 [![codecov](https://codecov.io/gh/dbelokursky/dbelokursky/branch/master/graph/badge.svg)](https://codecov.io/gh/dbelokursky/dbelokursky)
