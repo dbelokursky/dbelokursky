@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 
 public class OwnerStoreTest {
 
-    @Test
+//    @Test
     public void isExist() {
         OwnerStore ownerStore = new OwnerStore();
         Owner expected = null;
